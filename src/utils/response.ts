@@ -10,7 +10,4 @@ export const resError = ( res: Response, error: ResError ) =>
 type Control = ( request: Request ) => Promise<Record<string, any>>;
 export const controller = ( control: Control ) => 
   async ( req: Request, res: Response, next: NextFunction ) => 
-    res.status( 200 ).json({
-      message: await control( req )
-        .catch( error => next( error ) ), 
-    });
+    res.status( 200 ).json({ message: await control( req ).catch( error => next( error ) ) });
