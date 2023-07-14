@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 
-export const resError = ( res: Response, error: any ) => 
-  res.status( error?.status ||  500 ).json({ message: error?.message || 'undefined error' });
+interface ResError {
+  status?: number;
+  message?: string;
+}
+export const resError = ( res: Response, error: ResError ) => 
+  res.status( error.status ||  500 ).json({ message: error.message || 'undefined error' });
 
 type Control = ( request: Request ) => Promise<Record<string, any>>;
 export const controller = ( control: Control ) => 
