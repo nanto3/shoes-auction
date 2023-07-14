@@ -1,0 +1,11 @@
+# docker
+.dbdata
+
+.vscode
+package-lock.json
+node_modules
+dist
+logs
+.env
+
+src/test.*
