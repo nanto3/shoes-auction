@@ -28,7 +28,7 @@ const receiveConfigs: ReceiveConfigs = {
   },
 };
 
-export const setReceiveConfigs = ( app: Application, expressMethods: ExpressMethods ) => {
+export const setReceiveOptions = ( app: Application, expressMethods: ExpressMethods ) => {
   Object
     .entries( expressMethods )
     .forEach( ([ key, method ]) => app.use( method( receiveConfigs[key]) ) );
