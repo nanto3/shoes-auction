@@ -2,13 +2,13 @@
 class ResException extends Error {
   status: number;
   message: string;
-  error: Error;
+  previousError: Error;
 
   constructor( status, message='', error=null ) {
     super( message );
     this.status = status;
     this.message = message;
-    this.error = error;
+    this.previousError = error;
   }
 }
 
