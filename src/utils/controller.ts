@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import ResException from './ResException';
+import ResException from '../models/ResException';
 
 type Flow = ( request: Request ) => Promise<Record<string, any>> | Record<string, any>;
 export const respond = ( flow: Flow ) => 
