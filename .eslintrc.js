@@ -37,7 +37,7 @@ module.exports = {
     ],
     "max-len": ["error", { code: 500 }],
     semi: ["error", "always"],
-    // "eol-last": ["error", "always"],
+    "eol-last": ["error", "always"],
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "off",
   },

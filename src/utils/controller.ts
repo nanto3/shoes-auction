@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import ResException from './ResException';
 
 type Flow = ( request: Request ) => Promise<Record<string, any>> | Record<string, any>;
 export const respond = ( flow: Flow ) => 
@@ -16,3 +17,12 @@ interface ResError {
 }
 export const respondError = ( res: Response, error: ResError ) => 
   res.status( error.status || 500 ).json({ message: error.message || 'undefined error' });
+
+export const emitWrongRouteError = ( req: Request, res: Response, next: NextFunction ) => 
+  next( new ResException( 404, 'wrong route' ) );
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const handleError = ( error: ResException | Error, req: Request, res: Response, next: NextFunction ) => {
+  console.log( error ); 
+  respondError( res, error ) ;
+};
