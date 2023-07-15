@@ -6,7 +6,10 @@ import { emitWrongRouteError, handleError } from './utils/responder';
 
 const app: express.Application = express();
 
-setReceiveOptions( app, { json: express.json, urlencoded: express.urlencoded });
+setReceiveOptions( app, {
+  json: express.json, 
+  urlencoded: express.urlencoded, 
+});
 
 app.use( routers );
 app.use( emitWrongRouteError );
