@@ -1,8 +1,8 @@
 import express from 'express';
 import envConfig from './configs/env';
 import { setReceiveOptions } from './utils/setReceiveOptions';
-import routers from './routers';
-import { emitWrongRouteError, handleError } from './utils/controller';
+import routers from './domains/routers';
+import { emitWrongRouteError, handleError } from './utils/responder';
 
 const app: express.Application = express();
 

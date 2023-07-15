@@ -15,7 +15,7 @@ interface ResError {
   status?: number;
   message?: string;
 }
-export const respondError = ( res: Response, error: ResError ) => 
+const respondError = ( res: Response, error: ResError ) => 
   res.status( error.status || 500 ).json({ message: error.message || 'undefined error' });
 
 export const emitWrongRouteError = ( req: Request, res: Response, next: NextFunction ) => 
