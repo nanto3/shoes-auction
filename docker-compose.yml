@@ -18,7 +18,7 @@ services:
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
     ports:
-      - 33080:3306
+      - 33060:3306
     logging:
       driver: "json-file"
       options:

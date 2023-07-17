@@ -1,4 +1,5 @@
 import envConfig from './env';
+import { Sequelize } from 'sequelize';
 
 const { database, username, password, host, dbPort } = envConfig;
 
@@ -21,4 +22,6 @@ const sequelizeConfig = {
   },
 };
 
-export default sequelizeConfig;
+const sequelize = new Sequelize( sequelizeConfig );
+
+export default sequelize;
