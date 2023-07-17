@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { respond } from "../../utils/responder";
+import './user.service';
 
 const router = Router();
 
