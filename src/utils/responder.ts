@@ -18,8 +18,8 @@ interface ResError {
 const respondError = ( res: Response, error: ResError ) => 
   res.status( error.status || 500 ).json({ message: error.message || 'undefined error' });
 
-export const emitWrongRouteError = ( req: Request, res: Response, next: NextFunction ) => 
-  next( new ResException( 404, 'wrong route' ) );
+export const emitNotFoundError = ( req: Request, res: Response, next: NextFunction ) => 
+  next( new ResException( 404, 'not found' ) );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const handleError = ( error: ResException | Error, req: Request, res: Response, next: NextFunction ) => {
