@@ -19,9 +19,12 @@ const sequelizeConfig = {
       idle: 10000,
     },
     logQueryParameters: true,
+    logging: ( msg ) => console.log({ dbMsg: msg }),
   },
 };
 
 const sequelize = new Sequelize( sequelizeConfig );
+sequelize.sync({ force: true });
+sequelize.authenticate();
 
 export default sequelize;
