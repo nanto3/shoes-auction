@@ -1,3 +1,2 @@
-import User from "./user.model";
+import "../../entities/user.entity";
 
-User.findAll();

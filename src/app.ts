@@ -1,5 +1,5 @@
 import express from 'express';
-import envConfig from './configs/env';
+import envConfig from './configs/env.config';
 import { setReceiveOptions } from './utils/setReceiveOptions';
 import routers from './domains/routers';
 import { emitNotFoundError, handleError } from './utils/responder';

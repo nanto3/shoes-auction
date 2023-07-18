@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../../configs/sequelize';
+import sequelize from '../configs/sequelize.config';
 
 export default class User extends Model {
   declare id: number; 
@@ -35,4 +35,15 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-}, { sequelize });
+}, {
+  sequelize,
+  freezeTableName: true,
+});
+
+( async () => {
+  try {
+    await User.sync();
+  } catch ( error ) {
+    console.log( error );
+  }
+})();
