@@ -17,6 +17,16 @@ const options: Options = {
   logging: ( msg ) => console.log({ QUERY: msg }),
 };
 
-const sequelize = new Sequelize( database, username, password, options  );
+const sequelize = new Sequelize( database, username, password, options );
+
+export const checkConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    console.log( 'Db connection has been established' );
+  } catch ( error ) {
+    console.log( error, 'Unable to connect to the database error' );
+  }
+};
 
 export default sequelize;

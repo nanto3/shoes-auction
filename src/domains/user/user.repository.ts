@@ -1,2 +1,2 @@
-import "../../entities/user.entity";
+import "../../entities";
 

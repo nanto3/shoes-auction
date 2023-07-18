@@ -39,11 +39,3 @@ User.init({
   sequelize,
   freezeTableName: true,
 });
-
-( async () => {
-  try {
-    await User.sync();
-  } catch ( error ) {
-    console.log( error );
-  }
-})();
