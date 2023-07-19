@@ -6,11 +6,11 @@ export default class UserService {
 
   async join({ email, password }) {
     if ( !UserUtil.isEmail( email ) ) {
-      throw new ResException( 400, '잘못된 이메일 형식' );
+      throw new ResException( 400, 'wrong email format' );
     }
 
     if ( await this.userRepository.findByEmail( email ) ) {
-      throw new ResException( 400, '이미 존재하는 이메일' );
+      throw new ResException( 400, 'already registered email' );
     }
 
     return await this.userRepository.createUser({ 
