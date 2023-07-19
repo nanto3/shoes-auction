@@ -1,14 +1,11 @@
 import ResException from '../../models/ResException';
-import { EMAIL_REGEX } from '../../constants/const';
-import { hashPassword } from '../../utils/hash';
+import UserUtil from '../../models/UserUtil';
 
 export default class UserService {
   constructor( private userRepository ) {}
 
-  private isEmail = ( email: string ) => EMAIL_REGEX.test( email );
-
   async join({ email, password }) {
-    if ( !this.isEmail( email ) ) {
+    if ( !UserUtil.isEmail( email ) ) {
       throw new ResException( 400, '잘못된 이메일 형식' );
     }
 
@@ -18,7 +15,7 @@ export default class UserService {
 
     return await this.userRepository.createUser({ 
       email, 
-      password: await hashPassword( password ), 
+      password: await UserUtil.hashPassword( password ), 
     });
   }
 }
