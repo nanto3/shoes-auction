@@ -12,6 +12,8 @@ const envConfig = {
   password: process.env.SHOES_AUCTION_MYSQL_DB_PASSWORD,
   host: process.env.SHOES_AUCTION_MYSQL_DB_HOST,
   dbPort: process.env.SHOES_AUCTION_MYSQL_DB_PORT,
+
+  passwordSolt: process.env.SHOES_AUCTION_PASSWORD_SOLT,
 };
 
 export default envConfig;

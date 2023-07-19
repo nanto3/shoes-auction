@@ -34,7 +34,11 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
+  createdAt: DataTypes.DATE,
+  updatedAt: DataTypes.DATE,
+  deletedAt: DataTypes.DATE,
 }, {
   sequelize,
-  freezeTableName: true,
+  paranoid: true,
+  underscored: true,
 });
