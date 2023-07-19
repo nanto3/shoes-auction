@@ -12,6 +12,7 @@ class Auction extends Model {
   declare readonly deletedAt: Date;
 }
 
+// TODO: '최고 입찰가보다 적은 금액은 입찰 불가 처리' 어떻게 할 건지
 export const AuctionFactory = ( sequelize: Sequelize ) => Auction.init({
   id: {
     type: DataTypes.INTEGER,
