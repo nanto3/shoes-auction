@@ -1,7 +1,6 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../configs/sequelize.config';
+import { Sequelize, Model, DataTypes } from 'sequelize';
 
-export default class User extends Model {
+class User extends Model {
   declare id: number; 
   declare uuid: string;
   declare email: string;
@@ -11,7 +10,7 @@ export default class User extends Model {
   declare readonly deletedAt: Date;
 }
 
-User.init({
+export const UserFactory = ( sequelize: Sequelize ) => User.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: false,

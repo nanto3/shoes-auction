@@ -1,2 +1,1 @@
-import "../../entities";
-
+import { User } from "../../entities";
