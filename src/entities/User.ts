@@ -8,6 +8,8 @@ class User extends Model {
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
   declare readonly deletedAt: Date;
+  declare products: Record<string, any>[];
+  declare auctions: Record<string, any>[];
 }
 
 export const UserFactory = ( sequelize: Sequelize ) => User.init({

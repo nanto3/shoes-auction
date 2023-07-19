@@ -1,7 +1,20 @@
 import sequelize from '../configs/sequelize.config';
 import { UserFactory } from './User';
+import { ProductFactory } from './Product';
+import { AuctionFactory } from './Auction';
 
 export const User = UserFactory( sequelize );
+export const Product = ProductFactory( sequelize );
+export const Auction = AuctionFactory( sequelize );
+
+User.hasMany( Product, { as: 'products' });
+Product.belongsTo( User );
+
+User.hasMany( Auction, { as: 'auctions' });
+Auction.belongsTo( User );
+
+Product.hasMany( Auction, { as: 'auctions' });
+Auction.belongsTo( Product );
 
 export const checkDbConnection = new Promise( async ( resolve, reject ) => {
   try {
