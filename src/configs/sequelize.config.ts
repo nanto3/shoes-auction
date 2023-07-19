@@ -14,7 +14,7 @@ const options: Options = {
     idle: 10000,
   },
   logQueryParameters: true,
-  logging: ( msg ) => console.log({ QUERY: msg }),
+  logging: ( msg ) => console.log( 'Query', msg ),
 };
 
 const sequelize = new Sequelize( database, username, password, options );
