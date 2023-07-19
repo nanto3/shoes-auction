@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { respond } from "../../utils/responder";
 import UserSerivce from './user.service';
-import * as UserRepository from './user.repository';
+import UserRepository from './user.repository';
 
 const router = Router();
 
-const userService = new UserSerivce( UserRepository );
+const userService = new UserSerivce( new UserRepository() );
 
 router.get( '', respond( () => {
   return { result: 'users home' };
