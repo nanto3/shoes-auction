@@ -14,7 +14,8 @@ describe( 'user-service', () => {
       findByEmail: ( email ) => User.find( anUser => anUser.email === email ),
     };
 
-    const email = 'abc123naver.com';
+    const email = 'abc123@naver.com';
+    // const email = 'abc123naver.com';
     const password = '1234';
     const userService = new UserService( userRepository );
 
