@@ -15,7 +15,7 @@ export default class UserService {
 
     return await this.userRepository.createUser({ 
       email, 
-      password: await UserUtil.hashPassword( password ), 
+      password,
     });
   }
 }
