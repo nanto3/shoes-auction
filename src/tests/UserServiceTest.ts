@@ -1,5 +1,5 @@
 import { describe, test, expect } from "@jest/globals";
-import UserService from "../domains/user/user.service";
+import UserService from "../domains/user/UserService";
 import ResException from "../models/ResException";
 
 describe( 'user-service', () => {

@@ -1,6 +1,7 @@
 import ResException from '../../models/ResException';
 import UserUtil from '../../models/UserUtil';
-import UserRepository from './user.repository';
+import UserRepository from './UserRepository';
+import { User } from '../entity';
 
 export default class UserService {
   constructor( private userRepository: UserRepository ) {}

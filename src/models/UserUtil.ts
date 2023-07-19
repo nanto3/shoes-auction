@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import envConfig from '../configs/env.config';
+import envConfig from '../configs/envConfig';
 import { EMAIL_REGEX } from "../constants/const";
 
 export default class UserUtil {

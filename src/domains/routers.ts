@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import UserRouter from './user/user.controller';
-import ProductRouter from './product/product.controller';
-import AuctionRouter from './auction/auction.controller';
+import UserRouter from './user/UserController';
+import ProductRouter from './product/ProductController';
+import AuctionRouter from './auction/AuctionController';
 
 const router = Router();
 

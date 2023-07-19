@@ -1,9 +1,9 @@
 import express from 'express';
-import envConfig from './configs/env.config';
+import envConfig from './configs/envConfig';
 import routers from './domains/routers';
 import { setReceiveOptions } from './utils/setReceiveOptions';
 import { emitNotFoundError, handleError } from './utils/responder';
-import { checkDbConnection } from './entities';
+import { checkDbConnection } from './domains/entity';
 
 const app: express.Application = express();
 

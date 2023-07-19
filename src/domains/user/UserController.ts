@@ -1,14 +1,18 @@
 import { Router } from "express";
 import { respond } from "../../utils/responder";
-import UserSerivce from './user.service';
-import UserRepository from './user.repository';
+import UserSerivce from './UserService';
+import UserRepository from './UserRepository';
 import UserUtil from "../../models/UserUtil";
+import User from './User';
 
 const router = Router();
 
 const userService = new UserSerivce( new UserRepository() );
 
 router.get( '', respond( () => {
+  const user = new User({ email: 'jsu7375@gmail.com', password: '1234' });
+  user.email = 'hihih';
+  console.log( user );
   return { result: 'users home' };
 }) );
 
@@ -17,11 +21,12 @@ router.get( '', respond( () => {
  */
 router.get( '/join', respond( async ({ body }) => {
   const { email, password } = body;
+  const hashedPassword = await UserUtil.hashPassword( password );
 
   return {
-    user: await userService.join({ 
+    user: await userService.join({
       email, 
-      password: await UserUtil.hashPassword( password ), 
+      password: hashedPassword, 
     }), 
   };
 }) );

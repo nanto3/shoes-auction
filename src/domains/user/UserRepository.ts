@@ -1,5 +1,5 @@
 import { Transaction } from 'sequelize';
-import { User } from "../../entities";
+import { User } from "../entity";
 
 interface UserBody {
   email: string;

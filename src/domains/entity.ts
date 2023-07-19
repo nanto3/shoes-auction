@@ -1,7 +1,7 @@
-import sequelize from '../configs/sequelize.config';
-import { UserFactory } from './User';
-import { ProductFactory } from './Product';
-import { AuctionFactory } from './Auction';
+import sequelize from '../configs/sequelizeConfig';
+import { UserFactory } from './user/User';
+import { ProductFactory } from './product/Product';
+import { AuctionFactory } from './auction/Auction';
 
 export const User = UserFactory( sequelize );
 export const Product = ProductFactory( sequelize );
