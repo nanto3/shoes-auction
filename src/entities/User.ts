@@ -1,15 +1,15 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { Sequelize, Model, DataTypes, CreationOptional, NonAttribute, InferAttributes, InferCreationAttributes } from 'sequelize';
 
-class User extends Model {
-  declare id: number; 
-  declare uuid: string;
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  declare id: CreationOptional<number>; 
+  declare uuid: CreationOptional<string>;
   declare email: string;
   declare password: string;
-  declare readonly createdAt: Date;
-  declare readonly updatedAt: Date;
-  declare readonly deletedAt: Date;
-  declare products: Record<string, any>[];
-  declare auctions: Record<string, any>[];
+  declare readonly createdAt: CreationOptional<Date>;
+  declare readonly updatedAt: CreationOptional<Date>;
+  declare readonly deletedAt: Date | null;
+  declare products: NonAttribute<Record<string, any>[]>;
+  declare auctions: NonAttribute<Record<string, any>[]>;
 }
 
 export const UserFactory = ( sequelize: Sequelize ) => User.init({
