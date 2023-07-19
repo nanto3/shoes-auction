@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import ResException from '../models/ResException';
 
-type ProcessRequest = ( request: Request ) => Promise<Record<string, any>> | Record<string, any>;
+type ProcessReq = ( req: Request ) => Promise<Record<string, any>> | Record<string, any>;
 
-export const respond = ( processRequest: ProcessRequest ) => 
+export const respond = ( processReq: ProcessReq ) => 
   async ( req: Request, res: Response, next: NextFunction ) => {
     try {
-      res.status( 200 ).json({ message: await processRequest( req ) });
+      res.status( 200 ).json({ message: await processReq( req ) });
     } catch ( error ) {
       next( error );
     }
