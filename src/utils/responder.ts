@@ -16,7 +16,7 @@ interface ResError {
   message?: string;
 }
 const respondError = ( res: Response, error: ResError ) => 
-  res.status( error.status || 500 ).json({ message: error.message || 'undefined error' });
+  res.status( error.status || 500 ).json({ message: error.message || 'not defined error' });
 
 export const emitNotFoundError = ( req: Request, res: Response, next: NextFunction ) => 
   next( new ResException( 404, 'not found' ) );
