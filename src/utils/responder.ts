@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import ResException from '../models/ResException';
 
 type ProcessRequest = ( request: Request ) => Promise<Record<string, any>> | Record<string, any>;
+
 export const respond = ( processRequest: ProcessRequest ) => 
   async ( req: Request, res: Response, next: NextFunction ) => {
     try {
@@ -15,6 +16,7 @@ interface ResError {
   status?: number;
   message?: string;
 }
+
 const respondError = ( res: Response, error: ResError ) => 
   res.status( error.status || 500 ).json({ message: error.message || 'not defined error' });
 
