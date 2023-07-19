@@ -4,7 +4,7 @@ import cors, { CorsOptions } from 'cors';
 
 
 type ReceiveMethod<T> = ( options: T ) => ( req: Request, res: Response, next: NextFunction ) => void;
-interface ReceiveMethods {
+interface ReceiveTool {
   raw?: ReceiveMethod<Options>;
   text?: ReceiveMethod<OptionsText>;
   json?: ReceiveMethod<OptionsJson>;
@@ -12,14 +12,14 @@ interface ReceiveMethods {
   cors?: ReceiveMethod<CorsOptions>;
 }
 
-interface ReceiveConfigs {
+interface ReceiveConfig {
   raw?: Options;
   text?: OptionsText;
   json?: OptionsJson;
   urlencoded?: OptionsUrlencoded;
   cors?: CorsOptions;
 }
-const receiveConfigs: ReceiveConfigs = { 
+const receiveConfig: ReceiveConfig = { 
   json: { limit: '50mb' },
   urlencoded: {
     limit: '50mb',
@@ -28,10 +28,10 @@ const receiveConfigs: ReceiveConfigs = {
   },
 };
 
-export const setReceiveOptions = ( app: Application, receiveMethods: ReceiveMethods={}) => {
+export const setReceiveOptions = ( app: Application, receiveTool: ReceiveTool={}) => {
   Object
-    .entries( receiveMethods )
-    .forEach( ([ key, method ]) => app.use( method( receiveConfigs[key]) ) );
+    .entries( receiveTool )
+    .forEach( ([ key, method ]) => app.use( method( receiveConfig[key]) ) );
   
   app.use( cors({ credentials: true }) );
 };
