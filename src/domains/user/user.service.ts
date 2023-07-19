@@ -1,8 +1,9 @@
 import ResException from '../../models/ResException';
 import UserUtil from '../../models/UserUtil';
+import UserRepository from './user.repository';
 
 export default class UserService {
-  constructor( private userRepository ) {}
+  constructor( private userRepository: UserRepository ) {}
 
   async join({ email, password }) {
     if ( !UserUtil.isEmail( email ) ) {
