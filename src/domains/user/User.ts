@@ -12,7 +12,7 @@ export default class User {
     this._password = password;
   }
 
-  validateEmail(): void {
+  validateEmailFormat(): void {
     if ( !EMAIL_REGEX.test( this._email ) ) {
       throw new ResException( 400, 'wrong email format' ); 
     }

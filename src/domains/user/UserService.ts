@@ -8,15 +8,18 @@ export default class UserService {
 
   async join( user: User ) {
 
-    user.validateEmail();
-
-    if ( await this.userRepository.findByEmail( user.email ) ) {
-      throw new ResException( 400, 'already registered email' );
-    }
-
+    user.validateEmailFormat();
+    await this.validateEmailRegistered( user.email );
     await user.hashPassword();
 
     return await this.userRepository.createUser( user.format() );
+  }
+
+  private async validateEmailRegistered( email: string ): Promise<void> {
+    const registeredEmail = await this.userRepository.findByEmail( email );
+    if ( registeredEmail ) {
+      throw new ResException( 400, 'already registered email' );
+    }
   }
 }
 
