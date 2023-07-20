@@ -11,7 +11,7 @@ export default class UserUtil {
     return await bcrypt.hash( password, await bcrypt.genSalt( +envConfig.passwordSalt ) );
   }
 
-  static async validatePassword( password: string, dbPassword: string ): Promise<boolean> {
-    return await bcrypt.compare( password, dbPassword );
+  static async validatePassword( password: string, target: string ): Promise<boolean> {
+    return await bcrypt.compare( password, target );
   }
 }

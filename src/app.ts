@@ -3,7 +3,7 @@ import envConfig from './configs/envConfig';
 import routers from './domains/routers';
 import { setReceiveOptions } from './utils/setReceiveOptions';
 import { emitNotFoundError, handleError } from './utils/responder';
-import { checkDbConnection } from './domains/entity';
+import { checkDbConnection } from './entities';
 
 const app: express.Application = express();
 

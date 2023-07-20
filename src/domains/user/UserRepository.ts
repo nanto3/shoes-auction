@@ -1,5 +1,5 @@
 import { Transaction } from 'sequelize';
-import { User } from "../entity";
+import { User } from "../../entities";
 
 interface UserBody {
   email: string;
@@ -7,11 +7,11 @@ interface UserBody {
 }
 
 export default class UserRepository {
-  async createUser ( user: UserBody ) {
+  async createUser( user: UserBody ) {
     return await User.create( user );
   }
   
-  async findByEmail ( email: string, transaction?: Transaction ) {
+  async findByEmail( email: string, transaction?: Transaction ) {
     return await User.findOne({ where: { email }, transaction });
   }
 }

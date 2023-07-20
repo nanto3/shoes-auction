@@ -1,1 +1,1 @@
-import { Product } from "../entity";
+import { Product } from "../../entities";

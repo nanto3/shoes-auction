@@ -1,46 +1,42 @@
-import { Sequelize, Model, DataTypes, CreationOptional, NonAttribute, InferAttributes, InferCreationAttributes } from 'sequelize';
+import bcrypt from 'bcrypt';
+import envConfig from '../../configs/envConfig';
+import { EMAIL_REGEX } from "../../constants/const";
+import ResException from "../../models/ResException";
 
-export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-  declare id: CreationOptional<number>; 
-  declare uuid: string;
-  declare email: string;
-  declare password: string;
-  declare readonly createdAt: CreationOptional<Date>;
-  declare readonly updatedAt: CreationOptional<Date>;
-  declare readonly deletedAt: Date | null;
-  declare products: NonAttribute<Record<string, any>[]>;
-  declare auctions: NonAttribute<Record<string, any>[]>;
+export default class User {
+  private _email: string;
+  private _password: string;
+
+  constructor({ email, password }) {
+    this._email = email;
+    this._password = password;
+  }
+
+  validateEmail(): void {
+    if ( !EMAIL_REGEX.test( this._email ) ) {
+      throw new ResException( 400, 'wrong email format' ); 
+    }
+  }
+
+  async hashPassword(): Promise<void> {
+    this._password = await bcrypt.hash( this._password, await bcrypt.genSalt( +envConfig.passwordSalt ) );
+  }
+  
+  async validatePassword( value: string ): Promise<boolean> {
+    return await bcrypt.compare( this._password, value );
+  }
+
+  format() {
+    return {
+      email: this._email,
+      password: this._password,
+    };
+  }
+
+  get email(): string {
+    return this._email;
+  }
+  get password() {
+    return this._password;
+  }
 }
-
-export const UserFactory = ( sequelize: Sequelize ) => User.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: false,
-    autoIncrement: true,
-    unique: true,
-    allowNull: false,
-  },    
-  uuid: {
-    comment: '유저 uuid',
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true,
-  },
-  email: {
-    comment: '유저 mail',
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
-    comment: '비밀번호',
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
-  deletedAt: DataTypes.DATE,
-}, {
-  sequelize,
-  paranoid: true,
-  underscored: true,
-});
