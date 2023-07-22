@@ -17,5 +17,6 @@ app.use( emitNotFoundError );
 app.use( handleError );
 
 checkDbConnection
-  .then( () => app.listen( envConfig.port , async () => 
-    console.log( 'Start shoes-auction server' ) ) );
+  .then( () => 
+    app.listen( envConfig.port , async () => 
+      console.log( 'Start shoes-auction server' ) ) );
