@@ -21,4 +21,8 @@ router.post( '/join', respond( async ({ body }) => {
   return { user: await userService.join( new User({ email, password }) ) };
 }) );
 
+router.post( '/login', respond( async ({ body }) => {
+  const { email, password } = body;
+}) );
+
 export default router;
