@@ -3,9 +3,9 @@ import { UserFactory } from './UserEntity';
 import { ProductFactory } from './ProductEntity';
 import { AuctionFactory } from './AuctionEntity';
 
-export const User = UserFactory( sequelize );
-export const Product = ProductFactory( sequelize );
-export const Auction = AuctionFactory( sequelize );
+const User = UserFactory( sequelize );
+const Product = ProductFactory( sequelize );
+const Auction = AuctionFactory( sequelize );
 
 User.hasMany( Product, { as: 'products' });
 Product.belongsTo( User );
