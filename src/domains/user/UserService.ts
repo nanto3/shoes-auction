@@ -16,8 +16,8 @@ export default class UserService {
   }
 
   private async validateEmailRegistered( email: string ): Promise<void> {
-    const registeredEmail = await this.userRepository.findByEmail( email );
-    if ( registeredEmail ) {
+    
+    if ( await this.userRepository.findByEmail( email ) ) {
       throw new ResException( 400, 'already registered email' );
     }
   }
