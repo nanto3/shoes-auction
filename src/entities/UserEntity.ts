@@ -1,4 +1,6 @@
 import { Sequelize, Model, DataTypes, CreationOptional, NonAttribute, InferAttributes, InferCreationAttributes } from 'sequelize';
+import Product from './ProductEntity';
+import Auction from './AuctionEntity';
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<number>; 
@@ -8,8 +10,8 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: Date | null;
-  declare products: NonAttribute<Record<string, any>[]>;
-  declare auctions: NonAttribute<Record<string, any>[]>;
+  declare products: NonAttribute<Product>;
+  declare auctions: NonAttribute<Auction>;
 }
 
 export const UserFactory = ( sequelize: Sequelize ) => User.init({
