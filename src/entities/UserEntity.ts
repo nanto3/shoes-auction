@@ -15,7 +15,6 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
 export const UserFactory = ( sequelize: Sequelize ) => User.init({
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
-    primaryKey: false,
     autoIncrement: true,
     unique: true,
     allowNull: false,
