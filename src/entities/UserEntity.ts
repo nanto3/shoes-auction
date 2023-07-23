@@ -3,15 +3,15 @@ import Product from './ProductEntity';
 import Auction from './AuctionEntity';
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-  declare id: CreationOptional<number>; 
-  declare uuid: CreationOptional<string>;
+  declare readonly id: CreationOptional<number>; 
+  declare readonly uuid: CreationOptional<string>;
   declare email: string;
   declare password: string;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: Date | null;
-  declare products: NonAttribute<Product>;
-  declare auctions: NonAttribute<Auction>;
+  declare readonly products: NonAttribute<Product>;
+  declare readonly auctions: NonAttribute<Auction>;
 }
 
 export const UserFactory = ( sequelize: Sequelize ) => User.init({
