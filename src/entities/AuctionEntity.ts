@@ -1,6 +1,6 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 
-class Auction extends Model {
+export default class Auction extends Model {
   declare id: number;
   declare uuid: string;
   declare productUuid: string;

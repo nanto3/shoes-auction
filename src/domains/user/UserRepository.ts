@@ -1,13 +1,8 @@
-import { Transaction } from 'sequelize';
-import { User } from "../../entities";
-
-interface UserBody {
-  email: string;
-  password: string;
-}
+import { Transaction, CreationAttributes } from 'sequelize';
+import User from '../../entities/UserEntity';
 
 export default class UserRepository {
-  async createUser( user: UserBody ) {
+  async createUser( user: CreationAttributes<User> ) {
     return await User.create( user );
   }
   

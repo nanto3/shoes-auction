@@ -22,8 +22,10 @@ export default class User {
     this._password = await bcrypt.hash( this._password, await bcrypt.genSalt( +envConfig.passwordSalt ) );
   }
   
-  async validatePassword( value: string ): Promise<boolean> {
-    return await bcrypt.compare( this._password, value );
+  async validatePassword( value: string ): Promise<void> {
+    if ( !( await bcrypt.compare( this._password, value ) ) ) {
+      throw new ResException( 401, 'wrong password' );
+    }
   }
 
   format() {

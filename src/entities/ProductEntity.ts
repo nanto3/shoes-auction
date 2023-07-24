@@ -1,6 +1,6 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 
-class Product extends Model {
+export default class Product extends Model {
   declare id: number;
   declare uuid: string;
   declare brand: 'NIKE' | 'ADIDAS' | 'NEW-BALANCE' | 'ETC';

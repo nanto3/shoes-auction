@@ -1,1 +1,1 @@
-import { Auction } from '../../entities';
+import Auction from '../../entities/AuctionEntity';

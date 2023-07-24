@@ -3,9 +3,9 @@ import { UserFactory } from './UserEntity';
 import { ProductFactory } from './ProductEntity';
 import { AuctionFactory } from './AuctionEntity';
 
-export const User = UserFactory( sequelize );
-export const Product = ProductFactory( sequelize );
-export const Auction = AuctionFactory( sequelize );
+const User = UserFactory( sequelize );
+const Product = ProductFactory( sequelize );
+const Auction = AuctionFactory( sequelize );
 
 User.hasMany( Product, { as: 'products' });
 Product.belongsTo( User );
@@ -16,7 +16,7 @@ Auction.belongsTo( User );
 Product.hasMany( Auction, { as: 'auctions' });
 Auction.belongsTo( Product );
 
-export const checkDbConnection = new Promise( async ( resolve, reject ) => {
+export const checkDbConnection = new Promise( async ( resolve, _ ) => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
@@ -24,6 +24,5 @@ export const checkDbConnection = new Promise( async ( resolve, reject ) => {
     resolve( true );
   } catch ( error ) {
     console.log( error, 'Unable to connect to the database error' );
-    reject();
   }
 });
