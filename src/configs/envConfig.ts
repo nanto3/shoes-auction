@@ -14,6 +14,7 @@ const envConfig = {
   dbPort: process.env.SHOES_AUCTION_MYSQL_DB_PORT,
 
   passwordSalt: process.env.SHOES_AUCTION_PASSWORD_SALT,
+  jwtSecret: process.env.SHOES_AUCTION_JWT_SECRET,
 };
 
 export default envConfig;
