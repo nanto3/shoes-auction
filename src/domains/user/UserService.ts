@@ -16,17 +16,13 @@ export default class UserService {
   }
 
   async login( user: User ) {
-    const [ dbUser ] = await Promise.all([ 
-      this.getUserByEmail( user.email ), 
-      user.hashPassword(), 
-    ]);
+    const dbUser = await this.getUserByEmail( user.email );
     
     if ( !dbUser ) {
       throw new ResException( 400, 'not registered email' );
     }
-    if ( user.password !== dbUser.password ) {
-      throw new ResException( 401, 'wrong password' );
-    }
+
+    await user.validatePassword( dbUser.password );
 
     return {
       accessToken: issueAccessToken({ userUuid: dbUser.uuid }),
