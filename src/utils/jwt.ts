@@ -10,9 +10,13 @@ export const EXPIRY_OF_ACCESS_TOKEN_BY_SECOND = A_DAY_BY_SECONDS * 7;
 export const EXPIRY_OF_REFRESH_TOKEN_BY_SECOND = A_DAY_BY_SECONDS * 30;
 
 // TODO: issueAccessToken, issueRefreshToken 하나로 합치기?
-export const issueAccessToken = ( payload ) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND });
+interface AccessTokenPayload {
+  userUuid: string;
+}
 
-export const issueRefreshToken = ( payload={}) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND });
+export const issueAccessToken = ( payload: AccessTokenPayload ) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND });
+
+export const issueRefreshToken = ( payload: Record<string, unknown>={}) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND });
 
 export const verify = ( token: string ) => {
   try {
