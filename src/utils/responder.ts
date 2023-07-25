@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, CookieOptions } from 'express';
 import ResException from '../models/ResException';
 
 interface ResOptions {
-  setCookie: ( name: string, value: any, options?: CookieOptions ) => void;
+  setCookie: ( name: string, value: unknown, options?: CookieOptions ) => void;
 } 
 
 type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<string, any>> | Record<string, any>;
