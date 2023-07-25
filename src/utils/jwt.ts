@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import ResException from '../models/ResException';
 import envConfig from '../configs/envConfig';
 
@@ -16,7 +16,7 @@ export const issueRefreshToken = ( payload={}) => jwt.sign( payload, jwtSecret, 
 
 export const verify = ( token: string ) => {
   try {
-    return jwt.verify( token, jwtSecret );
+    return jwt.verify( token, jwtSecret ) as JwtPayload;
   } catch ( error ) {
     if ( error.message === 'invalid signature' ) {
       throw new ResException( 401, 'not authenticated' );
