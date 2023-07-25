@@ -14,11 +14,19 @@ interface AccessTokenPayload {
   userUuid: string;
 }
 
-export const issueAccessToken = ( payload: AccessTokenPayload ) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND });
+export const issueAccessToken = ( payload: AccessTokenPayload ): string => 
+  jwt.sign( payload, jwtSecret, { 
+    algorithm: HS256, 
+    expiresIn: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, 
+  });
 
-export const issueRefreshToken = ( payload: Record<string, unknown>={}) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND });
+export const issueRefreshToken = ( payload: Record<string, unknown>={}): string => 
+  jwt.sign( payload, jwtSecret, { 
+    algorithm: HS256, 
+    expiresIn: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND, 
+  });
 
-export const verify = ( token: string ) => {
+export const verify = ( token: string ): JwtPayload => {
   try {
     return jwt.verify( token, jwtSecret ) as JwtPayload;
   } catch ( error ) {
@@ -36,4 +44,5 @@ interface Verified {
   iat: number;
 }
 
-export const needReissueRefreshToken = ( verified: Verified ) => verified.exp - verified.iat < EXPIRY_OF_REFRESH_TOKEN_BY_SECOND;
+export const needReissueRefreshToken = ( verified: Verified ): boolean => 
+  verified.exp - verified.iat < EXPIRY_OF_REFRESH_TOKEN_BY_SECOND;
