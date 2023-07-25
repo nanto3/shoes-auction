@@ -19,7 +19,7 @@ export default class UserService {
     const dbUser = await this.getUserByEmail( user.email );
     
     if ( !dbUser ) {
-      throw new ResException( 400, 'not registered email' );
+      throw new ResException( 400, 'not registered user' );
     }
 
     await user.validatePassword( dbUser.password );
