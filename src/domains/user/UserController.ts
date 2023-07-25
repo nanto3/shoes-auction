@@ -4,6 +4,7 @@ import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
 import User from "./User";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECONDS, EXPIRY_OF_REFRESH_TOKEN_BY_SECONDS } from "../../utils/jwt";
+import * as STRING_CONST from '../../constants/string';
 
 const router = Router();
 
@@ -27,9 +28,9 @@ router.post( '/login', respond( async ({ body }, { setCookie }) => {
 
   const { accessToken, refreshsToken, userUuid } = await userService.login( new User( email, password ) );
 
-  setCookie( 'Authorization', `Bearer ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECONDS * 1000 }
+  setCookie( STRING_CONST.Authorization, `${STRING_CONST.Bearer} ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECONDS * 1000 }
   );
-  setCookie( 'refreshtoken', refreshsToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECONDS * 1000 });
+  setCookie( STRING_CONST.refreshtoken, refreshsToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECONDS * 1000 });
   
   return { email, userUuid }; 
 }) );
