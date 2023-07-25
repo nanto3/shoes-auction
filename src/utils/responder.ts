@@ -10,7 +10,8 @@ type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<str
 export const respond = ( processReq: ProcessReq ) => 
   async ( req: Request, res: Response, next: NextFunction ) => {
     try {
-      res.status( 200 ).json({ message: await processReq( req, { setCookie: ( name, value, options ) => res.cookie( name, value, options ) }) });
+      const message = await processReq( req, { setCookie: ( name, value, options ) => res.cookie( name, value, options ) });
+      res.status( 200 ).json({ message });
     } catch ( error ) {
       next( error );
     }
