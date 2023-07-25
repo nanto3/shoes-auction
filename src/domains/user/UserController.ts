@@ -27,16 +27,9 @@ router.post( '/login', respond( async ({ body }, { setCookie }) => {
 
   const { accessToken, refreshsToken, userUuid } = await userService.login( new User( email, password ) );
 
-  setCookie({ 
-    name: 'Authorization', 
-    value: `Bearer ${accessToken}`,
-    options: { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECONDS * 1000 },
-  });
-  setCookie({ 
-    name: 'refreshtoken', 
-    value: refreshsToken, 
-    options: { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECONDS * 1000 }, 
-  });
+  setCookie( 'Authorization', `Bearer ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECONDS * 1000 }
+  );
+  setCookie( 'refreshtoken', refreshsToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECONDS * 1000 });
   
   return { email, userUuid }; 
 }) );
