@@ -1,12 +1,20 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, CookieOptions } from 'express';
 import ResException from '../models/ResException';
 
-type ProcessReq = ( req: Request ) => Promise<Record<string, any>> | Record<string, any>;
+interface ResOptions {
+  setCookie: ( param: {
+    name: string, 
+    value: any, 
+    options?: CookieOptions
+  }) => void;
+} 
+
+type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<string, any>> | Record<string, any>;
 
 export const respond = ( processReq: ProcessReq ) => 
   async ( req: Request, res: Response, next: NextFunction ) => {
     try {
-      res.status( 200 ).json({ message: await processReq( req ) });
+      res.status( 200 ).json({ message: await processReq( req, { setCookie: ( param ) => res.cookie( param.name, param.value, param.options ) }) });
     } catch ( error ) {
       next( error );
     }

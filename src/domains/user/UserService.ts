@@ -27,8 +27,7 @@ export default class UserService {
     return {
       accessToken: issueAccessToken({ userUuid: dbUser.uuid }),
       refreshsToken: issueRefreshToken(),
-      uuid: dbUser.uuid,
-      email: dbUser.email,
+      userUuid: dbUser.uuid,
     };
   }
 

@@ -3,9 +3,7 @@ import { respond } from "../../utils/responder";
 import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
 import User from "./User";
-import ResException from "../../models/ResException";
-
-import { verify } from "../../utils/jwt";
+import { EXPIRY_OF_ACCESS_TOKEN_BY_SECONDS, EXPIRY_OF_REFRESH_TOKEN_BY_SECONDS } from "../../utils/jwt";
 
 const router = Router();
 
@@ -24,10 +22,23 @@ router.post( '/join', respond( async ({ body }) => {
   return { user: await userService.join( new User( email, password ) ) };
 }) );
 
-router.post( '/login', respond( async ({ headers, body }) => {
+router.post( '/login', respond( async ({ body }, { setCookie }) => {
   const { email, password } = body;
 
-  return await userService.login( new User( email, password ) );
+  const { accessToken, refreshsToken, userUuid } = await userService.login( new User( email, password ) );
+
+  setCookie({ 
+    name: 'Authorization', 
+    value: `Bearer ${accessToken}`,
+    options: { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECONDS * 1000 },
+  });
+  setCookie({ 
+    name: 'refreshtoken', 
+    value: refreshsToken, 
+    options: { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECONDS * 1000 }, 
+  });
+  
+  return { email, userUuid }; 
 }) );
 
 export default router;
