@@ -9,9 +9,10 @@ const EXPIRY_OF_ACCESS_TOKEN_BY_DAY = '7d';
 const EXPIRY_OF_REFRESH_TOKEN_BY_DAY = '30d';
 const EXPIRY_OF_REFRESH_TOKEN_BY_SECOND = 60 * 60 * 24 * 30;
 
-export const sign = ( userUuid: string ) => jwt.sign({ userUuid }, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_ACCESS_TOKEN_BY_DAY });
+// TODO: issueAccessToken, issueRefreshToken 하나로 합치기?
+export const issueAccessToken = ( payload ) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_ACCESS_TOKEN_BY_DAY });
 
-export const createRefreshToken = () => jwt.sign({}, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_REFRESH_TOKEN_BY_DAY });
+export const issueRefreshToken = ( payload={}) => jwt.sign( payload, jwtSecret, { algorithm: HS256, expiresIn: EXPIRY_OF_REFRESH_TOKEN_BY_DAY });
 
 export const verify = ( token: string ) => {
   try {
