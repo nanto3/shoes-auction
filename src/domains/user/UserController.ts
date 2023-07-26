@@ -24,6 +24,9 @@ router.post( '/join', respond( async ({ body }) => {
   return { user: await userService.join( new User( email, password ) ) };
 }) );
 
+/**
+ * @api 로그인
+ */
 router.post( '/login', respond( async ({ body }, { setCookie }) => {
   const { email, password } = body;
 
