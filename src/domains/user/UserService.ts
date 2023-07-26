@@ -31,10 +31,10 @@ export default class UserService {
     };
   }
 
-  private async validateEmailRegistered( email: string, needRegistered=true ): Promise<void> {
-    const errorMessage = needRegistered ? 'not registered email' : 'already registered email';
+  private async validateEmailRegistered( email: string, requireRegistered=true ): Promise<void> {
     const registered = !!( await this.getUserByEmail( email ) );
-    if ( needRegistered ? !registered : registered ) {
+    if ( requireRegistered ? !registered : registered ) {
+      const errorMessage = requireRegistered ? 'not registered email' : 'already registered email';
       throw new ResException( 400, errorMessage );
     }
   }
