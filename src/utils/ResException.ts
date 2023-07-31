@@ -15,21 +15,20 @@ export default class ResException extends Error {
 }
 
 // 'excpt'는 'exception'을 의미
-const excptIf_postfix = ( postfix: boolean ) => 
+const excptIfTruthyOrFalsyFormat = ( detectTruthy: boolean ) => 
   ( value: unknown, statusOrMessage?: number | string, message='' ) => {
     if ( typeChecker.string( statusOrMessage ) ) {
       message = statusOrMessage as string;
       statusOrMessage = 400;
     }
-    
-    if ( postfix ? value : !value ) {
+    if ( detectTruthy ? value : !value ) {
       throw new ResException( statusOrMessage as number, message );
     }
   };
 
-export const excptIfTruthy = excptIf_postfix( true );
+export const excptIfTruthy = excptIfTruthyOrFalsyFormat( true );
 
-export const excptIfFalsy = excptIf_postfix( false );
+export const excptIfFalsy = excptIfTruthyOrFalsyFormat( false );
 
 export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
   const check = typeChecker[type];
