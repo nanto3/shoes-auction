@@ -12,11 +12,11 @@ export const EXPIRY_OF_ACCESS_TOKEN_BY_SECOND = A_DAY_BY_SECONDS * 7;
 export const EXPIRY_OF_REFRESH_TOKEN_BY_SECOND = A_DAY_BY_SECONDS * 30;
 
 export const issueJwt = ( 
-  type: 'access' | 'refresh', 
+  sort: 'access' | 'refresh', 
   payload: Record<string, unknown>={}): string => 
   jwt.sign( payload, jwtSecret, { 
     algorithm: 'HS256', 
-    expiresIn: type === 'access' ? 
+    expiresIn: sort === 'access' ? 
       EXPIRY_OF_ACCESS_TOKEN_BY_SECOND : 
       EXPIRY_OF_REFRESH_TOKEN_BY_SECOND, 
   });
