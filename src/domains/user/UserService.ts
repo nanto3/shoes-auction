@@ -2,7 +2,7 @@ import ResException from '../../models/ResException';
 import UserRepository from './UserRepository';
 import { excptIfTruthy, excptIfFalsy } from '../../utils/responder';
 import UserUtil from '../../utils/UserUtil';
-import { issueAccessToken, issueRefreshToken } from '../../utils/jwt';
+import { issueJwt } from '../../utils/jwt';
 
 export default class UserService {
 
@@ -26,8 +26,8 @@ export default class UserService {
     excptIfFalsy( isCorrect, 401, 'wrong password' );
 
     return {
-      accessToken: issueAccessToken({ userUuid: userInDb.uuid }),
-      refreshToken: issueRefreshToken(),
+      accessToken: issueJwt( 'access', { userUuid: userInDb.uuid }),
+      refreshToken: issueJwt( 'refresh' ),
       userUuid: userInDb.uuid,
     };
   }
