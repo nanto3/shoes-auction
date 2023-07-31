@@ -6,7 +6,7 @@ export default class ResException extends Error {
   message: string;
   previousError: Error;
 
-  constructor( status, message='', error=null ) {
+  constructor( status: number, message='', error=null ) {
     super( message );
     this.status = status;
     this.message = message;
@@ -16,14 +16,14 @@ export default class ResException extends Error {
 
 // excpt === exception
 const excptIfFormat = ( postfix: boolean ) => 
-  ( value: unknown, codeOrMessage?: number | string, message?: string ) => {
-    if ( !message ) {
-      message = codeOrMessage as string || '';
-      codeOrMessage = 400;
+  ( value: unknown, statusOrMessage?: number | string, message='' ) => {
+    if ( typeChecker.string( statusOrMessage ) ) {
+      message = statusOrMessage as string;
+      statusOrMessage = 400;
     }
     
     if ( postfix ? value : !value ) {
-      throw new ResException( codeOrMessage , message );
+      throw new ResException( statusOrMessage as number, message );
     }
   };
 
