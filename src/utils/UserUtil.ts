@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import envConfig from '../configs/envConfig';
 import { EMAIL_REGEX } from "../constants/const";
 
@@ -8,7 +8,8 @@ export default class UserUtil {
   }
 
   static async hashPassword( password: string ): Promise<string> { 
-    return await bcrypt.hash( password, await bcrypt.genSalt( +envConfig.passwordSalt ) );
+    const salt = await bcrypt.genSalt( +envConfig.passwordSalt );
+    return await bcrypt.hash( password, salt );
   }
 
   static async validatePassword( password: string, target: string ): Promise<boolean> {

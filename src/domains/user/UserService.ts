@@ -1,42 +1,41 @@
 import ResException from '../../models/ResException';
 import UserRepository from './UserRepository';
-import User from './User';
+import UserUtil from '../../utils/UserUtil';
 import { issueAccessToken, issueRefreshToken } from '../../utils/jwt';
 
 export default class UserService {
 
   constructor( private userRepository: UserRepository ) {}
 
-  async join( user: User ) {
-    user.validateEmailFormat();
-    await this.validateEmailRegistered( user.email, false );
-    await user.hashPassword();
+  async join( email: string, password: string ) {
+    if ( !UserUtil.isEmail( email ) ) {
+      throw new ResException( 400, 'wrong email format' );
+    }
+    if ( await this.getUserByEmail( email ) ) {
+      throw new ResException( 400, 'already registered email' );      
+    }
 
-    return await this.userRepository.createUser( user.format() );
+    return await this.userRepository.createUser({ 
+      email, 
+      password: await UserUtil.hashPassword( password ), 
+    });
   }
 
-  async login( user: User ) {
-    const dbUser = await this.getUserByEmail( user.email );
-    
-    if ( !dbUser ) {
+  async login( email: string, password: string ) {
+    const userInDb = await this.getUserByEmail( email );
+    if ( !userInDb ) {
       throw new ResException( 400, 'not registered user' );
     }
-
-    await user.validatePassword( dbUser.password );
+    const isCorrectPassword = await UserUtil.validatePassword( password, userInDb.password );
+    if ( !isCorrectPassword ) {
+      throw new ResException( 401, 'wrong password' );
+    }
 
     return {
-      accessToken: issueAccessToken({ userUuid: dbUser.uuid }),
+      accessToken: issueAccessToken({ userUuid: userInDb.uuid }),
       refreshToken: issueRefreshToken(),
-      userUuid: dbUser.uuid,
+      userUuid: userInDb.uuid,
     };
-  }
-
-  private async validateEmailRegistered( email: string, requireRegistered=true ): Promise<void> {
-    const registered = !!( await this.getUserByEmail( email ) );
-    if ( requireRegistered ? !registered : registered ) {
-      const errorMessage = requireRegistered ? 'not registered email' : 'already registered email';
-      throw new ResException( 400, errorMessage );
-    }
   }
 
   async getUserByEmail( email: string ) {
