@@ -22,8 +22,8 @@ export default class UserService {
     const userInDb = await this.getUserByEmail( email );
     excptIfFalsy( userInDb, 'not registered user' );
 
-    const isCorrectPassword = await UserUtil.isCorrectPassword( password, userInDb.password );
-    excptIfFalsy( isCorrectPassword, 401, 'wrong password' );
+    const isCorrect = await UserUtil.isCorrectPassword( password, userInDb.password );
+    excptIfFalsy( isCorrect, 401, 'wrong password' );
 
     return {
       accessToken: issueAccessToken({ userUuid: userInDb.uuid }),
