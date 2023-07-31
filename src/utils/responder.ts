@@ -35,6 +35,7 @@ export const emitNotFoundError = ( req: Request, res: Response, next: NextFuncti
   next( new ResException( 404, 'not found' ) );
 
 
+// excpt === exception
 const excptIfFormat = ( postfix: boolean ) => 
   ( value: unknown, codeOrMessage?: number | string, message?: string ) => {
     if ( !message ) {
@@ -46,6 +47,5 @@ const excptIfFormat = ( postfix: boolean ) =>
       throw new ResException( codeOrMessage , message );
     }
   }; 
-
 export const excptIfTruthy = excptIfFormat( true );
 export const excptIfFalsy = excptIfFormat( false );
