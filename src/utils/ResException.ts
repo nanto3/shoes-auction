@@ -14,7 +14,7 @@ export default class ResException extends Error {
   }
 }
 
-// excpt === exception
+// 'excpt'는 'exception'을 의미
 const excptIf_postfix = ( postfix: boolean ) => 
   ( value: unknown, statusOrMessage?: number | string, message='' ) => {
     if ( typeChecker.string( statusOrMessage ) ) {
