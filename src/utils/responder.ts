@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, CookieOptions } from 'express';
 import ResException from '../models/ResException';
+import { isString, isBoolean, isNumber, isArray } from './typeHelper';
 
 interface ResOptions {
   setCookie: ( name: string, value: unknown, options?: CookieOptions ) => void;
@@ -49,3 +50,22 @@ const excptIfFormat = ( postfix: boolean ) =>
   }; 
 export const excptIfTruthy = excptIfFormat( true );
 export const excptIfFalsy = excptIfFormat( false );
+
+const typeCheck = { 
+  'string': isString,
+  'boolean': isBoolean,
+  'number': isNumber,
+};
+const checkTypeForamt = ( type: string ) => 
+  ( ...values: any | any[]) => {
+    if ( !isArray( values ) ) {
+      values = [ values ];
+    }
+    values.forEach( value => {
+      if ( !typeCheck[type]( value ) )
+        throw new ResException( 400, 'bad data' );
+    });
+  };
+export const checkString = checkTypeForamt( 'string' );
+export const checkNumber = checkTypeForamt( 'number' );
+export const checkBoolean = checkTypeForamt( 'boolean' );

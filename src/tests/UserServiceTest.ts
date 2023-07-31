@@ -1,7 +1,27 @@
-// import { describe, test, expect } from "@jest/globals";
-// import UserService from "../domains/user/UserService";
-// import ResException from "../models/ResException";
-// import User from "../domains/user/User";
+import { describe, it, test, expect } from "@jest/globals";
+import UserService from "../domains/user/UserService";
+import ResException from "../models/ResException";
+import { excptIfTruthy, excptIfFalsy } from "../utils/responder";
+
+describe( 'excptIfFormat', () => {
+  it( 'should throw error if arguement truthy', () => {
+    expect( 1 ).toBe( 2 );
+    // try {
+    //   // const aaa = excptIfTruthy( false );
+    //   const a = 1;
+    // } catch ( error ) {
+    //   expect( error ).toEqual( new ResException( 400 ) );
+    // }
+  });
+  // it( 'should throw error if arguement falsy', () => {
+  //   try {
+  //     const aaa = excptIfFalsy( true );
+  //     expect( aaa ).toEqual( new ResException( 400 ) );
+  //   } catch ( error ) {
+  //     expect( error ).toEqual( new ResException( 400 ) );
+  //   }
+  // });
+});
 
 // describe( 'user-service', () => {
 //   test( 'join', async () => {
