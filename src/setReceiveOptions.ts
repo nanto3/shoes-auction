@@ -1,4 +1,4 @@
-import { Application, Request, Response, NextFunction } from 'express';
+import { Express, Request, Response, NextFunction, json, urlencoded } from 'express';
 import { Options, OptionsText, OptionsJson, OptionsUrlencoded } from 'body-parser';
 import cors, { CorsOptions } from 'cors';
 
@@ -28,10 +28,8 @@ const receiveConfig: ReceiveConfig = {
   },
 };
 
-export const setReceiveOptions = ( app: Application, receiveTool: ReceiveTool={}) => {
-  Object
-    .entries( receiveTool )
-    .forEach( ([ key, method ]) => app.use( method( receiveConfig[key]) ) );
-  
+export const setReceiveOptions = ( app: Express ) => {
+  app.use( json( receiveConfig.json ) );
+  app.use( urlencoded( receiveConfig.urlencoded ) );
   app.use( cors({ credentials: true }) );
 };

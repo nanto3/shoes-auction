@@ -1,16 +1,13 @@
 import express from 'express';
 import envConfig from './configs/envConfig';
 import routers from './domains/routers';
-import { setReceiveOptions } from './utils/setReceiveOptions';
+import { setReceiveOptions } from './setReceiveOptions';
 import { emitNotFoundError, handleError } from './utils/responder';
 import { checkDbConnection } from './entities';
 
-const app: express.Application = express();
+const app: express.Express = express();
 
-setReceiveOptions( app, {
-  json: express.json, 
-  urlencoded: express.urlencoded, 
-});
+setReceiveOptions( app );
 
 app.use( routers );
 app.use( emitNotFoundError );
