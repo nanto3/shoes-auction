@@ -19,8 +19,9 @@ export const respond = ( processReq: ProcessReq ) =>
     }
   };
 
-export const notFoundRoute = ( req: Request, res: Response, next: NextFunction ) => res.status( 404 ).json({ message: 'not found route' });
-
+export const notFoundRoute = ( req: Request, res: Response, next: NextFunction ) => {
+  res.status( 404 ).json({ message: 'not found route' });
+};
 
 // excpt === exception
 const excptIfFormat = ( postfix: boolean ) => 
