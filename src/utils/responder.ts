@@ -44,7 +44,7 @@ const excptIfFormat = ( postfix: boolean ) =>
     if ( postfix ? value : !value ) {
       throw new ResException( codeOrMessage , message );
     }
-  }; 
+  };
 
 export const excptIfTruthy = excptIfFormat( true );
 export const excptIfFalsy = excptIfFormat( false );
@@ -56,8 +56,9 @@ const typeChecker = {
 };
 
 export const checkType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
+  const check = typeChecker[type];
   values.forEach( value => {
-    if ( !typeChecker[type]( value ) )
+    if ( !check( value ) )
       throw new ResException( 400, 'bad data' );
   });
 };
