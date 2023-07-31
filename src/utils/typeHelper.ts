@@ -1,5 +1,3 @@
-import ResException from "./ResException";
-
 const isString = ( param: unknown ) => typeof param === 'string';
 const isNumber = ( param: unknown ) => typeof param === 'number';
 const isBoolean = ( param: unknown ) => typeof param === 'boolean';
@@ -18,17 +16,8 @@ const isObject = ( param: unknown ) => {
   return true;
 };
 
-const typeChecker = { 
+export const typeChecker = { 
   'string': isString,
   'boolean': isBoolean,
   'number': isNumber,
 };
-
-export const checkType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
-  const check = typeChecker[type];
-  values.forEach( value => {
-    if ( !check( value ) )
-      throw new ResException( 400, 'bad data' );
-  });
-};
-

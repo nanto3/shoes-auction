@@ -2,7 +2,7 @@ import { Router } from "express";
 import { respond } from "../../utils/responder";
 import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
-import { checkType } from "../../utils/typeHelper";
+import { checkType } from "../../utils/ResException";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 
 const router = Router();

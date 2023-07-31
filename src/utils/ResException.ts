@@ -1,3 +1,5 @@
+import { typeChecker } from "./typeHelper";
+
 // TODO: 속성 private 처리
 export default class ResException extends Error {
   status: number;
@@ -11,6 +13,7 @@ export default class ResException extends Error {
     this.previousError = error;
   }
 }
+
 // excpt === exception
 const excptIfFormat = ( postfix: boolean ) => 
   ( value: unknown, codeOrMessage?: number | string, message?: string ) => {
@@ -25,5 +28,14 @@ const excptIfFormat = ( postfix: boolean ) =>
   };
 
 export const excptIfTruthy = excptIfFormat( true );
+
 export const excptIfFalsy = excptIfFormat( false );
+
+export const checkType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
+  const check = typeChecker[type];
+  values.forEach( value => {
+    if ( !check( value ) )
+      throw new ResException( 400, 'bad data' );
+  });
+};
 
