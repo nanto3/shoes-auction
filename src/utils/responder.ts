@@ -9,7 +9,7 @@ interface ResOptions {
 type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<string, any>> | Record<string, any>;
 
 export const respond = ( processReq: ProcessReq ) => 
-  async ( req: Request, res: Response, next: NextFunction ) => {
+  async ( req: Request, res: Response ) => {
     try {
       const message = await processReq( req, { setCookie: ( name, value, options ) => res.cookie( name, value, options ) });
       res.status( 200 ).json({ message });
@@ -19,7 +19,7 @@ export const respond = ( processReq: ProcessReq ) =>
     }
   };
 
-export const notFoundRoute = ( req: Request, res: Response, next: NextFunction ) => {
+export const notFoundRoute = ( _: Request, res: Response ) => {
   res.status( 404 ).json({ message: 'not found route' });
 };
 
