@@ -33,3 +33,19 @@ export const handleError = ( error: ResException | Error, req: Request, res: Res
 
 export const emitNotFoundError = ( req: Request, res: Response, next: NextFunction ) => 
   next( new ResException( 404, 'not found' ) );
+
+
+const excptIfFormat = ( postfix: boolean ) => 
+  ( value: unknown, codeOrMessage: number | string, message?: string ) => {
+    if ( !message ) {
+      message = codeOrMessage as string;
+      codeOrMessage = 400;
+    }
+    
+    if ( postfix ? value : !value ) {
+      throw new ResException( codeOrMessage , message );
+    }
+  }; 
+
+export const excptIfTrue = excptIfFormat( true );
+export const excptIfFalse = excptIfFormat( false );

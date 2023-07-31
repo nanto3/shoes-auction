@@ -1,5 +1,6 @@
 import ResException from '../../models/ResException';
 import UserRepository from './UserRepository';
+import { excptIfTrue, excptIfFalse } from '../../utils/responder';
 import UserUtil from '../../utils/UserUtil';
 import { issueAccessToken, issueRefreshToken } from '../../utils/jwt';
 
@@ -8,12 +9,8 @@ export default class UserService {
   constructor( private userRepository: UserRepository ) {}
 
   async join( email: string, password: string ) {
-    if ( !UserUtil.isEmail( email ) ) {
-      throw new ResException( 400, 'wrong email format' );
-    }
-    if ( await this.getUserByEmail( email ) ) {
-      throw new ResException( 400, 'already registered email' );      
-    }
+    excptIfFalse( UserUtil.isEmail( email ), 'wrong email format' );
+    excptIfTrue( await this.getUserByEmail( email ), 'already registered email' );
 
     return await this.userRepository.createUser({ 
       email, 
@@ -23,13 +20,10 @@ export default class UserService {
 
   async login( email: string, password: string ) {
     const userInDb = await this.getUserByEmail( email );
-    if ( !userInDb ) {
-      throw new ResException( 400, 'not registered user' );
-    }
-    const isCorrectPassword = await UserUtil.validatePassword( password, userInDb.password );
-    if ( !isCorrectPassword ) {
-      throw new ResException( 401, 'wrong password' );
-    }
+    excptIfFalse( userInDb, 'not registered user' );
+    
+    const isCorrectPassword = await UserUtil.isCorrectPassword( password, userInDb.password );
+    excptIfFalse( isCorrectPassword, 401, 'wrong password' );
 
     return {
       accessToken: issueAccessToken({ userUuid: userInDb.uuid }),
