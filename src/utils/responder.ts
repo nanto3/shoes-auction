@@ -36,9 +36,9 @@ export const emitNotFoundError = ( req: Request, res: Response, next: NextFuncti
 
 
 const excptIfFormat = ( postfix: boolean ) => 
-  ( value: unknown, codeOrMessage: number | string, message?: string ) => {
+  ( value: unknown, codeOrMessage?: number | string, message?: string ) => {
     if ( !message ) {
-      message = codeOrMessage as string;
+      message = codeOrMessage as string || '';
       codeOrMessage = 400;
     }
     
@@ -47,5 +47,5 @@ const excptIfFormat = ( postfix: boolean ) =>
     }
   }; 
 
-export const excptIfTrue = excptIfFormat( true );
-export const excptIfFalse = excptIfFormat( false );
+export const excptIfTruthy = excptIfFormat( true );
+export const excptIfFalsy = excptIfFormat( false );
