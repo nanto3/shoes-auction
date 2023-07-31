@@ -1,13 +1,13 @@
-export const isString = ( param ) => typeof param === 'string';
-export const isNumber = ( param ) => typeof param === 'number';
-export const isBoolean = ( param ) => typeof param === 'boolean';
-export const isFunction = ( param ) => typeof param === 'function';
-export const isArray = ( param ) => Array.isArray( param );
+export const isString = ( param: unknown ) => typeof param === 'string';
+export const isNumber = ( param: unknown ) => typeof param === 'number';
+export const isBoolean = ( param: unknown ) => typeof param === 'boolean';
+export const isFunction = ( param: unknown ) => typeof param === 'function';
+export const isArray = ( param: unknown ) => Array.isArray( param );
 
 /**
  * @notice null, array도 false
  */
-export const isObject = ( param ) => {
+export const isObject = ( param: unknown ) => {
   if ( typeof param !== 'object' ) {
     return false;
   }

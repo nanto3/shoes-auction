@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { respond } from "../../utils/responder";
+import { respond, checkType } from "../../utils/responder";
 import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
-import { checkString } from "../../utils/responder";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 import { ONE_SECOND_BY_MILLI } from '../../constants/const';
 import * as STRING_CONST from '../../constants/string';
@@ -20,7 +19,7 @@ router.get( '', respond( async () => {
  */
 router.post( '/join', respond( async ({ body }) => {
   const { email, password } = body;
-  checkString( email, password );
+  checkType( 'string', email, password );
 
   return { user: await userService.join( email, password ) };
 }) );
@@ -30,7 +29,7 @@ router.post( '/join', respond( async ({ body }) => {
  */
 router.post( '/login', respond( async ({ body }, { setCookie }) => {
   const { email, password } = body;
-  checkString( email, password );
+  checkType( 'string', email, password );
 
   const { accessToken, refreshToken, userUuid } = await userService.login( email, password );
 

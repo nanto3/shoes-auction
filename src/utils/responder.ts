@@ -23,13 +23,10 @@ interface ResError {
   message?: string;
 }
 
-const respondError = ( res: Response, error: ResError ) => 
-  res.status( error.status || 500 ).json({ message: error.message || 'not defined error' });
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const handleError = ( error: ResException | Error, req: Request, res: Response, next: NextFunction ) => {
+export const handleError = ( error: ResError, req: Request, res: Response, next: NextFunction ) => {
   console.log( error ); 
-  respondError( res, error ) ;
+  res.status( error.status || 500 ).json({ message: error.message || 'not defined error' });
 };
 
 export const emitNotFoundError = ( req: Request, res: Response, next: NextFunction ) => 
@@ -48,24 +45,19 @@ const excptIfFormat = ( postfix: boolean ) =>
       throw new ResException( codeOrMessage , message );
     }
   }; 
+
 export const excptIfTruthy = excptIfFormat( true );
 export const excptIfFalsy = excptIfFormat( false );
 
-const typeCheck = { 
+const typeChecker = { 
   'string': isString,
   'boolean': isBoolean,
   'number': isNumber,
 };
-const checkTypeForamt = ( type: string ) => 
-  ( ...values: any | any[]) => {
-    if ( !isArray( values ) ) {
-      values = [ values ];
-    }
-    values.forEach( value => {
-      if ( !typeCheck[type]( value ) )
-        throw new ResException( 400, 'bad data' );
-    });
-  };
-export const checkString = checkTypeForamt( 'string' );
-export const checkNumber = checkTypeForamt( 'number' );
-export const checkBoolean = checkTypeForamt( 'boolean' );
+
+export const checkType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
+  values.forEach( value => {
+    if ( !typeChecker[type]( value ) )
+      throw new ResException( 400, 'bad data' );
+  });
+};
