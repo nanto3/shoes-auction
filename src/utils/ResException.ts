@@ -15,7 +15,7 @@ export default class ResException extends Error {
 }
 
 // excpt === exception
-const excptIfFormat = ( postfix: boolean ) => 
+const excptIf_postfix = ( postfix: boolean ) => 
   ( value: unknown, statusOrMessage?: number | string, message='' ) => {
     if ( typeChecker.string( statusOrMessage ) ) {
       message = statusOrMessage as string;
@@ -27,11 +27,11 @@ const excptIfFormat = ( postfix: boolean ) =>
     }
   };
 
-export const excptIfTruthy = excptIfFormat( true );
+export const excptIfTruthy = excptIf_postfix( true );
 
-export const excptIfFalsy = excptIfFormat( false );
+export const excptIfFalsy = excptIf_postfix( false );
 
-export const checkType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
+export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
   const check = typeChecker[type];
   values.forEach( value => {
     if ( !check( value ) )

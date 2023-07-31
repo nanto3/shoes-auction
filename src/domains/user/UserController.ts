@@ -2,7 +2,7 @@ import { Router } from "express";
 import { respond } from "../../utils/responder";
 import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
-import { checkType } from "../../utils/ResException";
+import { excptIfNotType } from "../../utils/ResException";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 
 const router = Router();
@@ -18,7 +18,7 @@ router.get( '', respond( async () => {
  */
 router.post( '/join', respond( async ({ body }) => {
   const { email, password } = body;
-  checkType( 'string', email, password );
+  excptIfNotType( 'string', email, password );
 
   return { user: await userService.join( email, password ) };
 }) );
@@ -28,7 +28,7 @@ router.post( '/join', respond( async ({ body }) => {
  */
 router.post( '/login', respond( async ({ body }, { setCookie }) => {
   const { email, password } = body;
-  checkType( 'string', email, password );
+  excptIfNotType( 'string', email, password );
 
   const { accessToken, refreshToken, userUuid } = await userService.login( email, password );
 
