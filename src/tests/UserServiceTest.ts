@@ -1,7 +1,6 @@
 import { describe, it, test, expect } from "@jest/globals";
 import UserService from "../domains/user/UserService";
-import ResException from "../models/ResException";
-import { excptIfTruthy, excptIfFalsy } from "../utils/responder";
+import ResException, { excptIfTruthy, excptIfFalsy } from "../utils/ResException";
 
 describe( 'excptIfFormat', () => {
   it( 'should throw error if arguement truthy', () => {

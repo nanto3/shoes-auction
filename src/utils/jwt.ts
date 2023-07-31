@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import ResException from '../models/ResException';
+import ResException from './ResException';
 import envConfig from '../configs/envConfig';
 
 const jwtSecret = envConfig.jwtSecret;

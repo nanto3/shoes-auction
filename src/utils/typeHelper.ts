@@ -1,13 +1,13 @@
-export const isString = ( param: unknown ) => typeof param === 'string';
-export const isNumber = ( param: unknown ) => typeof param === 'number';
-export const isBoolean = ( param: unknown ) => typeof param === 'boolean';
-export const isFunction = ( param: unknown ) => typeof param === 'function';
-export const isArray = ( param: unknown ) => Array.isArray( param );
+import ResException from "./ResException";
 
+const isString = ( param: unknown ) => typeof param === 'string';
+const isNumber = ( param: unknown ) => typeof param === 'number';
+const isBoolean = ( param: unknown ) => typeof param === 'boolean';
+const isArray = ( param: unknown ) => Array.isArray( param );
 /**
  * @notice null, array도 false
  */
-export const isObject = ( param: unknown ) => {
+const isObject = ( param: unknown ) => {
   if ( typeof param !== 'object' ) {
     return false;
   }
@@ -18,42 +18,17 @@ export const isObject = ( param: unknown ) => {
   return true;
 };
 
-export const keys = ( object: Record<string, any> ) => Object.keys( object );
-export const entries = ( object: Record<string, any> ) => Object.entries( object );
-export const values = ( object: Record<string, any> ) => Object.values( object );
-
-export const assign = ( a: Record<string, any>, b: Record<string, any> ) => Object.assign( a, b );
-export const concat = ( a: any[], b: any[]) => a.concat( b );
-
-export const isEmptyArray = ( param: any[]) => param.length === 0;
-export const isEmptyObject = ( param: Record<string, any> ) => keys( param ).length === 0; 
-
-export const deepCopy = ( param ) => {
-  if ( !isObject( param ) && !isArray( param ) ) {
-    return param;
-  }
-
-  // param: object | array
-  return isObject( param ) ? 
-    entries( param )
-      .map( ([ key, value ]) => ({ [key]: deepCopy( value ) }) )
-      .reduce( assign ) :
-    param
-      .map( elem => [ deepCopy( elem ) ])
-      .reduce( concat )
-  ;
+const typeChecker = { 
+  'string': isString,
+  'boolean': isBoolean,
+  'number': isNumber,
 };
 
-/**
- * @returns 새로 생성된 객체
- */
-export const deepAssign = ( passive: Record<string, any>, active: Record<string, any> ): Record<string, any> => {
-  const hasObject = values( active ).some( ( value ) => isObject( value ) );
-  if ( !hasObject ){
-    return assign( deepCopy( passive ), active );
-  }
-
-  return keys( active )
-    .map( key => ({ [key]: deepAssign( passive[key], active[key]) }) )
-    .reduce( assign, deepCopy( passive ) );
+export const checkType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
+  const check = typeChecker[type];
+  values.forEach( value => {
+    if ( !check( value ) )
+      throw new ResException( 400, 'bad data' );
+  });
 };
+

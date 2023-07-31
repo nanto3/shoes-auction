@@ -1,6 +1,4 @@
-import { Request, Response, NextFunction, CookieOptions } from 'express';
-import ResException from '../models/ResException';
-import { isString, isBoolean, isNumber } from './typeHelper';
+import { Request, Response, CookieOptions } from 'express';
 
 interface ResOptions {
   setCookie: ( name: string, value: unknown, options?: CookieOptions ) => void;
@@ -19,36 +17,6 @@ export const respond = ( processReq: ProcessReq ) =>
     }
   };
 
-export const notFoundRoute = ( _: Request, res: Response ) => {
+export const notFoundRoute = ( _, res: Response ) => {
   res.status( 404 ).json({ message: 'not found route' });
-};
-
-// excpt === exception
-const excptIfFormat = ( postfix: boolean ) => 
-  ( value: unknown, codeOrMessage?: number | string, message?: string ) => {
-    if ( !message ) {
-      message = codeOrMessage as string || '';
-      codeOrMessage = 400;
-    }
-    
-    if ( postfix ? value : !value ) {
-      throw new ResException( codeOrMessage , message );
-    }
-  };
-
-export const excptIfTruthy = excptIfFormat( true );
-export const excptIfFalsy = excptIfFormat( false );
-
-const typeChecker = { 
-  'string': isString,
-  'boolean': isBoolean,
-  'number': isNumber,
-};
-
-export const checkType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
-  const check = typeChecker[type];
-  values.forEach( value => {
-    if ( !check( value ) )
-      throw new ResException( 400, 'bad data' );
-  });
 };
