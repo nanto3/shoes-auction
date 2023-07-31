@@ -3,8 +3,6 @@ import { respond, checkType } from "../../utils/responder";
 import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
-import { ONE_SECOND_BY_MILLI } from '../../constants/const';
-import * as STRING_CONST from '../../constants/string';
 
 const router = Router();
 
@@ -33,9 +31,9 @@ router.post( '/login', respond( async ({ body }, { setCookie }) => {
 
   const { accessToken, refreshToken, userUuid } = await userService.login( email, password );
 
-  setCookie( STRING_CONST.Authorization, `${STRING_CONST.Bearer} ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND * ONE_SECOND_BY_MILLI }
+  setCookie( 'Authorization', `Bearer ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND * 1000 }
   );
-  setCookie( STRING_CONST.refreshtoken, refreshToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND * ONE_SECOND_BY_MILLI });
+  setCookie( 'refreshtoken', refreshToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND * 1000 });
   
   return { email, userUuid }; 
 }) );

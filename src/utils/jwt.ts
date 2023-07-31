@@ -4,7 +4,6 @@ import envConfig from '../configs/envConfig';
 
 const jwtSecret = envConfig.jwtSecret;
 
-const HS256 = 'HS256';
 const INVALID_SIGNATURE = 'invalid signature';
 const JWT_EXPIRED = 'jwt expired';
 
@@ -19,13 +18,13 @@ interface AccessTokenPayload {
 
 export const issueAccessToken = ( payload: AccessTokenPayload ): string => 
   jwt.sign( payload, jwtSecret, { 
-    algorithm: HS256, 
+    algorithm: 'HS256', 
     expiresIn: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, 
   });
 
 export const issueRefreshToken = ( payload: Record<string, unknown>={}): string => 
   jwt.sign( payload, jwtSecret, { 
-    algorithm: HS256, 
+    algorithm: 'HS256', 
     expiresIn: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND, 
   });
 
