@@ -6,10 +6,14 @@ export default class ResException extends Error {
   message: string;
   previousError: Error;
 
-  constructor( status: number, message='', error=null ) {
-    super( message );
+  constructor( status: number, messageOrError: string | Error='', error: Error=null ) {
+    if ( messageOrError && typeof messageOrError !== 'string' ) {
+      error = messageOrError;
+      messageOrError = '';
+    }
+    super( messageOrError as string );
     this.status = status;
-    this.message = message;
+    this.message = messageOrError as string;
     this.previousError = error;
   }
 }
