@@ -15,13 +15,13 @@ export default class ResException extends Error {
 }
 
 // 'excpt'는 'exception'을 의미
-const excptIfTruthyOrFalsyFormat = ( detectTruthy: boolean ) => 
+const excptIfTruthyOrFalsyFormat = ( filterTruthy: boolean ) => 
   ( value: unknown, statusOrMessage?: number | string, message='' ) => {
     if ( typeChecker.string( statusOrMessage ) ) {
       message = statusOrMessage as string;
       statusOrMessage = 400;
     }
-    if ( detectTruthy ? value : !value ) {
+    if ( filterTruthy ? value : !value ) {
       throw new ResException( statusOrMessage as number, message );
     }
   };
