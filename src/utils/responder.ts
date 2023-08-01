@@ -1,4 +1,4 @@
-import { Request, Response, CookieOptions } from 'express';
+import { Request, Response, NextFunction, CookieOptions } from 'express';
 
 interface ResOptions {
   setCookie: ( name: string, value: unknown, options?: CookieOptions ) => void;
@@ -7,7 +7,7 @@ interface ResOptions {
 type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<string, any>> | Record<string, any>;
 
 export const respond = ( processReq: ProcessReq ) => 
-  async ( req: Request, res: Response ) => {
+  async ( req: Request, res: Response, _: NextFunction ) => {
     try {
       const message = await processReq( req, { setCookie: ( name, value, options ) => res.cookie( name, value, options ) });
       res.status( 200 ).json({ message });
@@ -17,6 +17,6 @@ export const respond = ( processReq: ProcessReq ) =>
     }
   };
 
-export const notFoundRoute = ( _, res: Response ) => {
+export const notFoundRoute = ( _: Request, res: Response, __: NextFunction ) => {
   res.status( 404 ).json({ message: 'not found route' });
 };
