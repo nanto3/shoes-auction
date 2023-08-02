@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { respond } from "../../utils/responder";
+import respond from "../../utils/responder";
 import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
 import { excptIfNotType } from "../../utils/ResException";
