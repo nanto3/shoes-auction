@@ -15,6 +15,7 @@ export default class UserService {
 
   async login( email: string, password: string ) {
     const userInDb = await this.getUserByEmail( email );
+    
     excptIfFalsy( userInDb, 'not registered user' );
     excptIfFalsy( await UserUtil.isCorrectPassword( password, userInDb.password ), 401, 'wrong password' );
 
