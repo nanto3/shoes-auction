@@ -3,7 +3,7 @@ import envConfig from '../configs/envConfig';
 import { EMAIL_REGEX } from "../constants/const";
 
 export default class UserUtil {
-  static isEmail( value: string ): boolean {
+  static isEmailFormat( value: string ): boolean {
     return EMAIL_REGEX.test( value );
   }
 

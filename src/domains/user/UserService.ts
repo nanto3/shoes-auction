@@ -8,13 +8,10 @@ export default class UserService {
   constructor( private userRepository: UserRepository ) {}
 
   async join( email: string, password: string ) {
-    excptIfFalsy( UserUtil.isEmail( email ), 'wrong email format' );
-    excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
+    excptIfFalsy( UserUtil.isEmailFormat( email ), 'wrong email format' );
+    excptIfTruthy( await this.userRepository.findOneBy({ email }), 'already registered email' );
 
-    return await this.userRepository.createUser({ 
-      email, 
-      password: await UserUtil.hashPassword( password ), 
-    });
+    return await this.userRepository.createUser({ email, password });
   }
 
   async login( email: string, password: string ) {

@@ -4,12 +4,17 @@ import UserSerivce from './UserService';
 import UserRepository from './UserRepository';
 import { excptIfNotType } from "../../utils/ResException";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
+import User from "../../entities/UserEntity";
 
 const router = Router();
 
 const userService = new UserSerivce( new UserRepository() );
 
 router.get( '', respond( async () => {
+
+  const user = new User({ email: 'foo@test.com', password: '1234  ' });
+  console.log( user );
+
   return { result: 'users home' };
 }) );
 

@@ -1,6 +1,7 @@
 import { Sequelize, Model, DataTypes, CreationOptional, NonAttribute, InferAttributes, InferCreationAttributes } from 'sequelize';
 import Product from './ProductEntity';
 import Auction from './AuctionEntity';
+import UserUtil from '../utils/UserUtil';
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare readonly id: CreationOptional<number>; 
@@ -41,5 +42,10 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
   sequelize,
   paranoid: true,
   underscored: true,
+  
+  hooks: {
+    beforeCreate: async ( user: User ) => {
+      user.password = await UserUtil.hashPassword( user.password );
+    },
+  },
 });
-
