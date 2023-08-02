@@ -7,7 +7,7 @@ interface ResOptions {
 type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<string, any>> | Record<string, any>;
 
 const respond = ( processReq: ProcessReq ) => 
-  async ( req: Request, res: Response, _: NextFunction ) => {
+  async ( req: Request, res: Response, _: NextFunction ): Promise<void> => {
     try {
       const message = await processReq( req, { setCookie: ( name, value, options ) => res.cookie( name, value, options ) });
       res.status( 200 ).json({ message });
@@ -17,7 +17,7 @@ const respond = ( processReq: ProcessReq ) =>
     }
   };
 
-export const handleNotFoundRoute = ( _: Request, res: Response, __: NextFunction ) => {
+export const handleNotFoundRoute = ( _: Request, res: Response, __: NextFunction ): void => {
   res.status( 404 ).json({ message: 'not found route' });
 };
 

@@ -1,11 +1,11 @@
-const isString = ( param: unknown ) => typeof param === 'string';
-const isNumber = ( param: unknown ) => typeof param === 'number';
-const isBoolean = ( param: unknown ) => typeof param === 'boolean';
-const isArray = ( param: unknown ) => Array.isArray( param );
+const isString = ( param: unknown ): boolean => typeof param === 'string';
+const isNumber = ( param: unknown ): boolean => typeof param === 'number';
+const isBoolean = ( param: unknown ): boolean => typeof param === 'boolean';
+const isArray = ( param: unknown ): boolean => Array.isArray( param );
 /**
  * @notice null, array도 false
  */
-const isObject = ( param: unknown ) => {
+const isObject = ( param: unknown ): boolean => {
   if ( typeof param !== 'object' ) {
     return false;
   }
