@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { respond } from "../../utils/responder";
+import respond from "../../utils/responder";
 
 const router = Router();
 
