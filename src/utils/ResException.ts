@@ -37,6 +37,6 @@ export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unkno
   const isCorrectType = typeChecker[type];
   values.forEach( value => {
     if ( !isCorrectType( value ) )
-      throw new ResException( 400, 'bad data' );
+      throw new ResException( 400, 'bad request' );
   });
 };
