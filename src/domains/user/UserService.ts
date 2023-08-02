@@ -1,4 +1,4 @@
-import ResException, { excptIfTruthy, excptIfFalsy } from '../../utils/ResException';
+import { excptIfTruthy, excptIfFalsy } from '../../utils/ResException';
 import UserRepository from './UserRepository';
 import UserUtil from '../../utils/UserUtil';
 import { issueJwt } from '../../utils/jwt';
