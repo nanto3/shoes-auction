@@ -3,10 +3,6 @@ import envConfig from '../configs/envConfig';
 import { EMAIL_REGEX } from "../constants/const";
 
 export default class UserUtil {
-  static isEmailFormat( value: string ): boolean {
-    return EMAIL_REGEX.test( value );
-  }
-
   static async hashPassword( password: string ): Promise<string> { 
     const salt = await bcrypt.genSalt( +envConfig.passwordSalt );
     return await bcrypt.hash( password, salt );
