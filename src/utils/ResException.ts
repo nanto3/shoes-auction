@@ -19,7 +19,7 @@ export default class ResException extends Error {
 
 // 'excpt'는 'exception'을 의미
 const excptIfTruthyOrFalsyFormat = ( filterTruthy: boolean ) => 
-  ( value: unknown, statusOrMessage: number | string=400, message='' ) => {
+  ( value: unknown, statusOrMessage: number | string=400, message='' ): void => {
     if ( statusOrMessage && typeof statusOrMessage !== 'number' ) {
       message = statusOrMessage;
       statusOrMessage = 400;
@@ -33,7 +33,7 @@ export const excptIfTruthy = excptIfTruthyOrFalsyFormat( true );
 
 export const excptIfFalsy = excptIfTruthyOrFalsyFormat( false );
 
-export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unknown[]) => {
+export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unknown[]): void => {
   const isCorrectType = typeChecker[type];
   values.forEach( value => {
     if ( !isCorrectType( value ) )
