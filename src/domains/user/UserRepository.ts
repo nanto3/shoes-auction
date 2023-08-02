@@ -7,6 +7,7 @@ export default class UserRepository {
     try {
       return await User.create( user, { transaction });
     } catch ( error ) {
+      // TODO: validation 에러 처리 더 생각해 보기
       throw ( 
         error.errors[0]?.type === 'Validation error' ? 
           new ResException( 400, 'validation error', error ) : 
