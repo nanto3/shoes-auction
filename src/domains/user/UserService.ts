@@ -9,7 +9,7 @@ export default class UserService {
 
   async join( email: string, password: string ) {
     excptIfFalsy( UserUtil.isEmailFormat( email ), 'wrong email format' );
-    excptIfTruthy( await this.userRepository.findOneBy({ email }), 'already registered email' );
+    excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
 
     return await this.userRepository.createUser({ email, password });
   }
@@ -17,9 +17,7 @@ export default class UserService {
   async login( email: string, password: string ) {
     const userInDb = await this.getUserByEmail( email );
     excptIfFalsy( userInDb, 'not registered user' );
-
-    const isCorrect = await UserUtil.isCorrectPassword( password, userInDb.password );
-    excptIfFalsy( isCorrect, 401, 'wrong password' );
+    excptIfFalsy( await UserUtil.isCorrectPassword( password, userInDb.password ), 401, 'wrong password' );
 
     return {
       accessToken: issueJwt( 'access', { userUuid: userInDb.uuid }),
