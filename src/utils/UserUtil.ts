@@ -12,7 +12,7 @@ export default class UserUtil {
     return await bcrypt.hash( password, salt );
   }
 
-  static async isCorrectPassword( password: string, target: string ): Promise<boolean> {
-    return await bcrypt.compare( password, target );
+  static async isCorrectPassword( password: string, hashedPassword: string ): Promise<boolean> {
+    return await bcrypt.compare( password, hashedPassword );
   }
 }
