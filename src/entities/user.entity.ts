@@ -19,6 +19,8 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare readonly auctions: NonAttribute<Auction>;
 
   async hashPassword() {
+    // TODO: 이 조건 없이 최초에 hashPassword 한 번만 할 순 없을까. 
+    // 생성자에 넣기에는 sequelize에서 Model 생성할 때 생성자에서 발생하는 기본 동작들을 모른다.
     if ( this.password.length > PASSWORD_MAX_LENGTH ) {
       return;
     }
