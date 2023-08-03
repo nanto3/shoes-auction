@@ -16,10 +16,6 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare readonly products: NonAttribute<Product>;
   declare readonly auctions: NonAttribute<Auction>;
 
-  async hashPassword(): Promise<void> {
-    const salt = await bcrypt.genSalt( +envConfig.passwordSalt );
-    this.password = await bcrypt.hash( this.password, salt );
-  }
   async validatePassword( password: string ): Promise<boolean> {
     return await bcrypt.compare( password, this.password );
   }
@@ -56,7 +52,10 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
   
   hooks: {
     beforeCreate: async ( user: User ) => {
-      await user.hashPassword();
+      user.password = await bcrypt.hash( 
+        user.password, 
+        await bcrypt.genSalt( +envConfig.passwordSalt ) 
+      );
     },
   },
 });
