@@ -3,7 +3,7 @@ import envConfig from '../configs/env.config';
 import { EMAIL_REGEX } from "../constants/const";
 
 /**
- * @description 현재 사용 안 하는 중. 해당 메소드들 user.entity로 옮김
+ * @deprecated 해당 메소드들 user.entity로 옮김
  */
 export default class UserUtil {
   static async hashPassword( password: string ): Promise<string> { 
