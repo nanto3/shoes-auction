@@ -1,7 +1,9 @@
 import { Sequelize, Model, DataTypes, CreationOptional, NonAttribute, InferAttributes, InferCreationAttributes } from 'sequelize';
 import Product from './product.entity';
 import Auction from './auction.entity';
-import UserUtil from '../utils/UserUtil';
+
+import bcrypt from 'bcrypt';
+import envConfig from '../configs/env.config';
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare readonly id: CreationOptional<number>; 
@@ -13,6 +15,14 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare readonly deletedAt: Date | null;
   declare readonly products: NonAttribute<Product>;
   declare readonly auctions: NonAttribute<Auction>;
+
+  async hashPassword(): Promise<void> {
+    const salt = await bcrypt.genSalt( +envConfig.passwordSalt );
+    this.password = await bcrypt.hash( this.password, salt );
+  }
+  async validatePassword( password: string ): Promise<boolean> {
+    return await bcrypt.compare( password, this.password );
+  }
 }
 
 export const UserFactory = ( sequelize: Sequelize ) => User.init({
@@ -46,7 +56,7 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
   
   hooks: {
     beforeCreate: async ( user: User ) => {
-      user.password = await UserUtil.hashPassword( user.password );
+      await user.hashPassword();
     },
   },
 });

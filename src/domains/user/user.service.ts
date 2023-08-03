@@ -14,15 +14,15 @@ export default class UserService {
   }
 
   async login( email: string, password: string ) {
-    const userInDb = await this.getUserByEmail( email );
-    
-    excptIfFalsy( userInDb, 'not registered user' );
-    excptIfFalsy( await UserUtil.isCorrectPassword( password, userInDb.password ), 401, 'wrong password' );
+    const user = await this.getUserByEmail( email );
+
+    excptIfFalsy( user, 'not registered user' );
+    excptIfFalsy( await user.validatePassword( password ), 401, 'wrong password' );
 
     return {
-      accessToken: issueJwt( 'access', { userUuid: userInDb.uuid }),
+      accessToken: issueJwt( 'access', { userUuid: user.uuid }),
       refreshToken: issueJwt( 'refresh' ),
-      userUuid: userInDb.uuid,
+      userUuid: user.uuid,
     };
   }
 
