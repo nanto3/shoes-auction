@@ -1,7 +1,7 @@
 import { Router } from "express";
 import respond from "../../utils/responder";
-import UserSerivce from './UserService';
-import UserRepository from './UserRepository';
+import UserSerivce from './user.service';
+import UserRepository from './user.repository';
 import { excptIfNotType } from "../../utils/ResException";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 

@@ -1,6 +1,6 @@
 import { Sequelize, Model, DataTypes, CreationOptional, NonAttribute, InferAttributes, InferCreationAttributes } from 'sequelize';
-import Product from './ProductEntity';
-import Auction from './AuctionEntity';
+import Product from './product.entity';
+import Auction from './auction.entity';
 import UserUtil from '../utils/UserUtil';
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {

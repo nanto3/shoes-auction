@@ -1,4 +1,4 @@
-import envConfig from './envConfig';
+import envConfig from './env.config';
 import { Sequelize, Options } from 'sequelize';
 
 const { database, username, password, host, dbPort } = envConfig;

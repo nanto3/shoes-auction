@@ -1,5 +1,5 @@
 import express from 'express';
-import envConfig from './configs/envConfig';
+import envConfig from './configs/env.config';
 import router from './domains/router';
 import { setReceiveOptions } from './setReceiveOptions';
 import { checkDbConnection } from './entities';
