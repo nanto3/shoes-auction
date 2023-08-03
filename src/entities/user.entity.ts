@@ -5,6 +5,8 @@ import Auction from './auction.entity';
 import bcrypt from 'bcrypt';
 import envConfig from '../configs/env.config';
 
+const PASSWORD_MAX_LENGTH = 20;
+
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare readonly id: CreationOptional<number>; 
   declare readonly uuid: CreationOptional<string>;
@@ -15,6 +17,14 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare readonly deletedAt: Date | null;
   declare readonly products: NonAttribute<Product>;
   declare readonly auctions: NonAttribute<Auction>;
+
+  async hashPassword() {
+    if ( this.password.length > PASSWORD_MAX_LENGTH ) {
+      return;
+    }
+    const salt = await bcrypt.genSalt( +envConfig.passwordSalt ); 
+    this.password = await bcrypt.hash( this.password, salt );
+  }
 
   async validatePassword( password: string ): Promise<boolean> {
     return await bcrypt.compare( password, this.password );
@@ -27,7 +37,7 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
     autoIncrement: true,
     unique: true,
     allowNull: false,
-  },    
+  },
   uuid: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -41,6 +51,7 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
   password: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: { len: [ 4, PASSWORD_MAX_LENGTH ] },
   },
   createdAt: DataTypes.DATE,
   updatedAt: DataTypes.DATE,
@@ -52,10 +63,7 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
   
   hooks: {
     beforeCreate: async ( user: User ) => {
-      user.password = await bcrypt.hash( 
-        user.password, 
-        await bcrypt.genSalt( +envConfig.passwordSalt ) 
-      );
+      await user.hashPassword();
     },
   },
 });
