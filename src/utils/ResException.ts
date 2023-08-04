@@ -6,13 +6,13 @@ export default class ResException extends Error {
   previousError: Error;
 
   constructor( status: number, messageOrError: string | Error='', error: Error=null ) {
-    if ( messageOrError && typeof messageOrError !== 'string' ) {
+    if ( typeof messageOrError !== 'string' ) {
       error = messageOrError;
       messageOrError = '';
     }
-    super( messageOrError as string );
+    super( messageOrError );
     this.status = status;
-    this.message = messageOrError as string;
+    this.message = messageOrError;
     this.previousError = error;
   }
 }
@@ -20,12 +20,12 @@ export default class ResException extends Error {
 // 'excpt'는 'exception'을 의미
 const excptIfTruthyOrFalsyFormat = ( filterTruthy: boolean ) => 
   ( value: unknown, statusOrMessage: number | string=400, message='' ): void => {
-    if ( statusOrMessage && typeof statusOrMessage !== 'number' ) {
+    if ( typeof statusOrMessage !== 'number' ) {
       message = statusOrMessage;
       statusOrMessage = 400;
     }
     if ( filterTruthy ? value : !value ) {
-      throw new ResException( statusOrMessage as number, message );
+      throw new ResException( statusOrMessage, message );
     }
   };
 
