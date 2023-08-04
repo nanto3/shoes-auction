@@ -13,9 +13,16 @@ describe( 'join', () => {
       findOneBy: ({ email }: any ) => users.find( anUser => anUser.email === email ),
     };
   };
-    
   const email = 'abc123@test.com';
   const password = '1234';
+
+  it( 'returns user with id', async () => {
+    const userService = new UserService( UserRepository() );
+
+    const user = await userService.join( email, password );
+    
+    expect( user ).toEqual({ id: 1, email, password });
+  });
 
   it( 'throws error - already registered email', async () => {
     const userService = new UserService( UserRepository() );
@@ -27,14 +34,6 @@ describe( 'join', () => {
     } catch ( error ) {
       expect( error.message ).toMatch( 'already registered' );
     }
-  });
-
-  it( 'returns user with id', async () => {
-    const userService = new UserService( UserRepository() );
-
-    const user = await userService.join( email, password );
-    
-    expect( user ).toEqual({ id: 1, email, password });
   });
 });
 
