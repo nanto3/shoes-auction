@@ -41,11 +41,12 @@ describe( 'join', () => {
 
 describe( 'login', () => {
   const firstUserMail = 'abc@test.com';
+  const firstUserPassword = '1234';
   const UserRepository = () => {
     const users = [ { 
       id: 1, 
       email: firstUserMail, 
-      password: '1234', 
+      password: firstUserPassword, 
       validatePassword: ( _password ) => users[0].password === _password, 
     } ];
     return {
@@ -55,8 +56,8 @@ describe( 'login', () => {
   };
 
   it( 'throws error - not registered user', async () => {
-    const email = firstUserMail + 'm';
-    const password = '1234';
+    const email =  'a' + firstUserMail;
+    const password = firstUserPassword;
     const userService = new UserService( UserRepository() );
       
     try {
@@ -71,7 +72,7 @@ describe( 'login', () => {
     const userService = new UserService( UserRepository() );
       
     try {
-      await userService.login( firstUserMail, '1111' );
+      await userService.login( firstUserMail, firstUserPassword + 'a' );
 
     } catch ( error ) {
       expect( error.message ).toMatch( 'wrong password' );
