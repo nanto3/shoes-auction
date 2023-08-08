@@ -1,6 +1,6 @@
 import envConfig from './configs/env.config';
 import router from './domains/router';
-import { createApp } from './utils/createApp';
+import { createApp } from './utils/frame-util/createApp';
 import { checkDbConnection } from './entities';
 
 const startApp = async () => {
