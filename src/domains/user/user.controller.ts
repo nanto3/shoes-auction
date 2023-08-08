@@ -6,9 +6,9 @@ const userController = (
   { get, post, patch, put, destroy }, 
   userService=new UserService() 
 ) => {
-  
+
   get( '' )
-  ( async () => {
+  ( () => {
     return { result: 'user home' };
   });
 
