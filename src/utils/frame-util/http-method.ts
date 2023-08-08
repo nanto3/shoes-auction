@@ -5,13 +5,13 @@ type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
 export const getHttpMethod = ( app: Express, baseUrl='' ) => {
 
   const methodFormat = ( httpMethod: HttpMethod ) => 
-    ( url: string ) => ( callback: ProcessReq | any[]) => {
+    ( url: string, ...middlewares: any[]) => ( callback: ProcessReq | any[]) => {
       if ( Array.isArray( callback ) ) {
         return ( processReq: ProcessReq ) => {
-          app[httpMethod]( baseUrl + url, callback, respond( processReq ) );
+          app[httpMethod]( baseUrl + url, [ ...middlewares, ...callback ], respond( processReq ) );
         };
       }
-      app[httpMethod]( baseUrl + url, respond( callback ) );
+      app[httpMethod]( baseUrl + url, middlewares ,respond( callback ) );
     };
 
   return {
