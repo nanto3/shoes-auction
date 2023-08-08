@@ -16,13 +16,12 @@ Auction.belongsTo( User );
 Product.hasMany( Auction, { as: 'auctions' });
 Auction.belongsTo( Product );
 
-export const checkDbConnection = new Promise( async ( resolve, _ ) => {
+export const checkDbConnection = async () => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
     console.log( 'Db connection has been established' );
-    resolve( true );
   } catch ( error ) {
     console.log( error, 'Unable to connect to the database error' );
   }
-});
+};
