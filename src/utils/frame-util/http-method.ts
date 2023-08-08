@@ -1,22 +1,24 @@
 import { Express } from "express";
 import respond, { ProcessReq } from "./responder";
 
+type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
 export const getHttpMethods = ( app: Express, baseUrl='' ) => {
+
+  const methodFormat = ( httpMethod: HttpMethod ) => 
+    ( url: string ) => ( callback: ProcessReq | any[]) => {
+      if ( Array.isArray( callback ) ) {
+        return ( processReq: ProcessReq ) => {
+          app[httpMethod]( baseUrl + url, callback, respond( processReq ) );
+        };
+      }
+      app[httpMethod]( baseUrl + url, respond( callback ) );
+    };
+
   return {
-    get: ( url: string, ...middlewares ) => ( processReq: ProcessReq ) => {
-      app.get( baseUrl + url, middlewares, respond( processReq ) );
-    },
-    post: ( url: string, ...middlewares ) => ( processReq: ProcessReq ) => {
-      app.post( baseUrl + url, middlewares, respond( processReq ) );
-    },
-    patch: ( url: string, ...middlewares ) => ( processReq: ProcessReq ) => {
-      app.patch( baseUrl + url, middlewares, respond( processReq ) );
-    },
-    put: ( url: string, ...middlewares ) => ( processReq: ProcessReq ) => {
-      app.put( baseUrl + url, middlewares, respond( processReq ) );
-    },
-    destroy: ( url: string, ...middlewares ) => ( processReq: ProcessReq ) => {
-      app.delete( baseUrl + url, middlewares, respond( processReq ) );
-    },
+    get: methodFormat( 'get' ),
+    post: methodFormat( 'post' ),
+    patch: methodFormat( 'patch' ),
+    put: methodFormat( 'put' ),
+    destroy: methodFormat( 'delete' ),
   };
 };

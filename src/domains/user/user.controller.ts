@@ -19,7 +19,7 @@ const userController = (
 
     return { user: await userService.join( email, password ) };
   });
-
+  
   post( '/login' )
   ( async ({ body }, { setCookie }) => {
     const { email, password } = body;
