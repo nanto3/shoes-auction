@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import ResException from './ResException';
+import ErrorException from './error-exception';
 import envConfig from '../configs/env.config';
 
 const jwtSecret = envConfig.jwtSecret;
@@ -26,10 +26,10 @@ export const verify = ( token: string ): JwtPayload => {
     return jwt.verify( token, jwtSecret ) as JwtPayload;
   } catch ( error ) {
     if ( error.message === INVALID_SIGNATURE ) {
-      throw new ResException( 401, 'not authenticated' );
+      throw new ErrorException( 401, 'not authenticated' );
     }
     if ( error.message === JWT_EXPIRED ) {
-      throw new ResException( 401, 'login expired' );
+      throw new ErrorException( 401, 'login expired' );
     }
   }
 };

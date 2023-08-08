@@ -1,9 +1,8 @@
-import { typeChecker } from "./typeHelper";
+import { typeChecker } from "./type-helper";
 
-export default class ResException extends Error {
-  status: number;
-  message: string;
-  previousError: Error;
+export default class ErrorException extends Error {
+  private status: number;
+  private previousError: Error;
 
   constructor( status: number, messageOrError: string | Error='', error: Error=null ) {
     if ( typeof messageOrError !== 'string' ) {
@@ -25,7 +24,7 @@ const excptIfTruthyOrFalsyFormat = ( filterTruthy: boolean ) =>
       statusOrMessage = 400;
     }
     if ( filterTruthy ? value : !value ) {
-      throw new ResException( statusOrMessage, message );
+      throw new ErrorException( statusOrMessage, message );
     }
   };
 
@@ -37,6 +36,6 @@ export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unkno
   const isCorrectType = typeChecker[type];
   values.forEach( value => {
     if ( !isCorrectType( value ) )
-      throw new ResException( 400, 'bad request' );
+      throw new ErrorException( 400, 'bad request' );
   });
 };

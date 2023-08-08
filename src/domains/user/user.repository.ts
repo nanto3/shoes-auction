@@ -1,6 +1,6 @@
 import { Transaction, Attributes, CreationAttributes } from 'sequelize';
 import User from '../../entities/user.entity';
-import ResException from '../../utils/ResException';
+import ErrorException from '../../utils/error-exception';
 
 export default class UserRepository {
   async createUser( user: CreationAttributes<User>, transaction?: Transaction ) {
@@ -10,8 +10,8 @@ export default class UserRepository {
       // TODO: validation 에러 처리 더 생각해 보기
       throw (
         error.errors && error.errors[0]?.type === 'Validation error' ? 
-          new ResException( 400, 'validation error', error ) : 
-          new ResException( 500, error ) 
+          new ErrorException( 400, 'validation error', error ) : 
+          new ErrorException( 500, error ) 
       );
     }
   }
