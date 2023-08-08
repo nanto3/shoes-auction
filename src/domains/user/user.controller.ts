@@ -4,7 +4,8 @@ import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } f
 
 const userController = (
   { get, post, patch, put, destroy }, 
-  userService=new UserService() ) => {
+  userService=new UserService() 
+) => {
   
   get( '' )
   ( async () => {

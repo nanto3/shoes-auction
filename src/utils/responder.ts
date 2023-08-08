@@ -4,7 +4,7 @@ interface ResOptions {
   setCookie: ( name: string, value: unknown, options?: CookieOptions ) => void;
 } 
 
-type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<string, any>> | Record<string, any>;
+export type ProcessReq = ( req: Request, resOptions: ResOptions ) => Promise<Record<string, any>> | Record<string, any>;
 
 const respond = ( processReq: ProcessReq ) => 
   async ( req: Request, res: Response, _: NextFunction ): Promise<void> => {
