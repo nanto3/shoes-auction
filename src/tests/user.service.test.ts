@@ -69,10 +69,12 @@ describe( 'user-service', () => {
     });
   
     it( 'throws error - wrong password', async () => {
+      const email = firstUserMail;
+      const password = 'a' + firstUserPassword;
       const userService = new UserService( UserRepository() );
         
       try {
-        await userService.login( firstUserMail, firstUserPassword + 'a' );
+        await userService.login( email, password );
   
       } catch ( error ) {
         expect( error.message ).toMatch( 'wrong password' );
