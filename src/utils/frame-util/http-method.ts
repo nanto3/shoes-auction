@@ -2,7 +2,7 @@ import { Express } from "express";
 import respond, { ProcessReq } from "./responder";
 
 type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
-export const getHttpMethods = ( app: Express, baseUrl='' ) => {
+export const getHttpMethod = ( app: Express, baseUrl='' ) => {
 
   const methodFormat = ( httpMethod: HttpMethod ) => 
     ( url: string ) => ( callback: ProcessReq | any[]) => {
