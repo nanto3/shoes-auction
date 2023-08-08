@@ -1,14 +1,18 @@
-import { Router } from 'express';
-import UserRouter from './user/user.controller';
-import ProductRouter from './product/product.controller';
-import AuctionRouter from './auction/auction.controller';
+import { Express } from 'express';
 import { handleNotFoundRoute } from '../utils/responder';
+import { getHttpMethods } from '../utils/http-method';
 
-const router = Router();
+import userController from './user/user.controller';
+import productController from './product/product.controller';
+import auctionController from './auction/auction.controller';
 
-router.use( '/users', UserRouter );
-router.use( '/products', ProductRouter );
-router.use( '/auctions', AuctionRouter );
-router.use( handleNotFoundRoute );
+const router = ( app: Express ) => {
+  userController( getHttpMethods( app, '/users' ) );
+  productController( getHttpMethods( app, '/products' ) );
+  auctionController( getHttpMethods( app, '/auctions' ) );
+
+  app.use( handleNotFoundRoute );
+};
 
 export default router;
+

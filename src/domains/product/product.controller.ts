@@ -1,10 +1,9 @@
-import { Router } from "express";
-import respond from "../../utils/responder";
+const productController = ({ get, post, put, patch, destroy }) => {
+  
+  get( '' )
+  ( () => {
+    return { result: 'products home' };
+  });
+};
 
-const router = Router();
-
-router.get( '', respond( () => {
-  return { result: 'products home' };
-}) );
-
-export default router;
+export default productController;

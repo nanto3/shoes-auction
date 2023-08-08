@@ -1,4 +1,4 @@
-import express, { Express, Router } from 'express';
+import express, { Express } from 'express';
 import { Options, OptionsText, OptionsJson, OptionsUrlencoded } from 'body-parser';
 import cors, { CorsOptions } from 'cors';
 
@@ -10,6 +10,8 @@ interface CreateAppOptions {
   cors?: CorsOptions;
 }
 
+type Router = ( app: Express ) => void
+
 export const createApp = ( router: Router, options: CreateAppOptions={}): Express => {
   const app = express();
 
@@ -19,7 +21,7 @@ export const createApp = ( router: Router, options: CreateAppOptions={}): Expres
   app.use( express.raw( options.raw ) );
   app.use( cors( options.cors ) );
 
-  app.use( router );
+  router( app );
 
   return app;
 };

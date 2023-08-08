@@ -4,7 +4,7 @@ import { issueJwt } from '../../utils/jwt';
 
 export default class UserService {
 
-  constructor( private userRepository: UserRepository ) {}
+  constructor( private userRepository=new UserRepository() ) {}
 
   async join( email: string, password: string ) {
     excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );

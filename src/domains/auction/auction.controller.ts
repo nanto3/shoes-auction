@@ -1,10 +1,9 @@
-import { Router } from "express";
-import respond from "../../utils/responder";
+const auctionController = ({ get, post, put, patch, destroy }) => {
+  
+  get( '' )
+  ( () => {
+    return { result: 'auctions home' };
+  });
+};
 
-const router = Router();
-
-router.get( '', respond( () => {
-  return { result: 'auctions home' };
-}) );
-
-export default router;
+export default auctionController;

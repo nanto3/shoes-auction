@@ -1,42 +1,37 @@
-import { Router } from "express";
-import respond from "../../utils/responder";
-import UserSerivce from './user.service';
-import UserRepository from './user.repository';
+import UserService from "./user.service";
 import { excptIfNotType } from "../../utils/error-exception";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 
-const router = Router();
-
-const userService = new UserSerivce( new UserRepository() );
-
-router.get( '', respond( async () => {
-  return { result: 'users home' };
-}) );
-
-/**
- * @api 회원가입
- */
-router.post( '/join', respond( async ({ body }) => {
-  const { email, password } = body;
-  excptIfNotType( 'string', email, password );
-
-  return { user: await userService.join( email, password ) };
-}) );
-
-/**
- * @api 로그인
- */
-router.post( '/login', respond( async ({ body }, { setCookie }) => {
-  const { email, password } = body;
-  excptIfNotType( 'string', email, password );
-
-  const { accessToken, refreshToken, userUuid } = await userService.login( email, password );
-
-  setCookie( 'Authorization', `Bearer ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND * 1000 }
-  );
-  setCookie( 'refreshtoken', refreshToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND * 1000 });
+const userController = (
+  { get, post, patch, put, destroy }, 
+  userService=new UserService() ) => {
   
-  return { email, userUuid }; 
-}) );
+  get( '' )
+  ( async () => {
+    return { result: 'user home' };
+  });
 
-export default router;
+  post( '/join' )
+  ( async ({ body }) => {
+    const { email, password } = body;
+    excptIfNotType( 'string', email, password );
+
+    return { user: await userService.join( email, password ) };
+  });
+
+  post( '/login' )
+  ( async ({ body }, { setCookie }) => {
+    const { email, password } = body;
+    excptIfNotType( 'string', email, password );
+
+    const { accessToken, refreshToken, userUuid } = await userService.login( email, password );
+
+    setCookie( 'Authorization', `Bearer ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND * 1000 }
+    );
+    setCookie( 'refreshtoken', refreshToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND * 1000 });
+  
+    return { email, userUuid }; 
+  });
+};
+
+export default userController;
