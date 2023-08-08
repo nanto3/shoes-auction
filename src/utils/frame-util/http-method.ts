@@ -2,6 +2,7 @@ import { Router } from "express";
 import respond, { ProcessReq } from "./responder";
 
 type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
+
 export const getHttpMethod = ( router: Router, baseUrl='' ) => {
 
   const methodFormat = ( httpMethod: HttpMethod ) => 
