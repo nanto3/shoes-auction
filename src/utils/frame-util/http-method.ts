@@ -1,16 +1,16 @@
 import { type Router } from "express";
 import respond, { ProcessReq } from "./responder";
 
-export type HttpMethodType = 'get' | 'post' | 'patch' | 'put' | 'delete'
+export type HttpMethodType = 'get' | 'post' | 'patch' | 'put' | 'delete';
+
+export interface ReturnHttpMethod {
+  getMethod: ( baseUrl: string ) => Record<string, any>;
+}
 
 const httpMethodFormat = ( router: Router, httpMethod: HttpMethodType, baseUrl: string ) => 
   ( url: string, ...middlewares ) => ( _, processReq: ProcessReq ) => {
     router[httpMethod]( baseUrl + url, middlewares, respond( processReq ) );  
   };
-
-export interface ReturnHttpMethod {
-  getMethod: ( baseUrl: string ) => Record<string, any>;
-}
 
 const HttpMethod = ( router: Router ): ReturnHttpMethod => {
   return {
