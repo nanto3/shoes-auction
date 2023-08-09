@@ -1,10 +1,10 @@
-import UserService from "./user.service";
+import type UserService from "./user.service";
 import { excptIfNotType } from "../../utils/error-exception";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 
 const userController = (
   { get, post, patch, put, destroy }, 
-  userService=new UserService() 
+  userService: UserService
 ) => {
   
   get( '' )

@@ -10,7 +10,7 @@ interface CreateAppOptions {
   cors?: CorsOptions;
 }
 
-export const createApp = ( router: Router, options: CreateAppOptions={}): Express => {
+const createApp = ( router: Router, options: CreateAppOptions={}): Express => {
   const app = express();
 
   app.use( express.raw( options.raw ) );
@@ -22,3 +22,5 @@ export const createApp = ( router: Router, options: CreateAppOptions={}): Expres
 
   return app;
 };
+
+export default createApp;

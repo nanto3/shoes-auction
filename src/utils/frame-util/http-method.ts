@@ -3,7 +3,7 @@ import respond, { ProcessReq } from "./responder";
 
 type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
 
-export const getHttpMethod = ( router: Router, baseUrl='' ) => {
+const getHttpMethod = ( router: Router, baseUrl='' ) => {
   
   const methodFormat = ( httpMethod: HttpMethod ) => 
     ( url: string, ...middlewares ) => ( _, processReq: ProcessReq ) => {
@@ -18,3 +18,5 @@ export const getHttpMethod = ( router: Router, baseUrl='' ) => {
     destroy: methodFormat( 'delete' ),
   };
 };
+
+export default getHttpMethod;
