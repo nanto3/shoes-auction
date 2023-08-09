@@ -3,19 +3,18 @@ import respond, { ProcessReq } from "./responder";
 
 type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
 
-const getHttpMethod = ( router: Router, baseUrl='' ) => {
-  
-  const methodFormat = ( httpMethod: HttpMethod ) => 
-    ( url: string, ...middlewares ) => ( _, processReq: ProcessReq ) => {
-      return router[httpMethod]( baseUrl + url, middlewares, respond( processReq ) );  
-    };
+const httpMethodFormat = ( router: Router, httpMethod: HttpMethod, baseUrl: string ) => 
+  ( url: string, ...middlewares ) => ( _, processReq: ProcessReq ) => {
+    return router[httpMethod]( baseUrl + url, middlewares, respond( processReq ) );  
+  };
 
+const getHttpMethod = ( router: Router, baseUrl='' ) => {
   return {
-    get: methodFormat( 'get' ),
-    post: methodFormat( 'post' ),
-    patch: methodFormat( 'patch' ),
-    put: methodFormat( 'put' ),
-    destroy: methodFormat( 'delete' ),
+    get: httpMethodFormat( router, 'get', baseUrl ),
+    post: httpMethodFormat( router, 'post', baseUrl ),
+    patch: httpMethodFormat( router, 'patch', baseUrl ),
+    put: httpMethodFormat( router, 'put', baseUrl ),
+    destroy: httpMethodFormat( router, 'delete', baseUrl ),
   };
 };
 
