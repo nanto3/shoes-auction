@@ -6,24 +6,14 @@ const userController = (
   { get, post, patch, put, destroy }, 
   userService=new UserService() 
 ) => {
-
+  
   get( '' )
-  ( () => {
+  ( '유저 홈', () => {
     return { result: 'user home' };
   });
 
-  get(('/join') => {
-    const joinMember = ({body, headers}) => {
-      const { email, password } = body;
-      excptIfNotType( 'string', email, password );
-  
-      return { user: await userService.join( email, password ) };  
-    }
-  })
-
-
   post( '/join' )
-  ( async ({ body }) => {
+  ( '회원 가입', async ({ body }) => {
     const { email, password } = body;
     excptIfNotType( 'string', email, password );
 
@@ -31,7 +21,7 @@ const userController = (
   });
   
   post( '/login' )
-  ( async ({ body }, { setCookie }) => {
+  ( '로그인', async ({ body }, { setCookie }) => {
     const { email, password } = body;
     excptIfNotType( 'string', email, password );
 

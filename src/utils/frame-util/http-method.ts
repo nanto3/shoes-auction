@@ -4,15 +4,10 @@ import respond, { ProcessReq } from "./responder";
 type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
 
 export const getHttpMethod = ( router: Router, baseUrl='' ) => {
-
+  
   const methodFormat = ( httpMethod: HttpMethod ) => 
-    ( url: string, ...middlewares: any[]) => ( callback: ProcessReq | any[]) => {
-      if ( Array.isArray( callback ) ) {
-        return ( processReq: ProcessReq ) => {
-          router[httpMethod]( baseUrl + url, [ ...middlewares, ...callback ], respond( processReq ) );
-        };
-      }
-      router[httpMethod]( baseUrl + url, middlewares ,respond( callback ) );
+    ( url: string, ...middlewares ) => ( _, processReq: ProcessReq ) => {
+      return router[httpMethod]( baseUrl + url, middlewares, respond( processReq ) );  
     };
 
   return {
