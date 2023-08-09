@@ -1,12 +1,11 @@
-import { type Router } from "express";
-import getHttpMethod from "./http-method";
+import { ReturnHttpMethod } from "./http-method";
 
-const injectDependencies = ( router: Router, dependencyInfo: Record<string, any[]> ) => {
-  Object.entries( dependencyInfo ).forEach( ([ k, v ]) => {
-    const [ controller, Service, ...repositoryAndElse ] = v;
+const injectDependencies = ( httpMethod: ReturnHttpMethod, dependencyInfo: Record<string, any[]> ) => {
+  Object.entries( dependencyInfo ).forEach( ([ baseUrl, funcs ]) => {
+    const [ controller, Service, ...repositoryAndElse ] = funcs;
     const initailized = repositoryAndElse.map( f => new f() );
     const service = new Service( ...initailized );
-    controller( getHttpMethod( router, `/${k}` ), service );
+    controller( httpMethod.getMethod( `/${baseUrl}` ), service );
   });
 };
 

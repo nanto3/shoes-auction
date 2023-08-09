@@ -1,21 +1,27 @@
 import { type Router } from "express";
 import respond, { ProcessReq } from "./responder";
 
-type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
+export type HttpMethodType = 'get' | 'post' | 'patch' | 'put' | 'delete'
 
-const httpMethodFormat = ( router: Router, httpMethod: HttpMethod, baseUrl: string ) => 
+const httpMethodFormat = ( router: Router, httpMethod: HttpMethodType, baseUrl: string ) => 
   ( url: string, ...middlewares ) => ( _, processReq: ProcessReq ) => {
-    return router[httpMethod]( baseUrl + url, middlewares, respond( processReq ) );  
+    router[httpMethod]( baseUrl + url, middlewares, respond( processReq ) );  
   };
 
-const getHttpMethod = ( router: Router, baseUrl='' ) => {
+export interface ReturnHttpMethod {
+  getMethod: ( baseUrl: string ) => Record<string, any>;
+}
+
+const HttpMethod = ( router: Router ): ReturnHttpMethod => {
   return {
-    get: httpMethodFormat( router, 'get', baseUrl ),
-    post: httpMethodFormat( router, 'post', baseUrl ),
-    patch: httpMethodFormat( router, 'patch', baseUrl ),
-    put: httpMethodFormat( router, 'put', baseUrl ),
-    destroy: httpMethodFormat( router, 'delete', baseUrl ),
+    getMethod: ( baseUrl: string ) => ({
+      get: httpMethodFormat( router, 'get', baseUrl ),
+      post: httpMethodFormat( router, 'post', baseUrl ),
+      patch: httpMethodFormat( router, 'patch', baseUrl ),
+      put: httpMethodFormat( router, 'put', baseUrl ),
+      destroy: httpMethodFormat( router, 'delete', baseUrl ),
+    }),
   };
 };
 
-export default getHttpMethod;
+export default HttpMethod;
