@@ -6,7 +6,7 @@ const userController = (
   { get, post, patch, put, destroy }, 
   userService: UserService
 ) => {
-  
+
   get( '' )
   ( '유저 홈', () => {
     return { result: 'user home' };

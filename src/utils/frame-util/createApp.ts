@@ -1,4 +1,4 @@
-import express, { Express, Router } from 'express';
+import express, { Express, type Router } from 'express';
 import { Options, OptionsText, OptionsJson, OptionsUrlencoded } from 'body-parser';
 import cors, { CorsOptions } from 'cors';
 

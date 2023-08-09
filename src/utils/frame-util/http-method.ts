@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { type Router } from "express";
 import respond, { ProcessReq } from "./responder";
 
 type HttpMethod = 'get' | 'post' | 'patch' | 'put' | 'delete'
