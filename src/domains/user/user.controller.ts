@@ -12,6 +12,16 @@ const userController = (
     return { result: 'user home' };
   });
 
+  get(('/join') => {
+    const joinMember = ({body, headers}) => {
+      const { email, password } = body;
+      excptIfNotType( 'string', email, password );
+  
+      return { user: await userService.join( email, password ) };  
+    }
+  })
+
+
   post( '/join' )
   ( async ({ body }) => {
     const { email, password } = body;
