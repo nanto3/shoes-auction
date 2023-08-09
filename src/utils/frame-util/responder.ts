@@ -17,7 +17,7 @@ const respond = ( processReq: ProcessReq ) =>
     }
   };
 
-export const handleNotFoundRoute = ( _: Request, res: Response, __: NextFunction ): void => {
+export const respondNotFoundRoute = ( _: Request, res: Response, __: NextFunction ): void => {
   res.status( 404 ).json({ message: 'not found route' });
 };
 
