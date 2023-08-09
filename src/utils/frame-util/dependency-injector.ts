@@ -5,7 +5,6 @@ const injectDependencies = ( router: Router, dependencyInfo: Record<string, any[
   Object.entries( dependencyInfo ).forEach( ([ k, v ]) => {
     const [ controller, Service, ...repositoryAndElse ] = v;
     const initailized = repositoryAndElse.map( f => new f() );
-    // console.log( Service.cons );
     const service = new Service( ...initailized );
     controller( getHttpMethod( router, `/${k}` ), service );
   });
