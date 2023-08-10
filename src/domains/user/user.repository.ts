@@ -2,7 +2,7 @@ import { Transaction, Attributes, CreationAttributes } from 'sequelize';
 import User from '../../entities/user.entity';
 import ErrorException from '../../utils/error-exception';
 
-export default class UserRepository {
+export class UserRepository {
   async createUser( user: CreationAttributes<User>, transaction?: Transaction ) {
     try {
       return await User.create( user, { transaction });

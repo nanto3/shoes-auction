@@ -1,5 +1,5 @@
 import { describe, it, test, expect } from "@jest/globals";
-import UserService from "../domains/user/user.service";
+import { UserService } from "../domains/user/user.service";
 
 describe( 'user-service', () => {
 

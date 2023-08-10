@@ -1,8 +1,8 @@
-import type UserRepository from './user.repository';
+import { type UserRepository } from './user.repository';
 import { excptIfTruthy, excptIfFalsy } from '../../utils/error-exception';
 import { issueJwt } from '../../utils/jwt';
 
-export default class UserService {
+export class UserService {
 
   constructor( private userRepository: UserRepository ) {}
 
