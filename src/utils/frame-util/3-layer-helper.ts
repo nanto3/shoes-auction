@@ -1,24 +1,37 @@
-import respond from "./responder";
+import { Request, Response, NextFunction, Router } from "express";
+import respond, { ProcessReq } from "./responder";
 
-type MethodType =  'get' | 'post' | 'patch' | 'put' | 'delete';
+type HttpMethod =  'get' | 'post' | 'patch' | 'put' | 'delete';
 
-const httpMethodFormat = ( methodType: MethodType ) => 
-  ( url, ...middlewares ) => ( callback ) => {
-    callback.httpMethod = methodType;
-    callback.url = url;
-    callback.middlewares = middlewares;
+type Middleware = ( req: Request, res: Response, next: NextFunction ) => void | Promise<void>;
 
-    return callback;
+type ControllerWithBaseUrl = [string, any];
+
+interface RouteInfo {
+  httpMethod: HttpMethod;
+  url: string;
+  middlewares: Middleware[];
+}
+
+const routeInfoSetterFormat = ( httpMethod: HttpMethod ) => 
+  ( url: string, ...middlewares: Middleware[]) => ( controllerMethod: ProcessReq ) => {
+    Object.defineProperty( controllerMethod, 'routeInfo', {
+      value: {
+        httpMethod,
+        url,
+        middlewares,
+      },
+    });
+    return controllerMethod;
   };
 
-export const Get = httpMethodFormat( 'get' );
-export const Post = httpMethodFormat( 'post' );
-export const Patch = httpMethodFormat( 'patch' );
-export const Put = httpMethodFormat( 'put' );
-export const Delete = httpMethodFormat( 'delete' );
+export const Get = routeInfoSetterFormat( 'get' );
+export const Post = routeInfoSetterFormat( 'post' );
+export const Patch = routeInfoSetterFormat( 'patch' );
+export const Put = routeInfoSetterFormat( 'put' );
+export const Delete = routeInfoSetterFormat( 'delete' );
 
-
-export const injectDependency = ( dependencyInfo: Record<string, any[]> ) => {
+export const injectDependency = ( dependencyInfo: Record<string, any[]> ): ControllerWithBaseUrl[] => {
   return Object.entries( dependencyInfo ).map( ([ baseUrl, funcs ]) => {
     const [ Controller, Service, ...repositoryAndElse ] = funcs;
     const initailized = repositoryAndElse.map( f => new f() );
@@ -27,17 +40,13 @@ export const injectDependency = ( dependencyInfo: Record<string, any[]> ) => {
   });
 };
 
-export const matchRouteWithControllers = ( router, controllers ) => {
+export const matchRouteWithControllers = ( router: Router, controllers: ControllerWithBaseUrl[]) => {
   controllers.forEach( ([ baseUrl, controller ]) => {
-    Object.values( controller ).forEach( ( method: any ) => {
-      if ( !method.httpMethod ) {
+    Object.values( controller ).forEach( ( method: ProcessReq & { routeInfo: RouteInfo; }) => {
+      if ( !method.routeInfo ) {
         return;
       }
-      const { httpMethod, url, middlewares } = method;
-      delete method.httpMethod;
-      delete method.url;
-      delete method.middlewares;
-
+      const { httpMethod, url, middlewares } = method.routeInfo;
       router[httpMethod]( `/${baseUrl}` + url, middlewares, respond( method ) );
     });
   });
