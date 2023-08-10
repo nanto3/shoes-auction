@@ -24,3 +24,14 @@ services:
       options:
         max-size: "8m"
         max-file: "10"
+
+  redis:
+    image: redis
+    command: redis-server --port 6379
+    container_name: redis_boot
+    hostname: redis_boot
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 6379:6379

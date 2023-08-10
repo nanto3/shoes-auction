@@ -1,10 +1,10 @@
 import envConfig from './configs/env.config';
-import router from './domains/router';
+import startRoute from './domains/router';
 import createApp from './utils/frame-util/create-app';
 import { checkDbConnection } from './entities';
 
 const startApp = async () => {
-  const app = createApp( router, {
+  const app = await createApp( startRoute, {
     json: { limit: '50mb' },
     urlencoded: {
       limit: '50mb',

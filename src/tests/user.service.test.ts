@@ -20,7 +20,7 @@ describe( 'user-service', () => {
     const birthday = '19920521';
   
     it( 'throws error - already registered email', async () => {
-      const userService = new UserService( UserRepository() );
+      const userService = new UserService( UserRepository(), {} as any );
   
       try {
         await userService.join( email, password, birthday );
@@ -32,7 +32,7 @@ describe( 'user-service', () => {
     });
     
     it( 'returns user with id', async () => {
-      const userService = new UserService( UserRepository() );
+      const userService = new UserService( UserRepository(), {} as any );
   
       const user = await userService.join( email, password, birthday );
       
@@ -59,7 +59,7 @@ describe( 'user-service', () => {
     it( 'throws error - not registered user', async () => {
       const email =  'a' + firstUserMail;
       const password = firstUserPassword;
-      const userService = new UserService( UserRepository() );
+      const userService = new UserService( UserRepository(), {} as any );
         
       try {
         await userService.login( email, password );
@@ -72,7 +72,7 @@ describe( 'user-service', () => {
     it( 'throws error - wrong password', async () => {
       const email = firstUserMail;
       const password = 'a' + firstUserPassword;
-      const userService = new UserService( UserRepository() );
+      const userService = new UserService( UserRepository(), {} as any );
         
       try {
         await userService.login( email, password );

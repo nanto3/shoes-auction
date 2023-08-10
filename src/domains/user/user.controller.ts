@@ -2,6 +2,7 @@ import { type UserService } from "./user.service";
 import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
 import { excptIfNotType } from "../../utils/error-exception";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
+import redisClient from "../../configs/redis.config";
 
 export class UserController {
   constructor( private userService: UserService ) {}
@@ -33,19 +34,19 @@ export class UserController {
     return { email, userUuid }; 
   });
 
-  메일_생일_일치_회원_유무 = Post( '/email-birthday' )
+  비밀번호_변경_위한_유저정보_체크 = Post( '/check-user-info' )
   ( async ({ body }) => {
     const { email, birthday } = body;
     excptIfNotType( 'string', email, birthday );
 
-    return { findMatched: !!( await this.userService.getUserByEmailAndBirthday({ email, birthday }) ) };
+    return { tempUuid: await this.userService.getUuid({ email, birthday }) };
   });
 
   비밀번호_변경 = Patch( '/password' )
   ( async ({ body }) => {
-    const { email, birthday, password } = body;
-    excptIfNotType( 'string', email, birthday, password );
+    const { email, tempUuid, password } = body;
+    excptIfNotType( 'string', email, tempUuid, password );
 
-    return { user: await this.userService.getUserWithNewPassword({ email, birthday, password }) };
+    return { user: await this.userService.getUserWithNewPassword({ email, tempUuid, password }) };
   });
 }
