@@ -3,7 +3,6 @@ import { excptIfTruthy, excptIfFalsy } from '../../utils/error-exception';
 import { issueJwt } from '../../utils/jwt';
 
 export class UserService {
-
   constructor( private userRepository: UserRepository ) {}
 
   async join( email: string, password: string ) {

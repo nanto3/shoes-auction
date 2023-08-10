@@ -4,7 +4,6 @@ import { excptIfNotType } from "../../utils/error-exception";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 
 export class UserController {
-
   constructor( private userService: UserService ) {}
 
   getHome = Get( '' )

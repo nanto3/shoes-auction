@@ -3,6 +3,7 @@ import User from '../../entities/user.entity';
 import ErrorException from '../../utils/error-exception';
 
 export class UserRepository {
+  
   async createUser( user: CreationAttributes<User>, transaction?: Transaction ) {
     try {
       return await User.create( user, { transaction });
