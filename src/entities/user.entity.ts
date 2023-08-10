@@ -32,6 +32,11 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   async validatePassword( password: string ): Promise<boolean> {
     return await bcrypt.compare( password, this.password );
   }
+
+  async setNewPassword( password ) {
+    this.password = password;
+    await this.hashPassword();
+  }
 }
 
 export const UserFactory = ( sequelize: Sequelize ) => User.init({

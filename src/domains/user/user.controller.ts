@@ -1,17 +1,17 @@
 import { type UserService } from "./user.service";
-import { Get, Post } from "../../utils/frame-util/3-layer-helper";
+import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
 import { excptIfNotType } from "../../utils/error-exception";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
 
 export class UserController {
   constructor( private userService: UserService ) {}
 
-  getHome = Get( '' )
+  테스트 = Get( '' )
   ( () => {
     return { result: 'user home' };
   });
 
-  join = Post( '/join' )
+  회원가입 = Post( '/join' )
   ( async ({ body }) => {
     const { email, password, birthday } = body;
     excptIfNotType( 'string', email, password, birthday );
@@ -19,7 +19,7 @@ export class UserController {
     return { user: await this.userService.join( email, password, birthday ) };
   });
 
-  login = Post( '/loign' )
+  로그인 = Post( '/loign' )
   ( async ({ body }, { setCookie }) => {
     const { email, password } = body;
     excptIfNotType( 'string', email, password );
@@ -31,5 +31,21 @@ export class UserController {
     setCookie( 'refreshtoken', refreshToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND * 1000 });
   
     return { email, userUuid }; 
+  });
+
+  메일_생일_일치_회원_유무 = Post( '/email-birthday' )
+  ( async ({ body }) => {
+    const { email, birthday } = body;
+    excptIfNotType( 'string', email, birthday );
+
+    return { findMatched: !!( await this.userService.getUserByEmailAndBirthday({ email, birthday }) ) };
+  });
+
+  비밀번호_변경 = Patch( '/password' )
+  ( async ({ body }) => {
+    const { email, birthday, password } = body;
+    excptIfNotType( 'string', email, birthday, password );
+
+    return { user: await this.userService.getUserWithNewPassword({ email, birthday, password }) };
   });
 }

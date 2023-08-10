@@ -24,11 +24,23 @@ export class UserService {
     };
   }
 
+  async getUserWithNewPassword({ email, birthday, password }) {
+    const user = await this.getUserByEmailAndBirthday({ email, birthday });
+    excptIfFalsy( user, 'not match personal info' );
+
+    await user.setNewPassword( password );
+    return await user.save();
+  }
+
   async getUserByEmail( email: string ) {
     return await this.userRepository.findOneBy({ email });
   }
 
   async getUserByUuid( uuid: string ) {
     return await this.userRepository.findOneBy({ uuid });
+  }
+
+  async getUserByEmailAndBirthday({ email, birthday }) {
+    return await this.userRepository.findOneBy({ email, birthday });
   }
 }
