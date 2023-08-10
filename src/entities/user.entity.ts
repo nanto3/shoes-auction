@@ -12,6 +12,7 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare readonly uuid: CreationOptional<string>;
   declare email: string;
   declare password: string;
+  declare birthday: string;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: Date | null;
@@ -54,6 +55,11 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
     type: DataTypes.STRING,
     allowNull: false,
     validate: { len: [ 4, PASSWORD_MAX_LENGTH ] },
+  },
+  birthday: {
+    type: DataTypes.STRING( 8 ),
+    allowNull: false,
+    validate: { is: /^(19[0-9][0-9]|20\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/ },
   },
   createdAt: DataTypes.DATE,
   updatedAt: DataTypes.DATE,

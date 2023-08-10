@@ -17,13 +17,14 @@ describe( 'user-service', () => {
     };
     const email = 'abc123@test.com';
     const password = '1234';
+    const birthday = '19920521';
   
     it( 'throws error - already registered email', async () => {
       const userService = new UserService( UserRepository() );
   
       try {
-        await userService.join( email, password );
-        await userService.join( email, password );
+        await userService.join( email, password, birthday );
+        await userService.join( email, password, birthday );
   
       } catch ( error ) {
         expect( error.message ).toMatch( 'already registered' );
@@ -33,9 +34,9 @@ describe( 'user-service', () => {
     it( 'returns user with id', async () => {
       const userService = new UserService( UserRepository() );
   
-      const user = await userService.join( email, password );
+      const user = await userService.join( email, password, birthday );
       
-      expect( user ).toEqual({ id: 1, email, password });
+      expect( user ).toEqual({ id: 1, email, password, birthday });
     });
   });
   

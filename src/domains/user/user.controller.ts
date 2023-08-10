@@ -13,10 +13,10 @@ export class UserController {
 
   join = Post( '/join' )
   ( async ({ body }) => {
-    const { email, password } = body;
-    excptIfNotType( 'string', email, password );
+    const { email, password, birthday } = body;
+    excptIfNotType( 'string', email, password, birthday );
 
-    return { user: await this.userService.join( email, password ) };
+    return { user: await this.userService.join( email, password, birthday ) };
   });
 
   login = Post( '/loign' )

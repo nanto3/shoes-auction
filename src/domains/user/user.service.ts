@@ -5,10 +5,10 @@ import { issueJwt } from '../../utils/jwt';
 export class UserService {
   constructor( private userRepository: UserRepository ) {}
 
-  async join( email: string, password: string ) {
+  async join( email: string, password: string, birthday: string ) {
     excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
     
-    return await this.userRepository.createUser({ email, password });
+    return await this.userRepository.createUser({ email, password, birthday });
   }
 
   async login( email: string, password: string ) {
