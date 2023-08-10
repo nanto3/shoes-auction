@@ -14,7 +14,4 @@ const startRoute = async ( router: Router ) => {
   router.use( respondNotFoundRoute );
 };
 
-
-
-
 export default startRoute;
