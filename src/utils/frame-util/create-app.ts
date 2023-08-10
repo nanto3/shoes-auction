@@ -1,4 +1,4 @@
-import express, { Express, type Router } from 'express';
+import express, { Express, Router } from 'express';
 import { Options, OptionsText, OptionsJson, OptionsUrlencoded } from 'body-parser';
 import cors, { CorsOptions } from 'cors';
 
@@ -10,7 +10,7 @@ interface CreateAppOptions {
   cors?: CorsOptions;
 }
 
-const createApp = ( router: Router, options: CreateAppOptions={}): Express => {
+const createApp = async ( startRoute, options: CreateAppOptions={}): Promise<Express> => {
   const app = express();
 
   app.use( express.raw( options.raw ) );
@@ -18,6 +18,9 @@ const createApp = ( router: Router, options: CreateAppOptions={}): Express => {
   app.use( express.urlencoded( options.urlencoded ) );
   app.use( express.raw( options.raw ) );
   app.use( cors( options.cors ) );
+
+  const router = Router();
+  await startRoute( router );
   app.use( router );
 
   return app;

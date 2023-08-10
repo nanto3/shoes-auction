@@ -1,16 +1,20 @@
-import { Router } from 'express';
+import { type Router } from 'express';
 import { respondNotFoundRoute } from '../utils/frame-util/responder';
 import { injectDependency, matchRouteWithControllers } from '../utils/frame-util/3-layer-helper';
+import redisClient from '../configs/redis.config';
 
 import { UserController, UserService, UserRepository } from './user';
 
-const router = Router();
+const startRoute = async ( router: Router ) => {
+  matchRouteWithControllers( 
+    router,
+    injectDependency({ users: [ UserController, UserService, [ UserRepository, await redisClient.connectRedis() ] ] }) 
+  );
 
-matchRouteWithControllers( 
-  router,
-  injectDependency({ users: [ UserController, UserService, UserRepository ] }) 
-);
+  router.use( respondNotFoundRoute );
+};
 
-router.use( respondNotFoundRoute );
 
-export default router;
+
+
+export default startRoute;
