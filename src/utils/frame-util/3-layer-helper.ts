@@ -5,7 +5,7 @@ type HttpMethod =  'get' | 'post' | 'patch' | 'put' | 'delete';
 
 type Middleware = ( req: Request, res: Response, next: NextFunction ) => void | Promise<void>;
 
-type ControllerWithBaseUrl = [string, any];
+type ControllerWithBaseUrl = [object, string];
 
 interface RouteInfo {
   httpMethod: HttpMethod;
@@ -40,12 +40,12 @@ export const injectDependency = ( dependencyInfo: Record<string, any[]> ): Contr
       return typeof f === 'function' ? new f() : f;
     });
     const service = new Service( ...initailized );
-    return [ baseUrl, new Controller( service ) ];
+    return [ new Controller( service ), baseUrl ];
   });
 };
 
 export const matchRouteWithControllers = ( router: Router, controllers: ControllerWithBaseUrl[]) => {
-  controllers.forEach( ([ baseUrl, controller ]) => {
+  controllers.forEach( ([ controller, baseUrl  ]) => {
     Object.values( controller ).forEach( ( method: ProcessReq & { routeInfo: RouteInfo; }) => {
       if ( !method.routeInfo ) {
         return;
