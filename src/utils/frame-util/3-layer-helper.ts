@@ -34,7 +34,9 @@ export const Delete = routeInfoSetterFormat( 'delete' );
 export const injectDependency = ( dependencyInfo: Record<string, any[]> ): ControllerWithBaseUrl[] => {
   return Object.entries( dependencyInfo ).map( ([ baseUrl, funcs ]) => {
     const [ Controller, Service, repositoryAndElse ] = funcs;
-    const initailized = repositoryAndElse.map( f => {
+    const initailized = ( Array.isArray( repositoryAndElse ) ? 
+      repositoryAndElse : 
+      [ repositoryAndElse ]).map( f => {
       return typeof f === 'function' ? new f() : f;
     });
     const service = new Service( ...initailized );
