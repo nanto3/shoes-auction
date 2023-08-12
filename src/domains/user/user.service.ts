@@ -19,9 +19,9 @@ export class UserService {
     excptIfFalsy( await user.validatePassword( password ), 401, 'wrong password' );
 
     return {
-      accessToken: issueJwt( 'access', { userUuid: user.uuid }),
+      accessToken: issueJwt( 'access', { userId: user.id }),
       refreshToken: issueJwt( 'refresh' ),
-      userUuid: user.uuid,
+      userId: user.id,
     };
   }
 
@@ -39,7 +39,7 @@ export class UserService {
     excptIfFalsy( user, 'not registered user' );
 
     await user.setNewPassword( password );
-    
+
     return await user.save();
   }
 
@@ -47,8 +47,8 @@ export class UserService {
     return await this.userRepository.findOneBy({ email });
   }
 
-  async getUserByUuid( uuid: string ) {
-    return await this.userRepository.findOneBy({ uuid });
+  async getUserByUuid( id: number ) {
+    return await this.userRepository.findOneBy({ id });
   }
 }
 

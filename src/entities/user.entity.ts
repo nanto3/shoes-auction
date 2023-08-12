@@ -8,8 +8,7 @@ import envConfig from '../configs/env.config';
 const PASSWORD_MAX_LENGTH = 20;
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-  declare readonly id: CreationOptional<number>; 
-  declare readonly uuid: CreationOptional<string>;
+  declare readonly id: CreationOptional<number>;
   declare email: string;
   declare password: string;
   declare birthday: string;
@@ -43,12 +42,6 @@ export const UserFactory = ( sequelize: Sequelize ) => User.init({
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
-    unique: true,
-    allowNull: false,
-  },
-  uuid: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
   email: {

@@ -24,13 +24,13 @@ export class UserController {
     const { email, password } = body;
     excptIfNotType( 'string', email, password );
 
-    const { accessToken, refreshToken, userUuid } = await this.userService.login( email, password );
+    const { accessToken, refreshToken, userId } = await this.userService.login( email, password );
 
     setCookie( 'Authorization', `Bearer ${accessToken}`, { maxAge: EXPIRY_OF_ACCESS_TOKEN_BY_SECOND * 1000 }
     );
     setCookie( 'refreshtoken', refreshToken, { maxAge: EXPIRY_OF_REFRESH_TOKEN_BY_SECOND * 1000 });
   
-    return { email, userUuid }; 
+    return { email, userId }; 
   });
 
   비밀번호_변경_위한_유저정보_체크 = Post( '/check-user-info' )
