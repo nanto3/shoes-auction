@@ -5,21 +5,6 @@ import { issueJwt } from '../../utils/jwt';
 import { type AuthUuid } from '../../utils/AuthUuid';
 import { v4 as uuidv4 } from 'uuid';
 
-interface UserJoinInfo {
-  email: string;
-  password: string;
-  birthday: string;
-}
-interface UserAuthInfo {
-  email: string;
-  birthday: string;
-}
-interface UserInfoForPasswordChange {
-  email: string;
-  authUuid: string;
-  password: string;
-}
-
 export class UserService {
   constructor( private userRepository: UserRepository, private authUuid: AuthUuid ) {}
 
@@ -67,4 +52,19 @@ export class UserService {
   async getUserByUuid( uuid: string ) {
     return await this.userRepository.findOneBy({ uuid });
   }
+}
+
+interface UserJoinInfo {
+  email: string;
+  password: string;
+  birthday: string;
+}
+interface UserAuthInfo {
+  email: string;
+  birthday: string;
+}
+interface UserInfoForPasswordChange {
+  email: string;
+  authUuid: string;
+  password: string;
 }
