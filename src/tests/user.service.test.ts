@@ -23,8 +23,8 @@ describe( 'user-service', () => {
       const userService = new UserService( UserRepository(), {} as any );
   
       try {
-        await userService.join( email, password, birthday );
-        await userService.join( email, password, birthday );
+        await userService.join({ email, password, birthday });
+        await userService.join({ email, password, birthday });
   
       } catch ( error ) {
         expect( error.message ).toMatch( 'already registered' );
@@ -34,7 +34,7 @@ describe( 'user-service', () => {
     it( 'returns user with id', async () => {
       const userService = new UserService( UserRepository(), {} as any );
   
-      const user = await userService.join( email, password, birthday );
+      const user = await userService.join({ email, password, birthday });
       
       expect( user ).toEqual({ id: 1, email, password, birthday });
     });

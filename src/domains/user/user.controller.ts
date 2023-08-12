@@ -1,8 +1,7 @@
 import { type UserService } from "./user.service";
 import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
-import { excptIfNotType } from "../../utils/error-exception";
+import { excptIfNotType } from "../../utils/ErrorException";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
-import redisClient from "../../configs/redis.config";
 
 export class UserController {
   constructor( private userService: UserService ) {}
@@ -17,7 +16,7 @@ export class UserController {
     const { email, password, birthday } = body;
     excptIfNotType( 'string', email, password, birthday );
 
-    return { user: await this.userService.join( email, password, birthday ) };
+    return { user: await this.userService.join({ email, password, birthday }) };
   });
 
   로그인 = Post( '/loign' )
@@ -39,14 +38,14 @@ export class UserController {
     const { email, birthday } = body;
     excptIfNotType( 'string', email, birthday );
 
-    return { tempUuid: await this.userService.getUuid({ email, birthday }) };
+    return { authUuid: await this.userService.createUuid({ email, birthday }) };
   });
 
   비밀번호_변경 = Patch( '/password' )
   ( async ({ body }) => {
-    const { email, tempUuid, password } = body;
-    excptIfNotType( 'string', email, tempUuid, password );
+    const { email, authUuid, password } = body;
+    excptIfNotType( 'string', email, authUuid, password );
 
-    return { user: await this.userService.getUserWithNewPassword({ email, tempUuid, password }) };
+    return { result: await this.userService.changePassword({ email, authUuid, password }) };
   });
 }
