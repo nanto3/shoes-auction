@@ -19,7 +19,7 @@ export class UserController {
     return { user: await this.userService.join({ email, password, birthday }) };
   });
 
-  로그인 = Post( '/loign' )
+  로그인 = Post( '/login' )
   ( async ({ body }, { setCookie }) => {
     const { email, password } = body;
     excptIfNotType( 'string', email, password );
