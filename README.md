@@ -7,4 +7,4 @@
 
 # utils
 ### utils/frame-util : 의존성 주입 기능 구현
-
+#### *domains/router.ts에서 의존성 처리
