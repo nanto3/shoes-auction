@@ -50,7 +50,7 @@ export class UserService {
     return await this.userRepository.findOneBy({ email });
   }
 
-  async getUserByUuid( id: number ) {
+  async getUserById( id: number ) {
     return await this.userRepository.findOneBy({ id });
   }
 }
