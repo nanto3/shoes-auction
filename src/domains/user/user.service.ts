@@ -1,13 +1,29 @@
 import { type UserRepository } from './user.repository';
 import { RedisClient } from '../../configs/redis.config';
-import { excptIfTruthy, excptIfFalsy } from '../../utils/error-exception';
+import { excptIfTruthy, excptIfFalsy } from '../../utils/ErrorException';
 import { issueJwt } from '../../utils/jwt';
+import { type AuthUuid } from '../../utils/AuthUuid';
 import { v4 as uuidv4 } from 'uuid';
 
-export class UserService {
-  constructor( private userRepository: UserRepository, private redisClient: RedisClient ) {}
+interface UserJoinInfo {
+  email: string;
+  password: string;
+  birthday: string;
+}
+interface UserAuthInfo {
+  email: string;
+  birthday: string;
+}
+interface UserInfoForPasswordChange {
+  email: string;
+  authUuid: string;
+  password: string;
+}
 
-  async join( email: string, password: string, birthday: string ) {
+export class UserService {
+  constructor( private userRepository: UserRepository, private authUuid: AuthUuid ) {}
+
+  async join({ email, password, birthday }: UserJoinInfo ) {
     excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
     
     return await this.userRepository.createUser({ email, password, birthday });
@@ -26,22 +42,22 @@ export class UserService {
     };
   }
 
-  async getUuid({ email, birthday }) {
+  async createUuid({ email, birthday }: UserAuthInfo ) {
     const user = await this.userRepository.findOneBy({ email, birthday });
     excptIfFalsy( user, 'not match personal info' );
     
-    const uuid = uuidv4();
-    this.redisClient.saveUuidByEmail( email, uuid );
-    return uuid;
+    return await this.authUuid.createUuid( email );
   }
 
-  async getUserWithNewPassword({ email, tempUuid, password }) {
-    const uuid = this.redisClient.getUuidByEmail( email );
-    excptIfFalsy( tempUuid === uuid, 405, 'not allowed' );
+  async changePassword({ email, authUuid, password }: UserInfoForPasswordChange ) {
+    excptIfFalsy( await this.authUuid.validateUuid( email, authUuid ), 405, 'not allowed' );
     
     const user = await this.getUserByEmail( email );
+    excptIfFalsy( user, 'not registered user' );
+
     await user.setNewPassword( password );
-    return await user.save();
+
+    return true;
   }
 
   async getUserByEmail( email: string ) {
