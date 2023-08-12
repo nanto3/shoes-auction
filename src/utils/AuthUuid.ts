@@ -5,7 +5,7 @@ export class AuthUuid {
   constructor( private redisClient: RedisClient ) {}
 
   async createUuid( key: string ) {
-    const uuid = uuidv4();
+    const uuid: string = uuidv4();
     await this.redisClient.saveUuidByEmail( key, uuid );
     return uuid;
   }
