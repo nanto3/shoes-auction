@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import ErrorException from './error-exception';
+import ErrorException from './ErrorException';
 import envConfig from '../configs/env.config';
 
 const jwtSecret = envConfig.jwtSecret;
