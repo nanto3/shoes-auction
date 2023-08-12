@@ -7,4 +7,4 @@ domains 폴더 내 domain 별로 controller, service, repository 가짐.
 
 domains의 router.ts에서 각 doamin들 합침.
 
-현재 api는 회원가입, 로그인만 구현돼 있음.
+현재 api는 회원가입, 로그인, 비밀번호 변경 관련만 구현돼 있음.
