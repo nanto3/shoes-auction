@@ -68,8 +68,8 @@ export const inject3LayerDependency = ( dependencyInfos: Record<string, any[]> )
   });
 };
 
-export const routeWithControllers = ( router: Router, controllers: ControllerWithBaseUrl[]) => {
-  controllers.forEach( ([ controller, baseUrl ]) => {
+export const routeWithControllers = ( router: Router, controllerWithBaseUrls: ControllerWithBaseUrl[]) => {
+  controllerWithBaseUrls.forEach( ([ controller, baseUrl ]) => {
     Object.values( controller ).forEach( ( method: ProcessReq & { routeInfo: RouteInfo; }) => {
       if ( !method.routeInfo ) {
         return;
