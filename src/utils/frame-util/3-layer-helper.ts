@@ -53,13 +53,7 @@ export const inject3LayerDependency = ( dependencyInfo: Record<string, any[]> ):
     const initailized = ( Array.isArray( repositoryAndElse ) ? 
       repositoryAndElse : 
       [ repositoryAndElse ])
-      .map( f => {
-        if ( Array.isArray( f ) ) {
-          console.log( f );
-          return injectDependency( f );
-        }
-        return construct( f );
-      });
+      .map( f => Array.isArray( f ) ? injectDependency( f ): construct( f ) );
     const service = new Service( ...initailized );
     return [ new Controller( service ), baseUrl  ];
   });
