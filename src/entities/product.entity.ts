@@ -12,7 +12,6 @@ export default class Product extends Model<InferAttributes<Product>, InferCreati
   declare auctionCloseDate: Date;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
-  declare readonly deletedAt: Date | null;
 }
 
 export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
@@ -49,9 +48,7 @@ export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
   },
   createdAt: DataTypes.DATE,
   updatedAt: DataTypes.DATE,
-  deletedAt: DataTypes.DATE,
 }, {
   sequelize,
-  paranoid: true,
   underscored: true,
 });
