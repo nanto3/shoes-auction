@@ -9,9 +9,9 @@ const PASSWORD_MAX_LENGTH = 20;
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare readonly id: CreationOptional<number>;
-  declare email: string;
+  declare readonly email: string;
   declare password: string;
-  declare birthday: string;
+  declare readonly birthday: string;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: Date | null;

@@ -1,61 +1,55 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { Sequelize, Model, DataTypes, CreationOptional, ForeignKey, InferAttributes, InferCreationAttributes } from 'sequelize';
+import User from './user.entity';
 
-export default class Product extends Model {
+export default class Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
+  declare readonly id: CreationOptional<number>;
+  declare readonly userId: ForeignKey<User['id']>;
+  declare readonly brand: 'NIKE'|'ADIDAS'|'ETC';
+  declare name: string;
+  declare price: number;
+  declare status: 'SELLING'|'WAITING'|'SOLD'|'PENDING'|'FAILED';
+  declare image: string | null;
+  declare auctionCloseDate: Date;
+  declare readonly createdAt: CreationOptional<Date>;
+  declare readonly updatedAt: CreationOptional<Date>;
+  declare readonly deletedAt: Date | null;
 }
 
 export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
   id: {
     type: DataTypes.INTEGER,
-    primaryKey: false,
+    primaryKey: true,
     autoIncrement: true,
-    unique: true,
+  },
+  // userUuid: {
+  //   type: DataTypes.STRING,
+  //   allowNull: false,
+  // },
+  brand: {
+    type: DataTypes.ENUM( 'NIKE', 'ADIDAS', 'ETC' ),
+    defaultValue: 'ETC',
+  },
+  name: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
-  uuid: {
-    comment: '상품 uuid',
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true,
+  price: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-  // brand: {
-  //   comment: '브랜드명',
-  //   type: DataTypes.ENUM( 'NIKE', 'ADIDAS', 'NEW-BALANCE', 'ETC' ),
-  //   allowNull: false,
-  //   defaultValue: 'ETC',
-  // },
-  // name: {
-  //   comment: '상품명',
-  //   type: DataTypes.STRING,
-  //   allowNull: false,
-  // },
-  // price: {
-  //   comment: '상품 시작 가격',
-  //   type: DataTypes.INTEGER,
-  //   allowNull: false,
-  //   defaultValue: 0,
-  // },
-  // // userUuid: {
-  // //   comment: '판매자 uuid',
-  // //   type: DataTypes.STRING,
-  // //   allowNull: false,
-  // // },
-  // status: {
-  //   comment: '상품 상태',
-  //   type: DataTypes.ENUM( 'SELLING','WAITING','SOLD','PENDING','FAILED' ),
-  //   defaultValue: 'SELLING',
-  // },
-  // image: {
-  //   comment: '상품 이미지',
-  //   type: DataTypes.STRING,
-  // },
-  // auctionCloseDate: {
-  //   comment: '경매 마감 날짜',
-  //   type: DataTypes.DATE,
-  //   allowNull: false,
-  // },
-  // createdAt: DataTypes.DATE,
-  // updatedAt: DataTypes.DATE,
-  // deletedAt: DataTypes.DATE,
+  status: {
+    type: DataTypes.ENUM( 'SELLING','WAITING','SOLD','PENDING','FAILED' ),
+    defaultValue: 'SELLING',
+  },
+  image: { type: DataTypes.STRING },
+  auctionCloseDate: {
+    comment: '경매 마감 날짜',
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  createdAt: DataTypes.DATE,
+  updatedAt: DataTypes.DATE,
+  deletedAt: DataTypes.DATE,
 }, {
   sequelize,
   paranoid: true,
