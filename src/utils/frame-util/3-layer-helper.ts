@@ -32,20 +32,20 @@ export const Put = routeInfoSetterFormat( 'put' );
 export const Delete = routeInfoSetterFormat( 'delete' );
 
 export const injectDependency = ( dependencyInfo: Record<string, any[]> ): ControllerWithBaseUrl[] => {
-  return Object.entries( dependencyInfo ).map( ([ baseUrl, funcs ]) => {
-    const [ Controller, Service, repositoryAndElse ] = funcs;
+  return Object.entries( dependencyInfo ).map( ([ baseUrl, info ]) => {
+    const [ Controller, Service, repositoryAndElse ] = info;
     const initailized = ( Array.isArray( repositoryAndElse ) ? 
       repositoryAndElse : 
       [ repositoryAndElse ]).map( f => {
       return typeof f === 'function' ? new f() : f;
     });
     const service = new Service( ...initailized );
-    return [ new Controller( service ), baseUrl ];
+    return [ new Controller( service ), baseUrl  ];
   });
 };
 
-export const matchRouteWithControllers = ( router: Router, controllers: ControllerWithBaseUrl[]) => {
-  controllers.forEach( ([ controller, baseUrl  ]) => {
+export const routeWithControllers = ( router: Router, controllers: ControllerWithBaseUrl[]) => {
+  controllers.forEach( ([ controller, baseUrl ]) => {
     Object.values( controller ).forEach( ( method: ProcessReq & { routeInfo: RouteInfo; }) => {
       if ( !method.routeInfo ) {
         return;
