@@ -1,7 +1,7 @@
 import { RedisClient } from "../configs/redis.config";
 import { v4 as uuidv4 } from 'uuid';
 
-export class AuthUuid {
+export default class AuthUuid {
   constructor( private redisClient: RedisClient ) {}
 
   async createUuid( key: string ) {
