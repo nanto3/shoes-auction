@@ -1,9 +1,7 @@
 import { type UserRepository } from './user.repository';
-import { RedisClient } from '../../configs/redis.config';
+import { type AuthUuid } from '../../utils/AuthUuid';
 import { excptIfTruthy, excptIfFalsy } from '../../utils/ErrorException';
 import { issueJwt } from '../../utils/jwt';
-import { type AuthUuid } from '../../utils/AuthUuid';
-import { v4 as uuidv4 } from 'uuid';
 
 export class UserService {
   constructor( private userRepository: UserRepository, private authUuid: AuthUuid ) {}
