@@ -39,8 +39,8 @@ export class UserService {
     excptIfFalsy( user, 'not registered user' );
 
     await user.setNewPassword( password );
-
-    return true;
+    
+    return await user.save();
   }
 
   async getUserByEmail( email: string ) {
