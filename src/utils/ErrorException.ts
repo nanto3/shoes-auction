@@ -27,9 +27,7 @@ const excptIfTruthyOrFalsyFormat = ( filterTruthy: boolean ) =>
       throw new ErrorException( statusOrMessage, message );
     }
   };
-
 export const excptIfTruthy = excptIfTruthyOrFalsyFormat( true );
-
 export const excptIfFalsy = excptIfTruthyOrFalsyFormat( false );
 
 export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unknown[]): void => {
