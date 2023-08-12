@@ -32,20 +32,34 @@ const construct = ( constructor, dependency? ) => {
   if ( typeof constructor !== 'function' ) {
     return constructor;
   }
+  dependency = dependency && ( Array.isArray( dependency ) ? dependency : [ dependency ]);
   try {
-    return dependency ? new constructor( dependency ): new constructor();
+    return ( dependency && dependency.length > 0 ) ? 
+      new constructor( ...dependency ): 
+      new constructor();
   } catch {
     try {
-      return dependency ? constructor( dependency ) : constructor();
+      return ( dependency && dependency.length > 0 ) ? 
+        constructor( ...dependency ) : 
+        constructor();
     } catch {
       return construct;
     }
   }
 };
 
-const injectDependency = ( dependencyInfo: any[]) => dependencyInfo
-  .reverse()
-  .reduce( ( a, b ) => construct( b, a ), construct( dependencyInfo[0]) );
+const injectDependency = ( dependencyInfo: any[]) => {
+  return dependencyInfo
+    .reverse()
+    .reduce( ( dependency, constructor ) => {
+      if ( Array.isArray( constructor ) ) {
+        return constructor.map( f => Array.isArray( f ) ? 
+          injectDependency( f ) : 
+          construct( f ) );
+      }
+      return construct( constructor, dependency );
+    }, null );
+};
 
 export const inject3LayerDependency = ( dependencyInfo: Record<string, any[]> ): ControllerWithBaseUrl[] => {
   return Object.entries( dependencyInfo ).map( ([ baseUrl, info ]) => {

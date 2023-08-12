@@ -13,7 +13,10 @@ const startRoute = async ( router: Router ) => {
       users: [ 
         UserController, 
         UserService, 
-        [ UserRepository, [ AuthUuid, await redisClient.connectRedis() ] ] ], 
+        [ 
+          UserRepository, 
+          [ AuthUuid, await redisClient.connectRedis() ], 
+        ] ], 
     }) 
   );
 
