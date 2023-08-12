@@ -1,10 +1,8 @@
 # express로 3-layer 프레임워크 만들어 보기(feat. 신발 중고 거래)
-### express, mysql, sequelize 사용
+#### express, mysql, sequelize 사용
+<br />
+###domains
+####User, Product, Auction
+#####*현재 api 구현은 User(회원가입, 로그인, 비밀번호 변경 관련)만 되어 있음.
+<br />
 
-진입점 app.ts
-
-domains 폴더 내 domain 별로 controller, service, repository 가짐.
-
-domains의 router.ts에서 각 doamin들 합침.
-
-현재 api는 회원가입, 로그인, 비밀번호 변경 관련만 구현돼 있음.
