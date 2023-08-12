@@ -11,33 +11,35 @@ const A_DAY_BY_SECONDS = 60 * 60 * 24;
 export const EXPIRY_OF_ACCESS_TOKEN_BY_SECOND = A_DAY_BY_SECONDS * 7;
 export const EXPIRY_OF_REFRESH_TOKEN_BY_SECOND = A_DAY_BY_SECONDS * 30;
 
-export const issueJwt = ( 
-  sort: 'access' | 'refresh', 
-  payload: Record<string, unknown>={}): string => 
-  jwt.sign( payload, jwtSecret, { 
-    algorithm: 'HS256', 
-    expiresIn: sort === 'access' ? 
-      EXPIRY_OF_ACCESS_TOKEN_BY_SECOND : 
-      EXPIRY_OF_REFRESH_TOKEN_BY_SECOND, 
-  });
-
-export const verify = ( token: string ): JwtPayload => {
-  try {
-    return jwt.verify( token, jwtSecret ) as JwtPayload;
-  } catch ( error ) {
-    if ( error.message === INVALID_SIGNATURE ) {
-      throw new ErrorException( 401, 'not authenticated' );
-    }
-    if ( error.message === JWT_EXPIRED ) {
-      throw new ErrorException( 401, 'login expired' );
-    }
-  }
-};
-
 interface Verified {
   exp: number;
   iat: number;
 }
 
-export const needReissueRefreshToken = ( verified: Verified ): boolean => 
-  verified.exp - verified.iat < EXPIRY_OF_REFRESH_TOKEN_BY_SECOND;
+const jwtUtil = {
+  issueJwt: ( 
+    sort: 'access' | 'refresh', 
+    payload: Record<string, unknown>={}): string => 
+    jwt.sign( payload, jwtSecret, { 
+      algorithm: 'HS256', 
+      expiresIn: sort === 'access' ? 
+        EXPIRY_OF_ACCESS_TOKEN_BY_SECOND : 
+        EXPIRY_OF_REFRESH_TOKEN_BY_SECOND, 
+    }),
+  verify: ( token: string ): JwtPayload => {
+    try {
+      return jwt.verify( token, jwtSecret ) as JwtPayload;
+    } catch ( error ) {
+      if ( error.message === INVALID_SIGNATURE ) {
+        throw new ErrorException( 401, 'not authenticated' );
+      }
+      if ( error.message === JWT_EXPIRED ) {
+        throw new ErrorException( 401, 'login expired' );
+      }
+    }
+  },
+  needReissueRefreshToken: ( verified: Verified ): boolean => 
+    verified.exp - verified.iat < EXPIRY_OF_REFRESH_TOKEN_BY_SECOND,
+};
+
+export default jwtUtil;

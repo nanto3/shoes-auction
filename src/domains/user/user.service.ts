@@ -1,14 +1,17 @@
 import { type UserRepository } from './user.repository';
-import { type AuthUuid } from '../../utils/AuthUuid';
+import type JwtUtil from '../../utils/jwt';
+import type AuthUuid from '../../utils/AuthUuid';
 import { excptIfTruthy, excptIfFalsy } from '../../utils/ErrorException';
-import { issueJwt } from '../../utils/jwt';
 
 export class UserService {
-  constructor( private userRepository: UserRepository, private authUuid: AuthUuid ) {}
+  constructor( 
+    private readonly userRepository: UserRepository,
+    private readonly jwtUtil: typeof JwtUtil,
+    private readonly authUuid: AuthUuid ) {}
 
   async join({ email, password, birthday }: UserJoinInfo ) {
     excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
-    
+
     return await this.userRepository.createUser({ email, password, birthday });
   }
 
@@ -19,8 +22,8 @@ export class UserService {
     excptIfFalsy( await user.validatePassword( password ), 401, 'wrong password' );
 
     return {
-      accessToken: issueJwt( 'access', { userId: user.id }),
-      refreshToken: issueJwt( 'refresh' ),
+      accessToken: this.jwtUtil.issueJwt( 'access', { userId: user.id }),
+      refreshToken: this.jwtUtil.issueJwt( 'refresh' ),
       userId: user.id,
     };
   }
