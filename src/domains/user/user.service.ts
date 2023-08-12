@@ -27,7 +27,7 @@ export class UserService {
 
   async createUuid({ email, birthday }: UserAuthInfo ) {
     const user = await this.userRepository.findOneBy({ email, birthday });
-    excptIfFalsy( user, 'not match personal info' );
+    excptIfFalsy( user, 'not match user info' );
     
     return await this.authUuid.createUuid( email );
   }
