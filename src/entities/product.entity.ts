@@ -7,7 +7,7 @@ export default class Product extends Model<InferAttributes<Product>, InferCreati
   declare readonly brand: 'NIKE'|'ADIDAS'|'ETC';
   declare name: string;
   declare price: number;
-  declare status: 'SELLING'|'WAITING'|'SOLD'|'PENDING'|'FAILED';
+  declare status: CreationOptional<'SELLING'|'WAITING'|'SOLD'|'PENDING'|'FAILED'>;
   declare image: string | null;
   declare auctionCloseDate: Date;
   declare readonly createdAt: CreationOptional<Date>;

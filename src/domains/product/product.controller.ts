@@ -9,4 +9,13 @@ export class ProductController {
   ( () => {
     return { result: 'product home' };
   });
+
+  상품_등록 = Post( '' )
+  ( async ({ body }) => {
+    const { userId, brand, name, price, image, auctionCloseDate } = body;
+    excptIfNotType( 'string', brand, name, image, auctionCloseDate );
+    excptIfNotType( 'number', userId, price );
+
+    return {};
+  });
 }
