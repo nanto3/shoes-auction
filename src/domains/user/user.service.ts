@@ -9,7 +9,7 @@ export class UserService {
     private readonly jwtUtil: typeof JwtUtil,
     private readonly authUuid: AuthUuid ) {}
 
-  async join({ email, password, birthday }: UserJoinInfo ) {
+  async join({ email, password, birthday }: UserVO ) {
     excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
 
     return await this.userRepository.createUser({ email, password, birthday });
@@ -55,7 +55,7 @@ export class UserService {
   }
 }
 
-interface UserJoinInfo {
+interface UserVO {
   email: string;
   password: string;
   birthday: string;
