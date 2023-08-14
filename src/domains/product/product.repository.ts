@@ -5,7 +5,7 @@ import ErrorException from '../../utils/ErrorException';
 export class ProductRepository {
   
   async createProduct( product: CreationAttributes<Product>, transaction?: Transaction ) {
-    return await Product.create( product );
+    return await Product.create( product, { transaction });
   }
 
   async findOneBy<T extends keyof Attributes<Product>>( where: Record<T, Product[T]>, transaction?: Transaction ) {

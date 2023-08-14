@@ -16,6 +16,6 @@ export class ProductController {
     excptIfNotType( 'string', brand, name, image, auctionCloseDate );
     excptIfNotType( 'number', userId, price );
 
-    return {};
+    return { product: this.productService.createProdudct({ userId, brand, name, price, image, auctionCloseDate }) };
   });
 }
