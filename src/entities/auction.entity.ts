@@ -7,7 +7,7 @@ export default class Auction extends Model<InferAttributes<Auction>, InferCreati
   declare readonly userId: ForeignKey<User['id']>;
   declare readonly productId: ForeignKey<Product['id']>;
   declare bidPrice: number;
-  declare result: CreationOptional<boolean>;
+  declare result: CreationOptional<'PENDING' | 'FAILED' | 'SUCCEEDED'>;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
 }
@@ -33,8 +33,8 @@ export const AuctionFactory = ( sequelize: Sequelize ) => Auction.init({
   },
   result: {
     comment: '낙찰 여부',
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
+    type: DataTypes.ENUM( 'PENDING', 'FAILED', 'SUCCEEDED' ),
+    defaultValue: 'PENDING',
     allowNull: false,
   },
   createdAt: DataTypes.DATE,
