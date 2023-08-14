@@ -1,5 +1,5 @@
 import { Transaction, Attributes, CreationAttributes } from 'sequelize';
-import Product from "../../entities/product.entity";
+import { Product } from "../../entities";
 import ErrorException from '../../utils/ErrorException';
 
 export class ProductRepository {

@@ -1,5 +1,5 @@
 import { Transaction, Attributes, CreationAttributes } from 'sequelize';
-import User from '../../entities/user.entity';
+import { User } from '../../entities';
 import ErrorException from '../../utils/ErrorException';
 
 export class UserRepository {

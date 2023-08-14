@@ -1,20 +1,20 @@
 import sequelize from '../configs/sequelize.config';
-import { UserFactory } from './user.entity';
-import { ProductFactory } from './product.entity';
-import { AuctionFactory } from './auction.entity';
+import User, { UserFactory } from './user.entity';
+import Product, { ProductFactory } from './product.entity';
+import Auction, { AuctionFactory } from './auction.entity';
 
-const User = UserFactory( sequelize );
-const Product = ProductFactory( sequelize );
-const Auction = AuctionFactory( sequelize );
+const _User = UserFactory( sequelize );
+const _Product = ProductFactory( sequelize );
+const _Auction = AuctionFactory( sequelize );
 
-User.hasMany( Product, { as: 'products' });
-Product.belongsTo( User );
+_User.hasMany( _Product, { as: 'products' });
+_Product.belongsTo( _User );
 
-User.hasMany( Auction, { as: 'auctions' });
-Auction.belongsTo( User );
+_User.hasMany( _Auction, { as: 'auctions' });
+_Auction.belongsTo( _User );
 
-Product.hasMany( Auction, { as: 'auctions' });
-Auction.belongsTo( Product );
+_Product.hasMany( _Auction, { as: 'auctions' });
+_Auction.belongsTo( _Product );
 
 export const checkDbConnection = async () => {
   try {
@@ -25,3 +25,5 @@ export const checkDbConnection = async () => {
     console.log( error, 'Unable to connect to the database error' );
   }
 };
+
+export { sequelize, User, Product, Auction };
