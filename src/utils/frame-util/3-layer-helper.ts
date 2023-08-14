@@ -39,7 +39,7 @@ const construct = ( constructor, dependency? ) => {
       new constructor();
   } catch {
     try {
-      return dependency.length > 0 ? 
+      return dependency?.length > 0 ? 
         constructor( ...dependency ) : 
         constructor();
     } catch {
