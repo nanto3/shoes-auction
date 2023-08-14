@@ -12,6 +12,7 @@ describe( 'user-service', () => {
           users.push( body );
           return body;
         },
+        saveUser: ( user ) => {return user;},
         findOneBy: ({ email }: any ) => users.find( anUser => anUser.email === email ),
       };
     };
@@ -52,6 +53,7 @@ describe( 'user-service', () => {
       } ];
       return {
         createUser: ( () => ({}) ) as any,
+        saveUser: ( user ) => {return user;},
         findOneBy: ({ email }: any ): any => users.find( user => user.email === email ), 
       };
     };

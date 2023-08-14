@@ -43,7 +43,7 @@ export class UserService {
 
     await user.setNewPassword( password );
 
-    return await user.save();
+    return await this.userRepository.saveUser( user );
   }
 
   async getUserByEmail( email: string ) {
