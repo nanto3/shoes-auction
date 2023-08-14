@@ -1,4 +1,4 @@
-# express로 3-layer 프레임워크 만들어 보기(feat. 신발 중고 거래)
+# express로 3-layer 프레임워크 만들어 보기(feat. 신발 경매 거래)
 #### express, mysql, sequelize 사용
 
 # domains
