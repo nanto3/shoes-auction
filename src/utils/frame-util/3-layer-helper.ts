@@ -34,12 +34,12 @@ const construct = ( constructor, dependency? ) => {
   }
   dependency = dependency && ( Array.isArray( dependency ) ? dependency : [ dependency ]);
   try {
-    return ( dependency && dependency.length > 0 ) ? 
+    return dependency?.length > 0 ? 
       new constructor( ...dependency ): 
       new constructor();
   } catch {
     try {
-      return ( dependency && dependency.length > 0 ) ? 
+      return dependency.length > 0 ? 
         constructor( ...dependency ) : 
         constructor();
     } catch {
