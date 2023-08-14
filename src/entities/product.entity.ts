@@ -26,7 +26,7 @@ export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
   // },
   brand: {
     type: DataTypes.ENUM( 'NIKE', 'ADIDAS', 'ETC' ),
-    defaultValue: 'ETC',
+    allowNull: false,
   },
   name: {
     type: DataTypes.STRING,
@@ -39,8 +39,9 @@ export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
   status: {
     type: DataTypes.ENUM( 'SELLING','WAITING','SOLD','PENDING','FAILED' ),
     defaultValue: 'SELLING',
+    allowNull: false,
   },
-  image: { type: DataTypes.STRING },
+  image: DataTypes.STRING,
   auctionCloseDate: {
     comment: '경매 마감 날짜',
     type: DataTypes.DATE,
