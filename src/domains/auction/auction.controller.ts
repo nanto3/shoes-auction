@@ -1,9 +1,12 @@
-const auctionController = ({ get, post, put, patch, destroy }) => {
-  
-  get( '' )
-  ( () => {
-    return { result: 'auctions home' };
-  });
-};
+import { type AuctionService } from "./auction.service";
+import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
+import { excptIfNotType } from "../../utils/ErrorException";
 
-export default auctionController;
+export class AuctionController {
+  constructor( private auctionService: AuctionService ) {}
+
+  테스트 = Get( '' )
+  ( () => {
+    return { result: 'auction home' };
+  });
+}

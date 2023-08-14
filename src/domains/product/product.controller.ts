@@ -1,9 +1,12 @@
-const productController = ({ get, post, put, patch, destroy }) => {
-  
-  get( '' )
-  ( () => {
-    return { result: 'products home' };
-  });
-};
+import { type ProductService } from "./product.service";
+import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
+import { excptIfNotType } from "../../utils/ErrorException";
 
-export default productController;
+export class ProductController {
+  constructor( private productService: ProductService ) {}
+
+  테스트 = Get( '' )
+  ( () => {
+    return { result: 'product home' };
+  });
+}

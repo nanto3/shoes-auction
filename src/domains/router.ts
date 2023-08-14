@@ -3,6 +3,8 @@ import { respondNotFoundRoute } from '../utils/frame-util/responder';
 import { inject3LayerDependency, routeWithControllers } from '../utils/frame-util/3-layer-helper';
 
 import { UserController, UserService, UserRepository } from './user';
+import { ProductController, ProductService, ProductRepository } from './product';
+import { AuctionController, AuctionService, AuctionRepository } from './auction';
 import jwtUtil from '../utils/jwt';
 import AuthUuid from '../utils/AuthUuid';
 import redisClient from '../configs/redis.config';
@@ -19,7 +21,17 @@ const startRoute = async ( router: Router ) => {
           jwtUtil, 
           [ AuthUuid, await redisClient.connectRedis() ], 
         ], 
-      ], 
+      ],
+      products: [
+        ProductController,
+        ProductService,
+        ProductRepository,
+      ],
+      auctions: [
+        AuctionController,
+        AuctionService,
+        AuctionRepository,
+      ],
     }) 
   );
 
