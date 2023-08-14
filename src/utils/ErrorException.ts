@@ -33,7 +33,7 @@ export const excptIfFalsy = excptIfTruthyOrFalsyFormat( false );
 export const excptIfNotType = ( type: keyof typeof typeChecker, ...values: unknown[]): void => {
   const isCorrectType = typeChecker[type];
   values.forEach( value => {
-    if ( !isCorrectType( value ) )
+    if ( value && !isCorrectType( value ) )
       throw new ErrorException( 400, 'bad request' );
   });
 };
