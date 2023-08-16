@@ -16,7 +16,7 @@ const createApp = async ( startRoute, options: CreateAppOptions={}): Promise<Exp
   app.use( express.raw( options.raw ) );
   app.use( express.text( options.text ) );
   app.use( express.urlencoded( options.urlencoded ) );
-  app.use( express.raw( options.raw ) );
+  app.use( express.json( options.json ) );
   app.use( cors( options.cors ) );
 
   const router = Router();
