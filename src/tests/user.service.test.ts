@@ -32,12 +32,12 @@ describe( 'user-service', () => {
       }
     });
     
-    it( 'returns user with id', async () => {
+    it( 'returns user with hashed password', async () => {
       const userService = new UserService( UserRepository(), {} as any, {} as any );
   
       const user = await userService.join({ email, password, birthday });
       
-      expect( user ).toEqual({ id: 1, email, password, birthday });
+      expect( await user.validatePassword( password ) ).toEqual( true );
     });
   });
   
