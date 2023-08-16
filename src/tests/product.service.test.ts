@@ -13,7 +13,7 @@ describe( 'product-service', () => {
           return body;
         },
         saveProduct: ( product ) => product,
-        findAndCountAll: ( ...params ) => { return {} as any;},
+        findAndCountAll: ( ...params ) => { return products;},
         findOneBy: ({ email }: any ) => products.find( anUser => anUser.email === email ),
       } as any;
     };
@@ -31,6 +31,15 @@ describe( 'product-service', () => {
       const product = await productService.createProdudct( productVO );
       
       expect( product ).toEqual({ id: 1, ...productVO });
+    });
+
+    it( 'returns products', async () => {
+      const productService = new ProductService( ProductRepository() );
+      const product = await productService.createProdudct( productVO );
+      
+      const products = await productService.getProducts({ page: 1, limit: 10, brand: null });
+      
+      expect( products ).toEqual([ product ]);
     });
   });
 });
