@@ -26,12 +26,10 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   }
 
   static async of({ email, password, birthday }) {
-    const user = new User({ email, password, birthday });
-
     const salt = await bcrypt.genSalt( +envConfig.passwordSalt ); 
-    user.password = await bcrypt.hash( user.password, salt );
+    password = await bcrypt.hash( password, salt );
 
-    return user;
+    return new User({ email, password, birthday });
   }
 }
 
