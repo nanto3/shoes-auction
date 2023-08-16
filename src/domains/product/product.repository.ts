@@ -13,10 +13,10 @@ export class ProductRepository {
 
   async findOneBy<T extends keyof Attributes<Product>>( 
     where: Record<T, Product[T]>, {
-      includeAuction, 
+      includeAuctions, 
       transaction, 
     }: FindOnyByOptions={}) {
-    const include: IncludeOptions = includeAuction ? { model: Auction, as: 'auctions' } : null;
+    const include: IncludeOptions = includeAuctions ? { model: Auction, as: 'auctions' } : null;
 
     return await Product.findOne({ where, include, transaction });
   }
@@ -46,6 +46,6 @@ export interface PaginationOptions {
   limit: number;
 }
 interface FindOnyByOptions {
-  includeAuction?: boolean;
+  includeAuctions?: boolean;
   transaction?: Transaction;
 }

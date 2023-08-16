@@ -20,7 +20,7 @@ export class ProductService {
   }
 
   async getProductWithAuctions( id: number ) {
-    return await this.productRepository.findOneBy({ id }, { includeAuction: true });
+    return await this.productRepository.findOneBy({ id }, { includeAuctions: true });
   }
 }
 

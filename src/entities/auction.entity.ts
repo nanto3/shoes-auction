@@ -10,6 +10,10 @@ export default class Auction extends Model<InferAttributes<Auction>, InferCreati
   declare result: CreationOptional<'PENDING' | 'FAILED' | 'SUCCEEDED'>;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
+
+  checkCloseDate( closeDate: Date ) {
+    return this.createdAt <= new Date( closeDate ); 
+  }
 }
 
 // TODO: '최고 입찰가보다 적은 금액은 입찰 불가 처리' 어떻게 할 건지
@@ -19,17 +23,19 @@ export const AuctionFactory = ( sequelize: Sequelize ) => Auction.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  // productUuid: {
-  //   type: DataTypes.STRING,
-  //   primaryKey: true,
-  // },
-  // userUuid: {
-  //   type: DataTypes.STRING,
-  //   allowNull: false,
-  // },
+  productId: {
+    type: DataTypes.NUMBER,
+    allowNull: false,
+    // primaryKey: true,
+  },
+  userId: {
+    type: DataTypes.NUMBER,
+    allowNull: false,
+  },
   bidPrice: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    // primaryKey: true,
   },
   result: {
     comment: '낙찰 여부',

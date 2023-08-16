@@ -29,8 +29,8 @@ const startRoute = async ( router: Router ) => {
       ],
       auctions: [
         AuctionController,
-        AuctionService,
-        AuctionRepository,
+        AuctionService, 
+        [ AuctionRepository, ProductRepository ],
       ],
     }) 
   );
