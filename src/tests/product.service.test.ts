@@ -3,7 +3,7 @@ import { ProductService } from "../domains/product/product.service";
 
 describe( 'product-service', () => {
 
-  describe( 'join', () => {
+  describe( 'register', () => {
     const ProductRepository = () => {
       const products = [];
       return {
@@ -15,7 +15,7 @@ describe( 'product-service', () => {
         saveProduct: ( product ) => product,
         findAndCountAll: ( ...params ) => { return {} as any;},
         findOneBy: ({ email }: any ) => products.find( anUser => anUser.email === email ),
-      };
+      } as any;
     };
     const productVO = {
       userId: 1,
