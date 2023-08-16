@@ -8,6 +8,10 @@ export class ProductRepository {
     return await Product.create( product, { transaction });
   }
 
+  async saveProduct( product: Product, transaction?: Transaction ) {
+    return await product.save({ transaction });
+  }
+
   async findOneBy<T extends keyof Attributes<Product>>( where: Record<T, Product[T]>, transaction?: Transaction ) {
     return await Product.findOne({ where, transaction });
   }

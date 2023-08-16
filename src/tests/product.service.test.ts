@@ -12,6 +12,7 @@ describe( 'product-service', () => {
           products.push( body );
           return body;
         },
+        saveProduct: ( product ) => product,
         findAndCountAll: ( ...params ) => { return {} as any;},
         findOneBy: ({ email }: any ) => products.find( anUser => anUser.email === email ),
       };
