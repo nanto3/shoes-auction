@@ -1,6 +1,5 @@
-import { Transaction, Attributes, CreationAttributes } from 'sequelize';
-import { Product } from "../../entities";
-import ErrorException from '../../utils/ErrorException';
+import { Transaction, Attributes, CreationAttributes, Model, IncludeOptions } from 'sequelize';
+import { Product, Auction } from "../../entities";
 
 export class ProductRepository {
   
@@ -12,8 +11,14 @@ export class ProductRepository {
     return await product.save({ transaction });
   }
 
-  async findOneBy<T extends keyof Attributes<Product>>( where: Record<T, Product[T]>, transaction?: Transaction ) {
-    return await Product.findOne({ where, transaction });
+  async findOneBy<T extends keyof Attributes<Product>>( 
+    where: Record<T, Product[T]>, {
+      includeAuction, 
+      transaction, 
+    }: FindOnyByOptions={}) {
+    const include: IncludeOptions = includeAuction ? { model: Auction, as: 'auctions' } : null;
+
+    return await Product.findOne({ where, include, transaction });
   }
 
   async findAndCountAll<T extends keyof Attributes<Product>>(
@@ -39,4 +44,8 @@ export class ProductRepository {
 export interface PaginationOptions {
   page: number;
   limit: number;
+}
+interface FindOnyByOptions {
+  includeAuction?: boolean;
+  transaction?: Transaction;
 }

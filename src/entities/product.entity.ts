@@ -20,10 +20,10 @@ export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  // userUuid: {
-  //   type: DataTypes.STRING,
-  //   allowNull: false,
-  // },
+  userId: {
+    type: DataTypes.NUMBER,
+    allowNull: false,
+  },
   brand: {
     type: DataTypes.ENUM( 'NIKE', 'ADIDAS', 'ETC' ),
     allowNull: false,

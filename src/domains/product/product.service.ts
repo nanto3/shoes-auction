@@ -1,4 +1,5 @@
 import { type ProductRepository, PaginationOptions } from './product.repository';
+import { Product } from '../../entities';
 
 export class ProductService {
   constructor( private productRepository: ProductRepository ) {}
@@ -16,6 +17,10 @@ export class ProductService {
 
   async getProductById( id: number ) {
     return await this.productRepository.findOneBy({ id });
+  }
+
+  async getProductWithAuctions( id: number ) {
+    return await this.productRepository.findOneBy({ id }, { includeAuction: true });
   }
 }
 
