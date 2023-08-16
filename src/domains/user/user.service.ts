@@ -2,6 +2,7 @@ import { type UserRepository } from './user.repository';
 import type JwtUtil from '../../utils/jwt';
 import type AuthUuid from '../../utils/AuthUuid';
 import { excptIfTruthy, excptIfFalsy } from '../../utils/ErrorException';
+import { User } from '../../entities';
 
 export class UserService {
   constructor( 
@@ -11,8 +12,10 @@ export class UserService {
 
   async join({ email, password, birthday }: UserVO ) {
     excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
+    
+    const user = await User.of({ email, password, birthday });
 
-    return await this.userRepository.createUser({ email, password, birthday });
+    return await this.userRepository.saveUser( user );
   }
 
   async login( email: string, password: string ) {

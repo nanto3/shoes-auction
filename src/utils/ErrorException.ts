@@ -18,7 +18,7 @@ export default class ErrorException extends Error {
 
 // 'excpt'는 'exception'을 의미
 const excptIfTruthyOrFalsyFormat = ( filterTruthy: boolean ) => 
-  ( value: unknown, statusOrMessage: number | string=400, message='' ): void => {
+  ( value: unknown, statusOrMessage: number | string=400, message='bad request' ): void => {
     if ( typeof statusOrMessage !== 'number' ) {
       message = statusOrMessage;
       statusOrMessage = 400;

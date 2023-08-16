@@ -1,7 +1,8 @@
 import { type UserService } from "./user.service";
 import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
-import { excptIfNotType } from "../../utils/ErrorException";
+import { excptIfNotType, excptIfFalsy } from "../../utils/ErrorException";
 import { EXPIRY_OF_ACCESS_TOKEN_BY_SECOND, EXPIRY_OF_REFRESH_TOKEN_BY_SECOND } from "../../utils/jwt";
+import { EMAIL_REGEX, BIRTHDAY_REGEX } from "../../constants/const";
 
 export class UserController {
   constructor( private userService: UserService ) {}
@@ -15,6 +16,9 @@ export class UserController {
   ( async ({ body }) => {
     const { email, password, birthday } = body;
     excptIfNotType( 'string', email, password, birthday );
+    excptIfFalsy( EMAIL_REGEX.test( email ) );
+    excptIfFalsy( BIRTHDAY_REGEX.test( birthday ) );
+    excptIfFalsy( ( password.length >= 4 ) && ( password.length < 20 ) );
 
     return { user: await this.userService.join({ email, password, birthday }) };
   });
