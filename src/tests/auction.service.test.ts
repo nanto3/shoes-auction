@@ -4,15 +4,15 @@ import { ProductService } from "../domains/product";
 
 describe( 'auction-service', () => {
 
-  describe( 'bid', () => {
+  const AuctionRepository = () => {
+    const auctions = [];
+    return {
+      save: ( auction ) => auction,   
+      findOneBy: ({ id }: any ) => auctions.find( anAuction => anAuction.id === id ), 
+    } as any;
+  };
 
-    const AuctionRepository = () => {
-      const auctions = [];
-      return {
-        save: ( auction ) => auction,   
-        findOneBy: ({ id }: any ) => auctions.find( anAuction => anAuction.id === id ), 
-      } as any;
-    };
+  describe( 'bid', () => {
 
     const ProductRepository = () => {
       const products = [];
@@ -28,25 +28,77 @@ describe( 'auction-service', () => {
       } as any;
     };
 
-    const productRepository = ProductRepository();
+    let productRepository;
+    let auctionService;
+    let auctionVO;
 
-    beforeAll( () => {
-      const productVO = {
+    beforeAll( async () => {
+      productRepository = ProductRepository();
+      const productService = new ProductService( productRepository )
+      ;
+      await productService.createProdudct({
         userId: 1,
         brand: 'NIKE' as 'NIKE'|'ADIDAS'|'ETC',
         name: 'jordan1 cichago',
         price: 500_000,
         auctionCloseDate: new Date( '2023-08-20 22:00:00' ),
+      });
+    });
+
+    beforeEach( () => {
+      auctionService = new AuctionService( AuctionRepository(), productRepository );
+
+      // success case
+      auctionVO = { 
+        userId: 2, 
+        productId: 1, 
+        bidPrice: 500_000, 
+        nowDate: new Date( '2023-08-19 22:00:00' ), 
       };
-      const productService = new ProductService( productRepository );
-      productService.createProdudct( productVO );
+    });
+
+
+    it( 'should need an product which coincides productId', async () => {
+      try {
+        auctionVO.productId = 2;
+
+        await auctionService.bid( auctionVO );
+      } catch ( error ) {
+        expect( error.message ).toMatch( 'product not exist' );
+      }
+    });
+
+    it( 'should have earlier nowDate than auctionCloseDate', async () => {
+      try {
+        auctionVO.nowDate = new Date( '2023-08-21 22:00:00' );
+
+        await auctionService.bid( auctionVO );
+      } catch ( error ) {
+        expect( error.message ).toMatch( 'auction closed' );
+      }
+    });
+
+    it( 'should be different user', async () => {
+      try {
+        auctionVO.userId = 1;
+
+        await auctionService.bid( auctionVO );
+      } catch ( error ) {
+        expect( error.message ).toMatch( `can't bid for own product` );
+      }
+    });
+
+    it( 'should have larger bidPrice than last one', async () => {
+      try {
+        auctionVO.bidPrice = 490_000;
+
+        await auctionService.bid( auctionVO );
+      } catch ( error ) {
+        expect( error.message ).toMatch( 'bidPrice should be larger than last bidPrice' );
+      }
     });
     
-    it( 'returns product with id', async () => {
-      const auctionService = new AuctionService( AuctionRepository(), productRepository );
-  
-      
-      // expect( product ).toEqual({ id: 1, ...productVO });
+    it( 'returns auction', async () => {
     });
   });
 });
