@@ -20,7 +20,7 @@ export class AuctionService {
     const topBidPrice = auctionInDb?.bidPrice || ( product.price - 1 );
     const auction = new Auction({ userId, productId, bidPrice, createdAt: nowDate });
     
-    excptIfFalsy( auction.checkCloseDate( product.auctionCloseDate ), 'auction closed' );
+    excptIfFalsy( auction.checkAuctionOpen( product.auctionCloseDate ), 'auction closed' );
     excptIfFalsy( auction.userId !== product.userId, `can't bid for own product` );
     excptIfFalsy( auction.bidPrice > topBidPrice, 'bidPrice should be larger than last bidPrice' );
     

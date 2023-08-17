@@ -11,7 +11,7 @@ export default class Auction extends Model<InferAttributes<Auction>, InferCreati
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
 
-  checkCloseDate( closeDate: Date ) {
+  checkAuctionOpen( closeDate: Date ) {
     return this.createdAt <= new Date( closeDate ); 
   }
 }
