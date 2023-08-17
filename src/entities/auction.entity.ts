@@ -25,7 +25,7 @@ export const AuctionFactory = ( sequelize: Sequelize ) => Auction.init({
   productId: {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
-    unique: 'auction_unique',
+    unique: 'auctionUnique',
   },
   userId: {
     type: DataTypes.INTEGER.UNSIGNED,
@@ -34,7 +34,7 @@ export const AuctionFactory = ( sequelize: Sequelize ) => Auction.init({
   bidPrice: {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
-    unique: 'auction_unique',
+    unique: 'auctionUnique',
   },
   result: {
     comment: '낙찰 여부',

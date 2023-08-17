@@ -14,7 +14,7 @@ describe( 'product-service', () => {
         },
         saveProduct: ( product ) => product,
         findAndCountAll: ( ...params ) => { return products;},
-        findOneBy: ({ email }: any ) => products.find( anUser => anUser.email === email ),
+        findOneBy: ({ id }: any ) => products.find( anProduct => anProduct.id === id ),
       } as any;
     };
     const productVO = {
