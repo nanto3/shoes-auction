@@ -20,8 +20,8 @@ export default class ProductJob {
   
           if ( !auction ) {
             const pendingCloseDate = new Date( new Date( auctionCloseDate ).setDate( new Date( auctionCloseDate ).getDate() + 2 ) );
-             
-            return await this.pendAuction( productId, pendingCloseDate );
+
+            return await this.setProductPending( productId, pendingCloseDate );
           }
 
           await this.achieveAuction( auction );
@@ -39,11 +39,9 @@ export default class ProductJob {
 
       auction.result = 'SUCCEEDED';      
     
-      await Promise.all([
-        await this.auctionRepository.save( auction, transaction ),
-        await this.auctionRepository.update({ result: 'FAILED' }, { where: { productId: auction.productId, id: { [Op.not]: auction.id } }, transaction }),
-        await this.productRepository.update({ status: 'WAITING' }, { where: { id: auction.productId }, transaction }),
-      ]);
+      await this.auctionRepository.save( auction, transaction );
+      await this.auctionRepository.update({ result: 'FAILED' }, { where: { productId: auction.productId, id: { [Op.not]: auction.id } }, transaction });
+      await this.productRepository.update({ status: 'WAITING' }, { where: { id: auction.productId }, transaction });
     } catch ( error ) {
       if ( transaction ) {
         await transaction.rollback().catch( err => console.error( err ) );
@@ -52,10 +50,10 @@ export default class ProductJob {
     }
   }
 
-  private async pendAuction( productId: number, pendingCloseDate: Date ) {
+  private async setProductPending( productId: number, pendingCloseDate: Date ) {
     await this.productRepository.update({ status: 'PENDING' }, { where: { id: productId } });
-
-    return scheduler.makeSchedule({
+    
+    scheduler.makeSchedule({
       id: productId, 
       executionDate: pendingCloseDate, 
       job: async () => {
