@@ -18,5 +18,5 @@ export class AuctionRepository {
 interface FindOneByOptions {
   transaction?: Transaction;
   withProduct?: boolean;
-  order?: [string, string]
+  order?: [string, string][]
 }

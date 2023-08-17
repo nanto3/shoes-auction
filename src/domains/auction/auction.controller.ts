@@ -1,6 +1,6 @@
 import { type AuctionService } from "./auction.service";
 import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
-import { excptIfNotType } from "../../utils/ErrorException";
+import { excptIfFalsy, excptIfNotType } from "../../utils/ErrorException";
 import jwtUtil from "../../utils/jwt";
 
 // middleware 처리
@@ -25,6 +25,7 @@ export class AuctionController {
   입찰하기 = Post( '', validateUser )
   ( async ({ body }) => {
     const { userId, productId, bidPrice } = body;
+    excptIfFalsy( userId, 401, 'not authenticated' );
     excptIfNotType( 'number', userId, productId, bidPrice );
     
     const auction = await this.auctionService.bid({ userId, productId, bidPrice, nowDate: new Date() });

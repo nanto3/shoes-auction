@@ -39,7 +39,7 @@ export class UserService {
   }
 
   async changePassword({ email, authUuid, password }: UserInfoForPasswordChange ) {
-    excptIfFalsy( await this.authUuid.validateUuid( email, authUuid ), 405, 'not allowed' );
+    excptIfFalsy( await this.authUuid.validateUuid( email, authUuid ), 401, 'not authenticated' );
     
     const user = await this.getUserByEmail( email );
     excptIfFalsy( user, 'not registered user' );

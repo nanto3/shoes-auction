@@ -11,7 +11,7 @@ export class AuctionService {
 
   async bid({ userId, productId, bidPrice, nowDate }: auctionVO ) {
     const [ auctionInDb, product ] = await Promise.all([ 
-      this.auctionRepository.findOneBy({ productId }, { order: [ 'bidPrice', 'desc' ] }), 
+      this.auctionRepository.findOneBy({ productId }, { order: [ [ 'bidPrice', 'desc' ] ] }), 
       this.ProductRepository.findOneBy({ id: productId }), 
     ]);
     
@@ -23,9 +23,6 @@ export class AuctionService {
     excptIfFalsy( auction.checkCloseDate( product.auctionCloseDate ), 'auction closed' );
     excptIfFalsy( auction.userId !== product.userId, `can't bid for own product` );
     excptIfFalsy( auction.bidPrice > topBidPrice, 'bidPrice should be larger than last bidPrice' );
-
-    // TODO: '최고 입찰가보다 적은 금액은 입찰 불가 처리' 어떻게 할 건지. 
-    // db에 같은 금액 입력될 수 있다.
     
     return await this.auctionRepository.save( auction );
   }
