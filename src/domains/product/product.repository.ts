@@ -11,6 +11,12 @@ export class ProductRepository {
     return await product.save({ transaction });
   }
 
+  async update<T extends keyof Attributes<Product>, K extends keyof Attributes<Product>>( body: Record<T, Product[T]>, { where, transaction }: UpdateOptions<K>={}) {
+    const result = await Product.update( body, { where, transaction });
+    
+    return result[0];
+  }
+
   async findOneBy<T extends keyof Attributes<Product>>( 
     where: Record<T, Product[T]>, {
       includeAuctions, 
@@ -41,6 +47,10 @@ export class ProductRepository {
   }
 }
 
+interface UpdateOptions<T extends keyof Attributes<Product>> {
+  where?: Record<T, any>;
+  transaction?: Transaction;
+}
 export interface PaginationOptions {
   page: number;
   limit: number;

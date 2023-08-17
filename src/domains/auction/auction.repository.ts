@@ -6,6 +6,12 @@ export class AuctionRepository {
   async save( auction: Auction, transaction?: Transaction ) {
     return await auction.save({ transaction });
   }
+
+  async update<T extends keyof Attributes<Auction>, K extends keyof Attributes<Auction>>( body: Record<T, Auction[T]>, { where, transaction }: UpdateOptions<K>={}) {
+    const result = await Auction.update( body, { where, transaction });
+    
+    return result[0];
+  }
   
   async findOneBy<T extends keyof Attributes<Auction>>( 
     where: Record<T, Auction[T]>, { order, withProduct, transaction }: FindOneByOptions={}) {
@@ -15,6 +21,10 @@ export class AuctionRepository {
   }
 }
 
+interface UpdateOptions<T extends keyof Attributes<Auction>> {
+  where?: Record<T, any>;
+  transaction?: Transaction;
+}
 interface FindOneByOptions {
   transaction?: Transaction;
   withProduct?: boolean;

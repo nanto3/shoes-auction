@@ -2,7 +2,7 @@ import { Request, Response, NextFunction, Router } from "express";
 import respond, { ProcessReq } from "./responder";
 
 type HttpMethod =  'get' | 'post' | 'patch' | 'put' | 'delete';
-type Middleware = ( req: Request, res: Response, next: NextFunction ) => void | Promise<void>;
+type Middleware = ( req: Request ) => void | Promise<void>;
 type ControllerWithBaseUrl = [any, string];
 
 interface RouteInfo {
@@ -17,7 +17,17 @@ const routeInfoSetterFormat = ( httpMethod: HttpMethod ) =>
       value: {
         httpMethod,
         url,
-        middlewares,
+        middlewares: middlewares.map( middleware => {
+          return ( req: Request, _, next: NextFunction ) =>{
+            try { 
+              middleware( req );
+              next();
+            }
+            catch ( error ) {
+              next( error );
+            }
+          };
+        }),
       },
     });
     return controllerMethod;
@@ -64,6 +74,7 @@ const injectDependency = ( dependencyInfo: any[]) => {
 export const inject3LayerDependency = ( dependencyInfos: Record<string, any[]> ): ControllerWithBaseUrl[] => {
   return Object.entries( dependencyInfos ).map( ([ baseUrl, dependencyInfo ]) => {
     const controller = injectDependency( dependencyInfo );
+    console.log( controller );
     return [ controller, baseUrl  ];
   });
 };

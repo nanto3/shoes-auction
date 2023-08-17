@@ -1,9 +1,12 @@
 import { type ProductService } from "./product.service";
+import type JobEvent from "../../jobs";
 import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
 import { excptIfNotType, excptIfFalsy } from "../../utils/ErrorException";
 
 export class ProductController {
-  constructor( private productService: ProductService ) {}
+  constructor( 
+    private productService: ProductService, 
+    private jobEvent: JobEvent ) {}
 
   상품_등록 = Post( '' )
   ( async ( req ) => {
@@ -12,7 +15,11 @@ export class ProductController {
     excptIfNotType( 'number', userId, price );
     excptIfFalsy([ 'NIKE','ADIDAS','ETC' ].some( elem => elem === brand ) );
 
-    return { product: await this.productService.createProdudct({ userId, brand, name, price, image, auctionCloseDate }) };
+    const product = await this.productService.createProdudct({ userId, brand, name, price, image, auctionCloseDate });
+
+    this.jobEvent.scheduleAuctionClose( product.id, product.auctionCloseDate );
+
+    return { product: product };
   });
 
   상품_목록_조회 = Get( '' )
