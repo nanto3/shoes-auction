@@ -3,26 +3,31 @@ import { UserService } from "../domains/user/user.service";
 
 describe( 'user-service', () => {
 
-  describe( 'join', () => {
-    const UserRepository = () => {
-      const users = [];
-      return {
-        createUser: ( user ) => {
-          const body = { ...user, id: users.length + 1 };
-          users.push( body );
-          return body;
-        },
-        saveUser: ( user ) => {return user;},
-        findOneBy: ({ email }: any ) => users.find( anUser => anUser.email === email ),
-      };
+  const UserRepository = () => {
+    const users = [];
+    return {
+      createUser: ( user ) => {
+        const body = { ...user, id: users.length + 1 };
+        users.push( body );
+        return body;
+      },
+      saveUser: ( user ) => {return user;},
+      findOneBy: ({ email }: any ) => users.find( anUser => anUser.email === email ),
     };
+  };
+
+  describe( 'join', () => {
     const email = 'abc123@test.com';
     const password = '1234';
     const birthday = '19920521';
+
+    let userService;
+
+    beforeEach( () => {
+      userService = new UserService( UserRepository(), {} as any, {} as any );
+    });
   
     it( 'throws error - already registered email', async () => {
-      const userService = new UserService( UserRepository(), {} as any, {} as any );
-  
       try {
         await userService.join({ email, password, birthday });
         await userService.join({ email, password, birthday });
@@ -33,8 +38,6 @@ describe( 'user-service', () => {
     });
     
     it( 'returns user with hashed password', async () => {
-      const userService = new UserService( UserRepository(), {} as any, {} as any );
-  
       const user = await userService.join({ email, password, birthday });
       
       expect( await user.validatePassword( password ) ).toEqual( true );
@@ -44,6 +47,7 @@ describe( 'user-service', () => {
   describe( 'login', () => {
     const firstUserMail = 'abc@test.com';
     const firstUserPassword = '1234';
+
     const UserRepository = () => {
       const users = [ { 
         id: 1, 
@@ -52,9 +56,9 @@ describe( 'user-service', () => {
         validatePassword: ( _password ) => users[0].password === _password, 
       } ];
       return {
-        createUser: ( () => ({}) ) as any,
-        saveUser: ( user ) => {return user;},
-        findOneBy: ({ email }: any ): any => users.find( user => user.email === email ), 
+        createUser: ( user ) => ({}) as any,
+        saveUser: ( user ) => ({}) as any,
+        findOneBy: ({ email }: any ) => users.find( anUser => anUser.email === email ) as any,
       };
     };
   
