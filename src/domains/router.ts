@@ -19,7 +19,7 @@ const startRoute = async ( router: Router ) => {
         [ 
           UserRepository,
           jwtUtil, 
-          [ AuthUuid, await redisClient.connectRedis() ], 
+          [ AuthUuid, redisClient ], 
         ], 
       ],
       products: [

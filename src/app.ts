@@ -2,6 +2,7 @@ import envConfig from './configs/env.config';
 import startRoute from './domains/router';
 import createApp from './utils/frame-util/create-app';
 import { checkDbConnection } from './entities';
+import { connectRedis } from './configs/redis.config';
 
 const startApp = async () => {
   const app = await createApp( startRoute, {
@@ -14,7 +15,7 @@ const startApp = async () => {
     cors: { credentials: true },
   });
   
-  await checkDbConnection();
+  await Promise.all([ checkDbConnection(), connectRedis() ]);
   app.listen( envConfig.port , () => 
     console.log( `Start shoes-auction server on port ${envConfig.port}` ) );
 };
