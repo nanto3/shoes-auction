@@ -16,12 +16,12 @@ export default class Product extends Model<InferAttributes<Product>, InferCreati
 
 export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
   },
   userId: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
   },
   brand: {
@@ -33,7 +33,7 @@ export const ProductFactory = ( sequelize: Sequelize ) => Product.init({
     allowNull: false,
   },
   price: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
   },
   status: {

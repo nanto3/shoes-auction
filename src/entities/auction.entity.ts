@@ -18,21 +18,21 @@ export default class Auction extends Model<InferAttributes<Auction>, InferCreati
 
 export const AuctionFactory = ( sequelize: Sequelize ) => Auction.init({
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
   },
   productId: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     unique: 'auction_unique',
   },
   userId: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
   },
   bidPrice: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     unique: 'auction_unique',
   },
