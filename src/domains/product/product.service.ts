@@ -73,14 +73,12 @@ export class ProductService {
     const products = productsAndAuctions.map( product => {
       const jsoned: any = product.toJSON();
 
-      const auctionCountsByUserId = jsoned.auctions
-        .reduce( ( acc: Record<number, number>, auction: Auction ) => {
-          const count = acc[auction.userId];
-          acc[auction.userId] = count ? count + 1 : 1;
-          return acc;
-        }, {});
+      const participantIdObj = jsoned.auctions
+        .reduce( ( acc: Record<number, number>, auction: Auction ) => acc[auction.userId] ? 
+          acc : 
+          ( acc[auction.userId] = 1, acc ), {});
 
-      jsoned.participantCount = Object.keys( auctionCountsByUserId ).length;
+      jsoned.participantCount = Object.keys( participantIdObj ).length;
       jsoned.auctionCount = jsoned.auctions.length;
       jsoned.topAuction = jsoned.auctions[0] || null;
       delete jsoned.auctions;
