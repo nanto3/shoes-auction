@@ -62,7 +62,7 @@ export class ProductService {
 
   // TODO: 내부에서 repository 사용하지 않고 모델을 사용하고 있는데 repository 사용하도록 변경
   async getMySellingProductsAndCount( userId: number, { page, limit, brand }: ProductListOptions ) {
-    const { rows: productsAndAuctions } = await Product.findAndCountAll({
+    const { rows: mySellingProductsAndAuctions } = await Product.findAndCountAll({
       where: { userId, status: 'SELLING', ...( brand && { brand }) }, 
       include: { model: Auction, as: 'auctions' },
       order: [ [ 'auctions', 'id', 'desc' ] ],
@@ -70,7 +70,7 @@ export class ProductService {
       limit, 
     });
 
-    const products = productsAndAuctions.map( product => {
+    const mySellingProducts = mySellingProductsAndAuctions.map( product => {
       const jsoned: any = product.toJSON();
 
       const participantIdObj = jsoned.auctions
@@ -86,7 +86,7 @@ export class ProductService {
       return jsoned;
     });
 
-    return { products, count: products.length };
+    return { products: mySellingProducts, count: mySellingProducts.length };
   }
 }
 
