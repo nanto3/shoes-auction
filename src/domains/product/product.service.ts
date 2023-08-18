@@ -24,6 +24,7 @@ export class ProductService {
     return await this.productRepository.findOneBy({ id }, { includeAuctions: true });
   }
 
+  // TODO: 내부에서 repository 사용하지 않고 모델을 사용하고 있는데 repository 사용하도록 변경
   async getMyBiddingProductsAndCount( userId: number, { page, limit, brand }: ProductListOptions ) {
     const { rows: myBiddingProductsWithMyAuctions } = await Product.findAndCountAll({
       where: { ...( brand && { brand }) },
