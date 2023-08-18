@@ -49,15 +49,46 @@ export class ProductService {
       const topAuction = product.auctions[0];
       const myAuction = product.findMyAuction( userId );
       
-      const parsed: any = product.toJSON();
-      parsed.topAuction = topAuction;
-      parsed.myAuction = myAuction;
-      delete parsed.auctions;
+      const jsoned: any = product.toJSON();
+      jsoned.topAuction = topAuction;
+      jsoned.myAuction = myAuction;
+      delete jsoned.auctions;
 
-      return parsed;
+      return jsoned;
     });
 
     return { products: myBinddingProducts, count: myBinddingProducts.length };
+  }
+
+  // TODO: 내부에서 repository 사용하지 않고 모델을 사용하고 있는데 repository 사용하도록 변경
+  async getMySellingProductsAndCount( userId: number, { page, limit, brand }: ProductListOptions ) {
+    const { rows: productsAndAuctions } = await Product.findAndCountAll({
+      where: { userId, status: 'SELLING', ...( brand && { brand }) }, 
+      include: { model: Auction, as: 'auctions' },
+      order: [ [ 'auctions', 'id', 'desc' ] ],
+      offset: ( page - 1 ) * limit, 
+      limit, 
+    });
+
+    const products = productsAndAuctions.map( product => {
+      const jsoned: any = product.toJSON();
+
+      const auctionCountsByUserId = jsoned.auctions
+        .reduce( ( acc: Record<number, number>, auction: Auction ) => {
+          const count = acc[auction.userId];
+          acc[auction.userId] = count ? count + 1 : 1;
+          return acc;
+        }, {});
+
+      jsoned.participantCount = Object.keys( auctionCountsByUserId ).length;
+      jsoned.auctionCount = jsoned.auctions.length;
+      jsoned.topAuction = jsoned.auctions[0] || null;
+      delete jsoned.auctions;
+
+      return jsoned;
+    });
+
+    return { products, count: products.length };
   }
 }
 

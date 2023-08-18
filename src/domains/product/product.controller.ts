@@ -36,7 +36,7 @@ export class ProductController {
     });
   });
 
-  구매_입찰_현황_조회 = Get( '/bidding', verifyUserWithJwt )
+  구매_입찰_목록_조회 = Get( '/bidding', verifyUserWithJwt )
   ( async ({ headers, query }) => {
     const { userid: userId } = headers;
     const { page, limit, brand } = query;
@@ -44,6 +44,20 @@ export class ProductController {
     brand && excptIfFalsy([ 'NIKE','ADIDAS','ETC' ].some( elem => elem === brand ) );
 
     return await this.productService.getMyBiddingProductsAndCount( +userId, {
+      page: +page || 1,
+      limit: +limit || 20,
+      brand: brand as 'NIKE' | 'ADIDAS' | 'ETC',
+    });
+  });
+
+  판매_입쳘_목록_조회 = Get( '/selling' )
+  ( async ({ headers, query }) => {
+    const { userid: userId } = headers;
+    const { page, limit, brand } = query;
+
+    brand && excptIfFalsy([ 'NIKE','ADIDAS','ETC' ].some( elem => elem === brand ) );
+
+    return await this.productService.getMySellingProductsAndCount( +userId, {
       page: +page || 1,
       limit: +limit || 20,
       brand: brand as 'NIKE' | 'ADIDAS' | 'ETC',
