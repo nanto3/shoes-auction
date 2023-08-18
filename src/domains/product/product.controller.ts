@@ -36,8 +36,7 @@ export class ProductController {
     });
   });
 
-  // verifyUserWithJwt
-  구매_입찰_현황_조회 = Get( '/bidding' )
+  구매_입찰_현황_조회 = Get( '/bidding', verifyUserWithJwt )
   ( async ({ headers, query }) => {
     const { userid: userId } = headers;
     const { page, limit, brand } = query;
