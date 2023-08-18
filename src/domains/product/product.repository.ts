@@ -24,7 +24,12 @@ export class ProductRepository {
     }: FindOnyByOptions={}) {
     const include: IncludeOptions = includeAuctions ? { model: Auction, as: 'auctions' } : null;
 
-    return await Product.findOne({ where, include, transaction });
+    return await Product.findOne({ 
+      where, 
+      include, 
+      order: includeAuctions ? [ [ 'auctions', 'id', 'desc' ] ] : null, 
+      transaction, 
+    });
   }
 
   async findAndCountAll<T extends keyof Attributes<Product>>(

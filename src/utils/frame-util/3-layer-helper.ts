@@ -74,7 +74,6 @@ const injectDependency = ( dependencyInfo: any[]) => {
 export const inject3LayerDependency = ( dependencyInfos: Record<string, any[]> ): ControllerWithBaseUrl[] => {
   return Object.entries( dependencyInfos ).map( ([ baseUrl, dependencyInfo ]) => {
     const controller = injectDependency( dependencyInfo );
-    console.log( controller );
     return [ controller, baseUrl  ];
   });
 };

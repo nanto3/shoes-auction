@@ -13,8 +13,8 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
   declare readonly deletedAt: Date | null;
-  declare readonly products: NonAttribute<Product>;
-  declare readonly auctions: NonAttribute<Auction>;
+  declare readonly products: NonAttribute<Product[]>;
+  declare readonly auctions: NonAttribute<Auction[]>;
 
   async validatePassword( password: string ): Promise<boolean> {
     return await bcrypt.compare( password, this.password );

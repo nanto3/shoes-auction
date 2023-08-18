@@ -11,11 +11,12 @@ export class AuctionController {
     return { result: 'auction home' };
   });
 
+  
   입찰하기 = Post( '', verifyUserWithJwt )
   ( async ({ headers, body }) => {
     const { userid: userId } = headers;
     const { productId, bidPrice } = body;
-    excptIfFalsy( userId, 401, 'not authenticated' );
+    
     excptIfNotType( 'number', +userId, productId, bidPrice );
     
     const auction = await this.auctionService.bid({ userId: +userId, productId, bidPrice, nowDate: new Date() });

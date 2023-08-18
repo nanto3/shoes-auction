@@ -7,14 +7,14 @@ const _User = UserFactory( sequelize );
 const _Product = ProductFactory( sequelize );
 const _Auction = AuctionFactory( sequelize );
 
-_User.hasMany( _Product, { as: 'products' });
-_Product.belongsTo( _User );
+_User.hasMany( _Product, { as: 'products', foreignKey: 'userId' });
+_Product.belongsTo( _User, { foreignKey: 'userId' });
 
-_User.hasMany( _Auction, { as: 'auctions' });
-_Auction.belongsTo( _User );
+_User.hasMany( _Auction, { as: 'auctions', foreignKey: 'userId' });
+_Auction.belongsTo( _User, { foreignKey: 'userId' });
 
-_Product.hasMany( _Auction, { as: 'auctions' });
-_Auction.belongsTo( _Product );
+_Product.hasMany( _Auction, { as: 'auctions', foreignKey: 'productId' });
+_Auction.belongsTo( _Product, { foreignKey: 'productId' });
 
 export const checkDbConnection = async () => {
   try {
