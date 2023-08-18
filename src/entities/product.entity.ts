@@ -1,5 +1,6 @@
-import { Sequelize, Model, DataTypes, CreationOptional, ForeignKey, InferAttributes, InferCreationAttributes } from 'sequelize';
+import { Sequelize, Model, DataTypes, CreationOptional, ForeignKey, InferAttributes, InferCreationAttributes, NonAttribute } from 'sequelize';
 import User from './user.entity';
+import Auction from './auction.entity';
 
 export default class Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
   declare readonly id: CreationOptional<number>;
@@ -12,6 +13,12 @@ export default class Product extends Model<InferAttributes<Product>, InferCreati
   declare auctionCloseDate: Date;
   declare readonly createdAt: CreationOptional<Date>;
   declare readonly updatedAt: CreationOptional<Date>;
+  
+  declare auctions: NonAttribute<Auction[]>;
+
+  findMyAuction( userId: number ) {
+    return this.auctions.find( auction => auction.userId === userId );
+  }
 }
 
 export const ProductFactory = ( sequelize: Sequelize ) => Product.init({

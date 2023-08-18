@@ -2,6 +2,7 @@ import { type ProductService } from "./product.service";
 import type JobEvent from "../../jobs";
 import { Get, Post, Patch } from "../../utils/frame-util/3-layer-helper";
 import { excptIfNotType, excptIfFalsy } from "../../utils/ErrorException";
+import { verifyUserWithJwt } from "../user/user.middleware";
 
 export class ProductController {
   constructor( 
@@ -14,6 +15,7 @@ export class ProductController {
     excptIfNotType( 'string', name, image, auctionCloseDate );
     excptIfNotType( 'number', userId, price );
     excptIfFalsy([ 'NIKE','ADIDAS','ETC' ].some( elem => elem === brand ) );
+    excptIfFalsy( new Date() < new Date( auctionCloseDate ) );
 
     const product = await this.productService.createProdudct({ userId, brand, name, price, image, auctionCloseDate });
 
@@ -27,10 +29,25 @@ export class ProductController {
     const { page, limit, brand } = query;
     brand && excptIfFalsy([ 'NIKE','ADIDAS','ETC' ].some( elem => elem === brand ) );
 
-    return await this.productService.getProducts({ 
+    return await this.productService.getSellingProductsAndCount({ 
       page: +page, 
       limit: +limit,
       brand: brand as 'NIKE'|'ADIDAS'|'ETC',
+    });
+  });
+
+  // verifyUserWithJwt
+  구매_입찰_현황_조회 = Get( '/bidding' )
+  ( async ({ headers, query }) => {
+    const { userid: userId } = headers;
+    const { page, limit, brand } = query;
+    
+    brand && excptIfFalsy([ 'NIKE','ADIDAS','ETC' ].some( elem => elem === brand ) );
+
+    return await this.productService.getMyBiddingProductsAndCount( +userId, {
+      page: +page || 1,
+      limit: +limit || 20,
+      brand: brand as 'NIKE' | 'ADIDAS' | 'ETC',
     });
   });
 
