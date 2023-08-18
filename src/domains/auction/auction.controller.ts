@@ -12,12 +12,13 @@ export class AuctionController {
   });
 
   입찰하기 = Post( '', verifyUserWithJwt )
-  ( async ({ body }) => {
-    const { userId, productId, bidPrice } = body;
+  ( async ({ headers, body }) => {
+    const { userid: userId } = headers;
+    const { productId, bidPrice } = body;
     excptIfFalsy( userId, 401, 'not authenticated' );
-    excptIfNotType( 'number', userId, productId, bidPrice );
+    excptIfNotType( 'number', +userId, productId, bidPrice );
     
-    const auction = await this.auctionService.bid({ userId, productId, bidPrice, nowDate: new Date() });
+    const auction = await this.auctionService.bid({ userId: +userId, productId, bidPrice, nowDate: new Date() });
 
     return { auction }; 
   });

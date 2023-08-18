@@ -12,5 +12,5 @@ export const verifyUserWithJwt = ( req: Request ) => {
   const accessToken = authorization.replace( 'Bearer ', '' );
   const result = jwtUtil.verify( accessToken );
   
-  req.body.userId = result.userId;
+  req.headers.userId = result.userId;
 };
