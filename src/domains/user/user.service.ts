@@ -10,7 +10,7 @@ export class UserService {
     private readonly jwtUtil: typeof JwtUtil,
     private readonly authUuid: AuthUuid ) {}
 
-  async join({ email, password, birthday }: UserVO ) {
+  async join({ email, password, birthday }: UserDTO ) {
     excptIfTruthy( await this.getUserByEmail( email ), 'already registered email' );
     
     const user = await User.of({ email, password, birthday });
@@ -58,7 +58,7 @@ export class UserService {
   }
 }
 
-interface UserVO {
+interface UserDTO {
   email: string;
   password: string;
   birthday: string;

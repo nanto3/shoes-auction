@@ -9,7 +9,7 @@ export class AuctionService {
     private ProductRepository: ProductRepository 
   ) {}
 
-  async bid({ userId, productId, bidPrice, nowDate }: auctionVO ) {
+  async bid({ userId, productId, bidPrice, nowDate }: auctionDTO ) {
     const [ auctionInDb, product ] = await Promise.all([ 
       this.auctionRepository.findOneBy({ productId }, { order: [ [ 'bidPrice', 'desc' ] ] }), 
       this.ProductRepository.findOneBy({ id: productId }), 
@@ -28,7 +28,7 @@ export class AuctionService {
   }
 }
 
-interface auctionVO {
+interface auctionDTO {
   userId: number;
   productId: number;
   bidPrice: number;

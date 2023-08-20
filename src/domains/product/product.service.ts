@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 export class ProductService {
   constructor( private productRepository: ProductRepository ) {}
 
-  async createProdudct( product: ProductVO ) {
+  async createProdudct( product: ProductDTO ) {
     return this.productRepository.createProduct( product );
   }
 
@@ -90,7 +90,7 @@ export class ProductService {
   }
 }
 
-interface ProductVO {
+interface ProductDTO {
   userId: number;
   brand: 'NIKE'|'ADIDAS'|'ETC';
   name: string;
