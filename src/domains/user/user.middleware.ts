@@ -6,7 +6,7 @@ export const verifyUserWithJwt = ( req: Request ) => {
   const { authorization } = req.headers;
 
   if ( !authorization ) {
-    throw new ErrorException( 400, 'bad request' );
+    throw new ErrorException( 403, 'forbidden' );
   }
 
   const accessToken = authorization.replace( 'Bearer ', '' );

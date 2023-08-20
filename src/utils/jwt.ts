@@ -31,10 +31,10 @@ const jwtUtil = {
       return jwt.verify( token, jwtSecret ) as JwtPayload;
     } catch ( error ) {
       if ( error.message === INVALID_SIGNATURE ) {
-        throw new ErrorException( 401, 'not authenticated' );
+        throw new ErrorException( 403, 'forbidden' );
       }
       if ( error.message === JWT_EXPIRED ) {
-        throw new ErrorException( 401, 'login expired' );
+        throw new ErrorException( 403, 'login expired' );
       }
     }
   },
