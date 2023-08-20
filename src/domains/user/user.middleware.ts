@@ -6,7 +6,7 @@ export const verifyUserWithJwt = ( req: Request ) => {
   const authorization = req.cookies['authorization'];
 
   if ( !authorization ) {
-    throw new ErrorException( 403, 'forbidden' );
+    throw new ErrorException( 401, 'not authenticated' );
   }
 
   const accessToken = authorization.replace( 'Bearer ', '' );
