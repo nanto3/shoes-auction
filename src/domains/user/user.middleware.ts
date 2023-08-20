@@ -3,7 +3,7 @@ import ErrorException from "../../utils/ErrorException";
 import jwtUtil from "../../utils/jwt";
 
 export const verifyUserWithJwt = ( req: Request ) => {
-  const { authorization } = req.headers;
+  const { authorization } = req.cookies;
 
   if ( !authorization ) {
     throw new ErrorException( 403, 'forbidden' );
